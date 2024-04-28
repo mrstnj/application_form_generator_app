@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:8.3.0
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - '3306:3306'
+
+  backend:
+    build:
+      context: project-backend
+    volumes:
+      - ./project-backend:/usr/src/app
+      - ./project-backend/vendor/bundle:/usr/local/bundle
+    ports:
+      - '8080:8080'
+    depends_on:
+      - db
+    stdin_open: true
+    tty: true
+    environment:
+      DB_USERNAME: root
+      DB_PASSWORD: password
+      DB_PORT: 3306
+      DB_HOST: db
+      RAILS_MAX_THREADS: 5
+      RAILS_ENV: development
+
+  frontend:
+    build:
+      context: project-frontend
+    volumes:
+      - ./project-frontend:/usr/src/app
+    ports:
+      - '3001:3000'

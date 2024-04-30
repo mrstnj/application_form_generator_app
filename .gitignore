@@ -47,25 +47,25 @@
 
 # Ignore all environment files (except templates).
 /project-backend/.env*
-/project-backend/!/.env*.erb
+!/project-backend/.env*.erb
 
 # Ignore all logfiles and tempfiles.
 /project-backend/log/*
 /project-backend/tmp/*
-/project-backend/!/log/.keep
-/project-backend/!/tmp/.keep
+!/project-backend/log/.keep
+!/project-backend/tmp/.keep
 
 # Ignore pidfiles, but keep the directory.
 /project-backend/tmp/pids/*
-/project-backend/!/tmp/pids/
-/project-backend/!/tmp/pids/.keep
+!/project-backend/tmp/pids/
+!/project-backend/tmp/pids/.keep
 
 # Ignore storage (uploaded files in development and any SQLite databases).
 /project-backend/storage/*
-/project-backend/!/storage/.keep
+!/project-backend/storage/.keep
 /project-backend/tmp/storage/*
-/project-backend/!/tmp/storage/
-/project-backend/!/tmp/storage/.keep
+!/project-backend/tmp/storage/
+!/project-backend/tmp/storage/.keep
 
 # Ignore master key for decrypting credentials and more.
 /project-backend/config/master.key

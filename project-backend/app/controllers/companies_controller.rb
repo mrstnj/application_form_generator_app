@@ -4,7 +4,7 @@ class CompaniesController < ApplicationController
   # GET /companies
   def index
     @companies = Company.all
-
+    @companies = @companies.search(@companies, params)
     render json: @companies
   end
 

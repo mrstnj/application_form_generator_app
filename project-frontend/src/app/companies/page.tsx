@@ -52,10 +52,16 @@ const CompanyIndex = () => {
     setCompanies(companies.filter((company) => company.id !== id));
   };
 
-  const onSubmit = (data: Company) => {
-    fetch(`http://localhost:8080/companies?company=${data}`)
-      .then((res) => res.json())
-      .then((companies) => setCompanies(companies));
+  const onSubmit = async (data: Company) => {
+    try {
+      const response = await axios.get('http://localhost:8080/companies', {
+        params: data
+      });
+      setCompanies(response.data);
+    } catch (error) {
+      // TODO: エラーメッセージ「条件に一致するデータがありませんでした」を出す
+      console.error('APIリクエストエラー:', error);
+    }
   };
 
   const { control, handleSubmit } = useForm<Company>();
@@ -186,8 +192,6 @@ const CompanyIndex = () => {
           >
             <Box component="p">ID: {selectedCompany.id}</Box>
             <Box component="p">Title: {selectedCompany.name}</Box>
-            <Box component="p">CreatedAt: {selectedCompany.created_at}</Box>
-            <Box component="p">UpdatedAt: {selectedCompany.updated_at}</Box>
             <Button onClick={() => handleShowDetails()} variant="contained">
               Close ✖️
             </Button>

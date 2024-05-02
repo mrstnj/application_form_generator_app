@@ -88,7 +88,7 @@ const CompanyIndex = () => {
                   />
                 </FormControl>
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <FormControl fullWidth>
                   <Controller
                     name="name"

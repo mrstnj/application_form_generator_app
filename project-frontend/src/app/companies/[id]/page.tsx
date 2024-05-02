@@ -15,6 +15,7 @@ import { useRouter } from 'next/navigation'
 import { useForm, Controller } from 'react-hook-form';
 
 import axios from "axios";
+import { useEffect, useState } from "react";
 
 type Company = {
   id: number;
@@ -23,12 +24,35 @@ type Company = {
   status: string;
 };
 
-const CompanyEdit = () => {
+type Params = {
+  params: {
+    id: number;
+  }
+}
+
+
+const CompanyEdit = ({ params }: Params) => {
   const router = useRouter();
+  const [company, setCompany] = useState<Company | null>(null);
+  const { control, handleSubmit, setValue } = useForm<Company>();
+
+  useEffect(() => {
+    fetch(`http://localhost:8080/companies/${params.id}`)
+      .then((res) => res.json())
+      .then((company) => setCompany(company));
+  }, [params.id]);
+
+  useEffect(() => {
+    if (company) {
+      setValue("code", company.code);
+      setValue("name", company.name);
+      setValue("status", company.status);
+    }
+  }, [company, setValue]);
 
   const onSubmit = async (data: Company) => {
     try {
-      await axios.post('http://localhost:8080/companies', {
+      await axios.put(`http://localhost:8080/companies/${params.id}`, {
         company: data
       });
       router.push('/companies');
@@ -38,8 +62,6 @@ const CompanyEdit = () => {
     }
   };
 
-  const { control, handleSubmit } = useForm<Company>();
-
   return (
     <>
       <Typography variant="h4" align="center">
@@ -48,7 +70,7 @@ const CompanyEdit = () => {
       <Paper elevation={0} className="sm:mx-auto sm:max-w-prose mb-4">
         <form onSubmit={handleSubmit(onSubmit)} className="p-8">
           <Typography variant="h6">
-            企業登録
+            企業詳細
           </Typography>
           <div className="my-4">
             <Grid container spacing={3}>
@@ -93,8 +115,11 @@ const CompanyEdit = () => {
             </Grid>
           </div>
           <div className="flex justify-center">
-            <Button variant="contained" color="primary" size="large" type="submit">
-              登録
+            <Button variant="contained" color="primary" size="large" className="m-1" onClick={() => router.push('/companies')}>
+              戻る
+            </Button>
+            <Button variant="contained" color="primary" size="large" type="submit" className="m-1">
+              更新
             </Button>
           </div>
         </form>  

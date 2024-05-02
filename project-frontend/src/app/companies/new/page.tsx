@@ -20,7 +20,7 @@ type Company = {
   id: number;
   code: string;
   name: string;
-  status: number | "";
+  status: string;
 };
 
 const CompanyEdit = () => {
@@ -82,8 +82,8 @@ const CompanyEdit = () => {
                       <FormControl fullWidth>
                         <InputLabel>ステータス</InputLabel>
                         <Select {...field} label="ステータス">
-                          <MenuItem value={1}>有効</MenuItem>
-                          <MenuItem value={0}>無効</MenuItem>
+                          <MenuItem value="activate">有効</MenuItem>
+                          <MenuItem value="deactivate">無効</MenuItem>
                         </Select>
                       </FormControl>
                     )}

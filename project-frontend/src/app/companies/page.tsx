@@ -9,8 +9,6 @@ import {
   TableBody,
   Button,
   Typography,
-  Box,
-  Modal,
   Paper,
   FormControl,
   InputLabel,
@@ -19,9 +17,10 @@ import {
   Grid,
   TextField,
 } from "@mui/material";
+import { useRouter } from 'next/navigation'
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -30,12 +29,12 @@ type Company = {
   id: number;
   code: string;
   name: string;
-  status: number | "";
+  status: string;
 };
 
 const CompanyIndex = () => {
+  const router = useRouter();
   const [companies, setCompanies] = useState<Company[]>([]);
-  const [selectedCompanyId, setSelectedCompanyId] = useState<number | null>(null);
 
   useEffect(() => {
     fetch("http://localhost:8080/companies")
@@ -43,9 +42,7 @@ const CompanyIndex = () => {
       .then((companies) => setCompanies(companies));
   }, []);
 
-  const selectedCompany = companies.find((company) => company.id === selectedCompanyId);
-
-  const handleShowDetails = (id?: number) => setSelectedCompanyId(id || null);
+  const handleShowDetails = (id?: number) => router.push(`/companies/${id}`);
 
   const deleteCompany = async (id: number) => {
     await axios.delete(`http://localhost:8080/companies/${id}`);
@@ -108,8 +105,9 @@ const CompanyIndex = () => {
                       <FormControl fullWidth>
                         <InputLabel>ステータス</InputLabel>
                         <Select {...field} label="ステータス">
-                          <MenuItem value={1}>有効</MenuItem>
-                          <MenuItem value={0}>無効</MenuItem>
+                          <MenuItem value="">選択してください</MenuItem>
+                          <MenuItem value="activate">有効</MenuItem>
+                          <MenuItem value="deactivate">無効</MenuItem>
                         </Select>
                       </FormControl>
                     )}
@@ -145,7 +143,7 @@ const CompanyIndex = () => {
                   <TableRow key={company.id}>
                     <TableCell>{company.code}</TableCell>
                     <TableCell>{company.name}</TableCell>
-                    <TableCell>{company.status? '有効' : '無効'}</TableCell>
+                    <TableCell>{company.status == "activate" ? '有効' : '無効'}</TableCell>
                     <TableCell>
                       <Button
                         variant="contained"
@@ -175,29 +173,6 @@ const CompanyIndex = () => {
           </Table>
         </TableContainer>
       </Paper>
-
-      {selectedCompany && (
-        <Modal open>
-          <Box
-            sx={{
-              position: "absolute" as "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: 400,
-              bgcolor: "lightblue",
-              p: 4,
-              borderRadius: "0.5em",
-            }}
-          >
-            <Box component="p">ID: {selectedCompany.id}</Box>
-            <Box component="p">Title: {selectedCompany.name}</Box>
-            <Button onClick={() => handleShowDetails()} variant="contained">
-              Close ✖️
-            </Button>
-          </Box>
-        </Modal>
-      )}
     </>
   );
 };

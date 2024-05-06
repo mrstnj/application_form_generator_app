@@ -26,36 +26,47 @@ type Company = {
 
 type Params = {
   params: {
-    id: number;
+    new: boolean;
+    id?: number;
   }
 }
 
-
-const CompanyEdit = ({ params }: Params) => {
+const Form = ({ params }: Params) => {
   const router = useRouter();
   const [company, setCompany] = useState<Company | null>(null);
   const { control, handleSubmit, setValue } = useForm<Company>();
 
-  useEffect(() => {
-    fetch(`http://localhost:8080/companies/${params.id}`)
-      .then((res) => res.json())
-      .then((company) => setCompany(company));
-  }, [params.id]);
+  const title = params.new ? "企業登録" : "企業詳細" ;
+  const action = params.new ? "登録" : "更新" ;
 
   useEffect(() => {
-    if (company) {
+    if (!params.new) {
+      fetch(`http://localhost:8080/companies/${params.id}`)
+        .then((res) => res.json())
+        .then((company) => setCompany(company));
+    }
+  }, [params.new, params.id]);
+
+  useEffect(() => {
+    if (!params.new && company) {
       setValue("code", company.code);
       setValue("name", company.name);
       setValue("status", company.status);
     }
-  }, [company, setValue]);
+  }, [params.new, company, setValue]);
 
   const onSubmit = async (data: Company) => {
     try {
-      await axios.put(`http://localhost:8080/companies/${params.id}`, {
-        company: data
-      });
-      router.push('/companies');
+      if (params.new) {
+        await axios.post('http://localhost:8080/companies', {
+          company: data
+        }); 
+      } else {
+        await axios.put(`http://localhost:8080/companies/${params.id}`, {
+          company: data
+        });
+      }
+      router.push('/admin/companies');
     } catch (error) {
       // TODO: エラーメッセージ「条件に一致するデータがありませんでした」を出す
       console.error('APIリクエストエラー:', error);
@@ -64,13 +75,10 @@ const CompanyEdit = ({ params }: Params) => {
 
   return (
     <>
-      <Typography variant="h4" align="center">
-        Company List
-      </Typography>    
       <Paper elevation={0} className="sm:mx-auto sm:max-w-prose mb-4">
         <form onSubmit={handleSubmit(onSubmit)} className="p-8">
           <Typography variant="h6">
-            企業詳細
+            {title}
           </Typography>
           <div className="my-4">
             <Grid container spacing={3}>
@@ -115,11 +123,11 @@ const CompanyEdit = ({ params }: Params) => {
             </Grid>
           </div>
           <div className="flex justify-center">
-            <Button variant="contained" color="primary" size="large" className="m-1" onClick={() => router.push('/companies')}>
+            <Button variant="contained" color="inherit" size="large" className="m-1" onClick={() => router.push('/admin/companies')}>
               戻る
             </Button>
             <Button variant="contained" color="primary" size="large" type="submit" className="m-1">
-              更新
+              {action}
             </Button>
           </div>
         </form>  
@@ -128,4 +136,4 @@ const CompanyEdit = ({ params }: Params) => {
   );
 };
 
-export default CompanyEdit;
+export default Form;

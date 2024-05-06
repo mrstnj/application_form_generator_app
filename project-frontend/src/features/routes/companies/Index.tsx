@@ -32,7 +32,7 @@ type Company = {
   status: string;
 };
 
-const CompanyIndex = () => {
+const Index = () => {
   const router = useRouter();
   const [companies, setCompanies] = useState<Company[]>([]);
 
@@ -42,7 +42,7 @@ const CompanyIndex = () => {
       .then((companies) => setCompanies(companies));
   }, []);
 
-  const handleShowDetails = (id?: number) => router.push(`/companies/${id}`);
+  const handleShowDetails = (id?: number) => router.push(`/admin/companies/${id}`);
 
   const deleteCompany = async (id: number) => {
     await axios.delete(`http://localhost:8080/companies/${id}`);
@@ -65,9 +65,6 @@ const CompanyIndex = () => {
 
   return (
     <>
-      <Typography variant="h4" align="center">
-        Company List
-      </Typography>    
       <Paper elevation={0} className="sm:mx-auto sm:max-w-prose mb-4">
         <form onSubmit={handleSubmit(onSubmit)} className="p-8">
           <Typography variant="h6">
@@ -134,7 +131,7 @@ const CompanyIndex = () => {
                 <TableCell className="font-bold">企業コード</TableCell>
                 <TableCell className="font-bold">企業名</TableCell>
                 <TableCell className="font-bold">ステータス</TableCell>
-                <TableCell className="font-bold" colSpan={2}>アクション</TableCell>
+                <TableCell className="font-bold">アクション</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -148,22 +145,20 @@ const CompanyIndex = () => {
                       <Button
                         variant="contained"
                         color="primary"
-                        size="small"
-                        startIcon={<VisibilityIcon />}
+                        size="medium"
                         onClick={() => handleShowDetails(company.id)}
+                        className="m-2"
                       >
-                        SHOW
+                        <VisibilityIcon />
                       </Button>
-                    </TableCell>
-                    <TableCell>
                       <Button
                         variant="contained"
                         color="error"
-                        size="small"
-                        startIcon={<DeleteForeverIcon />}
+                        size="medium"
                         onClick={() => deleteCompany(company.id)}
+                        className="m-2"
                       >
-                        DESTROY
+                        <DeleteForeverIcon />
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -177,4 +172,4 @@ const CompanyIndex = () => {
   );
 };
 
-export default CompanyIndex;
+export default Index;

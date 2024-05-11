@@ -7,7 +7,6 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  Button,
   Typography,
   Paper,
   FormControl,
@@ -17,13 +16,13 @@ import {
   Grid,
   TextField,
 } from "@mui/material";
-import { useRouter } from 'next/navigation'
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import { useForm, Controller } from 'react-hook-form';
-
 import axios from "axios";
+import { useRouter } from 'next/navigation'
+import { useForm, Controller } from 'react-hook-form';
 import { useEffect, useState } from "react";
+import SubmitButton from "@/components/button/SubmitButton";
+import EditButton from "@/components/button/EditButton";
+import DeleteButton from "@/components/button/DeleteButton";
 
 type Company = {
   id: number;
@@ -114,9 +113,7 @@ const Index = () => {
             </Grid>
           </div>
           <div className="flex justify-center">
-            <Button variant="contained" color="primary" size="large" type="submit">
-              検索
-            </Button>
+            <SubmitButton params={{action_letter: '検索'}}/>
           </div>
         </form>  
       </Paper>
@@ -142,24 +139,8 @@ const Index = () => {
                     <TableCell>{company.name}</TableCell>
                     <TableCell>{company.status == "activate" ? '有効' : '無効'}</TableCell>
                     <TableCell>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        size="medium"
-                        onClick={() => handleShowDetails(company.id)}
-                        className="m-2"
-                      >
-                        <VisibilityIcon />
-                      </Button>
-                      <Button
-                        variant="contained"
-                        color="error"
-                        size="medium"
-                        onClick={() => deleteCompany(company.id)}
-                        className="m-2"
-                      >
-                        <DeleteForeverIcon />
-                      </Button>
+                      <EditButton params={{onClick: handleShowDetails, data: company.id}} />
+                      <DeleteButton params={{onClick: deleteCompany, data: company.id}} />
                     </TableCell>
                   </TableRow>
                 );

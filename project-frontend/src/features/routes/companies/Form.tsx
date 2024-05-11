@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  Button,
   Typography,
   Paper,
   FormControl,
@@ -11,11 +10,12 @@ import {
   Grid,
   TextField,
 } from "@mui/material";
+import axios from "axios";
 import { useRouter } from 'next/navigation'
 import { useForm, Controller } from 'react-hook-form';
-
-import axios from "axios";
 import { useEffect, useState } from "react";
+import SubmitButton from "@/components/button/SubmitButton";
+import BackButton from "@/components/button/BackButton";
 
 type Company = {
   id: number;
@@ -123,12 +123,8 @@ const Form = ({ params }: Params) => {
             </Grid>
           </div>
           <div className="flex justify-center">
-            <Button variant="contained" color="inherit" size="large" className="m-1" onClick={() => router.push('/admin/companies')}>
-              戻る
-            </Button>
-            <Button variant="contained" color="primary" size="large" type="submit" className="m-1">
-              {action}
-            </Button>
+            <BackButton params={{path: '/admin/companies'}}/>
+            <SubmitButton params={{action_letter: action}}/>
           </div>
         </form>  
       </Paper>

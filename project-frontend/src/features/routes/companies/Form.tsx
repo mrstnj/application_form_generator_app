@@ -9,6 +9,7 @@ import {
   MenuItem,
   Grid,
   TextField,
+  FormHelperText
 } from "@mui/material";
 import axios from "axios";
 import { useRouter } from 'next/navigation'
@@ -16,6 +17,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { useEffect, useState } from "react";
 import SubmitButton from "@/components/button/SubmitButton";
 import BackButton from "@/components/button/BackButton";
+import * as validators from "@/common/utils/validate";
 
 type Company = {
   id: number;
@@ -34,7 +36,7 @@ type Params = {
 const Form = ({ params }: Params) => {
   const router = useRouter();
   const [company, setCompany] = useState<Company | null>(null);
-  const { control, handleSubmit, setValue } = useForm<Company>();
+  const { control, handleSubmit, setValue, formState: { errors } } = useForm<Company>();
 
   const title = params.new ? "企業登録" : "企業詳細" ;
   const action = params.new ? "登録" : "更新" ;
@@ -88,7 +90,18 @@ const Form = ({ params }: Params) => {
                     name="code"
                     control={control}
                     defaultValue=""
-                    render={({ field }) => <TextField {...field} label="企業コード"/>}
+                    rules={{
+                      validate: {
+                        reqired: validators.required,
+                        pattern: validators.code
+                      }
+                    }}
+                    render={({ field }) => <TextField 
+                      {...field}
+                      label="企業コード"
+                      error={Boolean(errors.code)}
+                      helperText={errors.code?.message}
+                    />}
                   />
                 </FormControl>
               </Grid>
@@ -98,7 +111,17 @@ const Form = ({ params }: Params) => {
                     name="name"
                     control={control}
                     defaultValue=""
-                    render={({ field }) => <TextField {...field} label="企業名"/>}
+                    rules={{
+                      validate: {
+                        reqired: validators.required
+                      }
+                    }}
+                    render={({ field }) => <TextField
+                      {...field}
+                      label="企業名"
+                      error={Boolean(errors.name)}
+                      helperText={errors.name?.message}
+                    />}
                   />
                 </FormControl>
               </Grid>
@@ -108,13 +131,22 @@ const Form = ({ params }: Params) => {
                     name="status"
                     control={control}
                     defaultValue=""
+                    rules={{
+                      validate: {
+                        reqired: validators.required,
+                      }
+                    }}
                     render={({ field }) => (
-                      <FormControl fullWidth>
+                      <FormControl fullWidth error={Boolean(errors.status)}>
                         <InputLabel>ステータス</InputLabel>
-                        <Select {...field} label="ステータス">
+                        <Select
+                          {...field}
+                          label="ステータス"
+                        >
                           <MenuItem value="activate">有効</MenuItem>
                           <MenuItem value="deactivate">無効</MenuItem>
                         </Select>
+                        <FormHelperText>{errors.status?.message}</FormHelperText>
                       </FormControl>
                     )}
                   />

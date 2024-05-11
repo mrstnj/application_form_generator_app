@@ -18,5 +18,9 @@ $ docker-compose run frontend yarn install
 $ docker-compose up
 ```
 ### 動作確認
-- ブラウザで、`http://localhost:3001`にアクセス。
-- ブラウザで、`http://localhost:8080`にアクセス。
+- ブラウザで、`http://localhost:3001`にアクセス
+- ブラウザで、`http://localhost:8080`にアクセス
+### テスト
+```
+$ docker-compose run backend bundle exec rspec
+```

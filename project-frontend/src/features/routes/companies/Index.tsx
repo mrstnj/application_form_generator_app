@@ -23,6 +23,8 @@ import { useEffect, useState } from "react";
 import SubmitButton from "@/components/button/SubmitButton";
 import EditButton from "@/components/button/EditButton";
 import DeleteButton from "@/components/button/DeleteButton";
+import Notification from "@/components/notification/Notification";
+import { errorHandle } from "@/common/utils/errorHandle";
 
 type Company = {
   id: number;
@@ -31,9 +33,29 @@ type Company = {
   status: string;
 };
 
+type Valiant = 'success' | 'warning' | 'error' | 'info';
+
 const Index = () => {
   const router = useRouter();
   const [companies, setCompanies] = useState<Company[]>([]);
+  const [notification, setNotification] = useState({
+    open: false,
+    message: '',
+    valiant: 'info' as Valiant
+  })
+  const handleOpenNotification = (message:string, valiant='error' as Valiant) =>{
+    setNotification({
+      open: true,
+      message: message,
+      valiant: valiant
+    })
+  }
+  const handleCloseNotification = () => {
+    setNotification(prevNotification => ({
+      ...prevNotification,
+      open: false
+    }));
+  };
 
   useEffect(() => {
     fetch("http://localhost:8080/companies")
@@ -55,8 +77,8 @@ const Index = () => {
       });
       setCompanies(response.data);
     } catch (error) {
-      // TODO: エラーメッセージ「条件に一致するデータがありませんでした」を出す
-      console.error('APIリクエストエラー:', error);
+      const errorText = errorHandle(error)
+      handleOpenNotification(errorText)
     }
   };
 
@@ -149,6 +171,7 @@ const Index = () => {
           </Table>
         </TableContainer>
       </Paper>
+      <Notification params={{handleClose: handleCloseNotification, notification: notification}} />
     </>
   );
 };

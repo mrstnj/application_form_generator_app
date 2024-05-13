@@ -17,7 +17,9 @@ import { useForm, Controller } from 'react-hook-form';
 import { useEffect, useState } from "react";
 import SubmitButton from "@/components/button/SubmitButton";
 import BackButton from "@/components/button/BackButton";
+import Notification from "@/components/notification/Notification";
 import * as validators from "@/common/utils/validate";
+import { errorHandle } from "@/common/utils/errorHandle";
 
 type Company = {
   id: number;
@@ -25,6 +27,8 @@ type Company = {
   name: string;
   status: string;
 };
+
+type Valiant = 'success' | 'warning' | 'error' | 'info';
 
 type Params = {
   params: {
@@ -40,6 +44,24 @@ const Form = ({ params }: Params) => {
 
   const title = params.new ? "企業登録" : "企業詳細" ;
   const action = params.new ? "登録" : "更新" ;
+  const [notification, setNotification] = useState({
+    open: false,
+    message: '',
+    valiant: 'info' as Valiant
+  })
+  const handleOpenNotification = (message:string, valiant='error' as Valiant) =>{
+    setNotification({
+      open: true,
+      message: message,
+      valiant: valiant
+    })
+  }
+  const handleCloseNotification = () => {
+    setNotification(prevNotification => ({
+      ...prevNotification,
+      open: false
+    }));
+  };
 
   useEffect(() => {
     if (!params.new) {
@@ -69,9 +91,9 @@ const Form = ({ params }: Params) => {
         });
       }
       router.push('/admin/companies');
-    } catch (error) {
-      // TODO: エラーメッセージ「条件に一致するデータがありませんでした」を出す
-      console.error('APIリクエストエラー:', error);
+    } catch (error: unknown) {
+      const errorText = errorHandle(error)
+      handleOpenNotification(errorText)
     }
   };
 
@@ -160,6 +182,7 @@ const Form = ({ params }: Params) => {
           </div>
         </form>  
       </Paper>
+      <Notification params={{handleClose: handleCloseNotification, notification: notification}} />
     </>
   );
 };

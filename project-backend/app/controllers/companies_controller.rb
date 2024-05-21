@@ -15,21 +15,22 @@ class CompaniesController < ApplicationController
 
   # POST /companies
   def create
-    @company = Company.new(company_params)
-
-    if @company.save
+    begin
+      @company = Company.new(company_params)
+      @company.save!
       render json: @company, status: :created, location: @company
-    else
-      render json: @company.errors, status: :unprocessable_entity
+    rescue => e
+      render json: { err: e.message }, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /companies/1
   def update
-    if @company.update(company_params)
+    begin
+      @company.update!(company_params)
       render json: @company
-    else
-      render json: @company.errors, status: :unprocessable_entity
+    rescue => e
+      render json: { err: e.message }, status: :unprocessable_entity
     end
   end
 

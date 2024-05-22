@@ -109,7 +109,7 @@ const Index = () => {
               <Grid item xs={12} sm={6}>
                 <FormControl fullWidth>
                   <Controller
-                    name="first_name"
+                    name="last_name"
                     control={control}
                     defaultValue=""
                     render={({ field }) => <TextField {...field} label="姓"/>}
@@ -119,7 +119,7 @@ const Index = () => {
               <Grid item xs={12} sm={6}>
                 <FormControl fullWidth>
                   <Controller
-                    name="last_name"
+                    name="first_name"
                     control={control}
                     defaultValue=""
                     render={({ field }) => <TextField {...field} label="名"/>}
@@ -172,8 +172,8 @@ const Index = () => {
                 return (
                   <TableRow key={admin_user.id}>
                     <TableCell>{admin_user.code}</TableCell>
-                    <TableCell>{admin_user.first_name}</TableCell>
                     <TableCell>{admin_user.last_name}</TableCell>
+                    <TableCell>{admin_user.first_name}</TableCell>
                     <TableCell>{admin_user.status == "activate" ? '有効' : '無効'}</TableCell>
                     <TableCell>
                       <EditButton params={{onClick: handleShowDetails, data: admin_user.id}} />

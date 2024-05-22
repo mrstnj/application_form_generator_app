@@ -15,21 +15,25 @@ class AdminUsersController < ApplicationController
 
   # POST /admin_users
   def create
-    @admin_user = AdminUser.new(admin_user_params)
-
-    if @admin_user.save
+    begin
+      # TODO ログイン機能が実装後ログイン中の管理者の企業を登録
+      company = Company.find_by(id: 1)
+      @admin_user = AdminUser.new(admin_user_params)
+      @admin_user.company = company
+      @admin_user.save!
       render json: @admin_user, status: :created, location: @admin_user
-    else
-      render json: @admin_user.errors, status: :unprocessable_entity
+    rescue => e
+      render json: { err: e.message }, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /admin_users/1
   def update
-    if @admin_user.update(admin_user_params)
+    begin
+      @admin_user.update!(admin_user_params)
       render json: @admin_user
-    else
-      render json: @admin_user.errors, status: :unprocessable_entity
+    rescue => e
+      render json: { err: e.message }, status: :unprocessable_entity
     end
   end
 
@@ -46,6 +50,6 @@ class AdminUsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def admin_user_params
-      params.require(:admin_user).permit(:first_name, :last_name, :password_hash, :password_salt, :email, :status)
+      params.require(:admin_user).permit(:code, :first_name, :last_name, :password, :email, :status)
     end
 end

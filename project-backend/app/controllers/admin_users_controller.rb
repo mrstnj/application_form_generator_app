@@ -4,7 +4,7 @@ class AdminUsersController < ApplicationController
   # GET /admin_users
   def index
     @admin_users = AdminUser.all
-
+    @admin_users = @admin_users.search(@admin_users, params)
     render json: @admin_users
   end
 

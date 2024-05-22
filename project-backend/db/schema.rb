@@ -10,7 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_28_113346) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_22_112909) do
+  create_table "admin_users", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.bigint "company_id", null: false
+    t.string "login", null: false
+    t.string "first_name", null: false
+    t.string "last_name", null: false
+    t.string "password_hash", null: false
+    t.string "password_salt", null: false
+    t.string "email", null: false
+    t.integer "status", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id"], name: "index_admin_users_on_company_id"
+  end
+
   create_table "companies", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.string "code", null: false
     t.string "name", null: false

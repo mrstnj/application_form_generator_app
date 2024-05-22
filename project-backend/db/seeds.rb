@@ -7,6 +7,5 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
-10.times do |i|
-  Company.create(code: "code#{i}", name: "name#{i}", status: 1)
-end
+sample_company = FactoryBot.create(:company, code: "sample", name: "sample", status: 1)
+FactoryBot.create(:admin_user, company: sample_company, login: "super_admin", first_name: "山田", last_name: "太郎", password: "password123", email: "test@test.com", status: 1)

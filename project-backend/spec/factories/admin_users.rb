@@ -1,10 +1,11 @@
 FactoryBot.define do
   factory :admin_user do
-    first_name { "MyString" }
-    last_name { "MyString" }
-    password_hash { "MyString" }
-    password_salt { "MyString" }
-    email { "MyString" }
+    company { FactoryBot.create(:company) }
+    code { Faker::Alphanumeric.alpha(number: 10) }
+    first_name { Faker::Name.first_name }
+    last_name { Faker::Name.last_name }
+    password { "password123" }
+    email { Faker::Internet.email }
     status { 1 }
   end
 end

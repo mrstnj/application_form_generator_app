@@ -9,7 +9,7 @@ const ErrorMessages = {
 
 const Regex = {
   blank: /\S/,
-  code: /^[0-9a-zA-Z]{1,10}$/,
+  code: /^[0-9a-zA-Z_]{1,10}$/,
   email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
   password: /^(?=.*[0-9])(?=.*[a-zA-Z])[0-9a-zA-Z]{8,50}$/,
 }

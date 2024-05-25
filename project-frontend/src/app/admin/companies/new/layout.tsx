@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "管理者登録"
+  title: "企業登録"
 };
 
 export default function RootLayout({

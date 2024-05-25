@@ -1,4 +1,4 @@
-import Form from '../../../../features/routes/companies/Form'
+import Form from '../../../../features/routes/admin_users/Form'
 
 type Params = {
   params: {
@@ -6,7 +6,7 @@ type Params = {
   }
 }
 
-const CompanyEdit = ({ params }: Params) => {
+const AdminUserEdit = ({ params }: Params) => {
 
   return (
     <>
@@ -15,4 +15,4 @@ const CompanyEdit = ({ params }: Params) => {
   );
 };
 
-export default CompanyEdit;
+export default AdminUserEdit;

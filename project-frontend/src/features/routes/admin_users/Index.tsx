@@ -95,7 +95,7 @@ const Index = () => {
           </Typography>
           <div className="my-4">
             <Grid container spacing={3}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <FormControl fullWidth>
                   <Controller
                     name="code"
@@ -105,7 +105,6 @@ const Index = () => {
                   />
                 </FormControl>
               </Grid>
-              <Grid item sm={6}/>
               <Grid item xs={12} sm={6}>
                 <FormControl fullWidth>
                   <Controller

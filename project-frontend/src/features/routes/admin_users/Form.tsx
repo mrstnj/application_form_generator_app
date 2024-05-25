@@ -27,6 +27,7 @@ type AdminUser = {
   first_name: string;
   last_name: string;
   email: string;
+  current_password: string;
   password: string;
   status: string;
 };
@@ -113,7 +114,7 @@ const Form = ({ params }: Params) => {
           </Typography>
           <div className="my-4">
             <Grid container spacing={3}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <FormControl fullWidth>
                   <Controller
                     name="code"
@@ -121,19 +122,19 @@ const Form = ({ params }: Params) => {
                     defaultValue=""
                     rules={{
                       validate: {
-                        reqired: validators.required,
+                        required: validators.required,
+                        pattern: validators.code
                       }
                     }}
                     render={({ field }) => <TextField 
                       {...field}
-                      label="管理者コード"
+                      label="ログインID"
                       error={Boolean(errors.code)}
                       helperText={errors.code?.message}
                     />}
                   />
                 </FormControl>
               </Grid>
-              <Grid item xs={6}/>
               <Grid item xs={12} sm={6}>
                 <FormControl fullWidth>
                   <Controller
@@ -142,7 +143,7 @@ const Form = ({ params }: Params) => {
                     defaultValue=""
                     rules={{
                       validate: {
-                        reqired: validators.required
+                        required: validators.required
                       }
                     }}
                     render={({ field }) => <TextField
@@ -162,7 +163,7 @@ const Form = ({ params }: Params) => {
                     defaultValue=""
                     rules={{
                       validate: {
-                        reqired: validators.required
+                        required: validators.required
                       }
                     }}
                     render={({ field }) => <TextField
@@ -174,7 +175,7 @@ const Form = ({ params }: Params) => {
                   />
                 </FormControl>
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <FormControl fullWidth>
                   <Controller
                     name="email"
@@ -182,7 +183,8 @@ const Form = ({ params }: Params) => {
                     defaultValue=""
                     rules={{
                       validate: {
-                        reqired: validators.required
+                        required: validators.required,
+                        pattern: validators.email
                       }
                     }}
                     render={({ field }) => <TextField
@@ -194,7 +196,29 @@ const Form = ({ params }: Params) => {
                   />
                 </FormControl>
               </Grid>
-              <Grid item xs={12} sm={6}>
+              {/* { !is_new &&
+                <Grid item xs={12}>
+                  <FormControl fullWidth>
+                    <Controller
+                      name="current_password"
+                      control={control}
+                      defaultValue=""
+                      rules={{
+                        validate: {
+                          required: validators.required
+                        }
+                      }}
+                      render={({ field }) => <TextField
+                        {...field}
+                        label="現在のパスワード"
+                        error={Boolean(errors.password)}
+                        helperText={errors.password?.message}
+                      />}
+                    />
+                  </FormControl>
+                </Grid>
+              } */}
+              <Grid item xs={12}>
                 <FormControl fullWidth>
                   <Controller
                     name="password"
@@ -202,12 +226,13 @@ const Form = ({ params }: Params) => {
                     defaultValue=""
                     rules={{
                       validate: {
-                        reqired: validators.required
-                      }
+                        ...(is_new && { required: validators.required }),
+                        pattern: validators.password
+                      }                 
                     }}
                     render={({ field }) => <TextField
                       {...field}
-                      label="パスワード"
+                      label={is_new ? "パスワード" : "変更後のパスワード"}
                       error={Boolean(errors.password)}
                       helperText={errors.password?.message}
                     />}
@@ -222,7 +247,7 @@ const Form = ({ params }: Params) => {
                     defaultValue=""
                     rules={{
                       validate: {
-                        reqired: validators.required,
+                        required: validators.required,
                       }
                     }}
                     render={({ field }) => (

@@ -116,7 +116,7 @@ const Form = ({ params }: Params) => {
                     defaultValue=""
                     rules={{
                       validate: {
-                        reqired: validators.required,
+                        required: validators.required,
                         pattern: validators.code
                       }
                     }}
@@ -137,7 +137,7 @@ const Form = ({ params }: Params) => {
                     defaultValue=""
                     rules={{
                       validate: {
-                        reqired: validators.required
+                        required: validators.required
                       }
                     }}
                     render={({ field }) => <TextField
@@ -157,7 +157,7 @@ const Form = ({ params }: Params) => {
                     defaultValue=""
                     rules={{
                       validate: {
-                        reqired: validators.required,
+                        required: validators.required,
                       }
                     }}
                     render={({ field }) => (

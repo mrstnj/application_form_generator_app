@@ -32,18 +32,20 @@ type Valiant = 'success' | 'warning' | 'error' | 'info';
 
 type Params = {
   params: {
-    new: boolean;
+    is_new: boolean;
     id?: number;
   }
 }
 
 const Form = ({ params }: Params) => {
+  const { is_new, id } = params;
+
   const router = useRouter();
   const [company, setCompany] = useState<Company | null>(null);
   const { control, handleSubmit, setValue, formState: { errors } } = useForm<Company>();
 
-  const title = params.new ? "企業登録" : "企業詳細" ;
-  const action = params.new ? "登録" : "更新" ;
+  const title = is_new ? "企業登録" : "企業詳細" ;
+  const action = is_new ? "登録" : "更新" ;
   const [notification, setNotification] = useState({
     open: false,
     message: '',
@@ -64,29 +66,29 @@ const Form = ({ params }: Params) => {
   };
 
   useEffect(() => {
-    if (!params.new) {
-      fetch(`http://localhost:8080/companies/${params.id}`)
+    if (!is_new) {
+      fetch(`http://localhost:8080/companies/${id}`)
         .then((res) => res.json())
         .then((company) => setCompany(company));
     }
-  }, [params.new, params.id]);
+  }, [is_new, id]);
 
   useEffect(() => {
-    if (!params.new && company) {
+    if (!is_new && company) {
       setValue("code", company.code);
       setValue("name", company.name);
       setValue("status", company.status);
     }
-  }, [params.new, company, setValue]);
+  }, [is_new, company, setValue]);
 
   const onSubmit = async (data: Company) => {
     try {
-      if (params.new) {
+      if (is_new) {
         await axios.post('http://localhost:8080/companies', {
           company: data
         }); 
       } else {
-        await axios.put(`http://localhost:8080/companies/${params.id}`, {
+        await axios.put(`http://localhost:8080/companies/${id}`, {
           company: data
         });
       }

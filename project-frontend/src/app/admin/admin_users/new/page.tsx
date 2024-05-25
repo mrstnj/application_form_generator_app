@@ -4,7 +4,7 @@ const AdminUserCreate = () => {
 
   return (
     <>
-      <Form params={{ new: true }}/>
+      <Form params={{ is_new: true }}/>
     </>
   );
 };

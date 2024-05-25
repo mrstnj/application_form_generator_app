@@ -10,7 +10,7 @@ const AdminUserEdit = ({ params }: Params) => {
 
   return (
     <>
-      <Form params={{ new: false, id: params.id }}/>
+      <Form params={{ is_new: false, id: params.id }}/>
     </>
   );
 };

@@ -35,18 +35,20 @@ type Valiant = 'success' | 'warning' | 'error' | 'info';
 
 type Params = {
   params: {
-    new: boolean;
+    is_new: boolean;
     id?: number;
   }
 }
 
 const Form = ({ params }: Params) => {
+  const { is_new, id } = params;
+
   const router = useRouter();
   const [adminUser, setAdminUser] = useState<AdminUser | null>(null);
   const { control, handleSubmit, setValue, formState: { errors } } = useForm<AdminUser>();
 
-  const title = params.new ? "管理者登録" : "管理者詳細" ;
-  const action = params.new ? "登録" : "更新" ;
+  const title = is_new ? "管理者登録" : "管理者詳細" ;
+  const action = is_new ? "登録" : "更新" ;
   const [notification, setNotification] = useState({
     open: false,
     message: '',
@@ -67,31 +69,31 @@ const Form = ({ params }: Params) => {
   };
 
   useEffect(() => {
-    if (!params.new) {
-      fetch(`http://localhost:8080/admin_users/${params.id}`)
+    if (!is_new) {
+      fetch(`http://localhost:8080/admin_users/${id}`)
         .then((res) => res.json())
         .then((admin_user) => setAdminUser(admin_user));
     }
-  }, [params.new, params.id]);
+  }, [is_new, id]);
 
   useEffect(() => {
-    if (!params.new && adminUser) {
+    if (!is_new && adminUser) {
       setValue("code", adminUser.code);
       setValue("first_name", adminUser.first_name);
       setValue("last_name", adminUser.last_name);
       setValue("email", adminUser.email);
       setValue("status", adminUser.status);
     }
-  }, [params.new, adminUser, setValue]);
+  }, [is_new, adminUser, setValue]);
 
   const onSubmit = async (data: AdminUser) => {
     try {
-      if (params.new) {
+      if (is_new) {
         await axios.post('http://localhost:8080/admin_users', {
           admin_user: data
         }); 
       } else {
-        await axios.put(`http://localhost:8080/admin_users/${params.id}`, {
+        await axios.put(`http://localhost:8080/admin_users/${id}`, {
           admin_user: data
         });
       }

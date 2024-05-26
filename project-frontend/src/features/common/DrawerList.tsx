@@ -7,8 +7,6 @@ import {
   ListItemText,
   Collapse
 } from "@mui/material";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import StarBorder from '@mui/icons-material/StarBorder';
 import { useState } from "react";
 import drawerItems from '../../common/utils/drawerItems';
 
@@ -36,7 +34,7 @@ const DrawerList = ({ handleDrawerClose }: Props): JSX.Element => {
         <div key={index}>
           <ListItemButton onClick={() => handleClick(index)}>
             <ListItemIcon>
-              <InboxIcon />
+              {item.icon}
             </ListItemIcon>
             <ListItemText secondary={item.name} />
           </ListItemButton>
@@ -45,7 +43,7 @@ const DrawerList = ({ handleDrawerClose }: Props): JSX.Element => {
               {item.child.map((childItem, childIndex) => (
                 <ListItemButton key={childIndex} sx={{ pl: 3 }} onClick={handleDrawerClose} href={childItem.path}>
                   <ListItemIcon>
-                    <StarBorder />
+                    {childItem.icon}
                   </ListItemIcon>
                   <ListItemText secondary={childItem.name} />
                 </ListItemButton>

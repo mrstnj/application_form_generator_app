@@ -30,18 +30,14 @@ type Company = {
 
 type Valiant = 'success' | 'warning' | 'error' | 'info';
 
-type Params = {
-  params: {
-    is_new: boolean;
-    id?: number;
-  }
+interface Props {
+  is_new: boolean;
+  id?: number;
+  company?: Company | null;
 }
 
-const Form = ({ params }: Params) => {
-  const { is_new, id } = params;
-
+const Form = ({ is_new, id, company = null }: Props) => {
   const router = useRouter();
-  const [company, setCompany] = useState<Company | null>(null);
   const { control, handleSubmit, setValue, formState: { errors } } = useForm<Company>();
 
   const title = is_new ? "企業登録" : "企業詳細" ;
@@ -66,14 +62,6 @@ const Form = ({ params }: Params) => {
   };
 
   useEffect(() => {
-    if (!is_new) {
-      fetch(`http://localhost:8080/companies/${id}`)
-        .then((res) => res.json())
-        .then((company) => setCompany(company));
-    }
-  }, [is_new, id]);
-
-  useEffect(() => {
     if (!is_new && company) {
       setValue("code", company.code);
       setValue("name", company.name);
@@ -93,6 +81,7 @@ const Form = ({ params }: Params) => {
         });
       }
       router.push('/admin/companies');
+      router.refresh();
     } catch (error: unknown) {
       const errorText = errorHandle(error)
       handleOpenNotification(errorText)
@@ -179,12 +168,12 @@ const Form = ({ params }: Params) => {
             </Grid>
           </div>
           <div className="flex justify-center">
-            <BackButton params={{path: '/admin/companies'}}/>
-            <SubmitButton params={{action_letter: action}}/>
+            <BackButton path={'/admin/companies'} />
+            <SubmitButton action_letter={action}/>
           </div>
         </form>  
       </Paper>
-      <Notification params={{handleClose: handleCloseNotification, notification: notification}} />
+      <Notification handleClose={handleCloseNotification} notification={notification} />
     </>
   );
 };

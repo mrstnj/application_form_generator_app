@@ -1,16 +1,17 @@
 import Form from '../../../../features/routes/companies/Form'
 
-type Params = {
+interface Props {
   params: {
     id: number;
   }
 }
 
-const CompanyEdit = ({ params }: Params) => {
+const CompanyEdit = async ({ params }: Props) => {
+  const company = await fetch(`http://backend:8080/companies/${params.id}`, { cache: 'no-store' }).then((res) => res.json())
 
   return (
     <>
-      <Form params={{ is_new: false, id: params.id }}/>
+      <Form is_new={false} id={params.id} company={company} />
     </>
   );
 };

@@ -37,18 +37,14 @@ type AdminUser = {
 
 type Valiant = 'success' | 'warning' | 'error' | 'info';
 
-type Params = {
-  params: {
-    is_new: boolean;
-    id?: number;
-  }
+interface Props {
+  is_new: boolean;
+  id?: number;
+  adminUser?: AdminUser | null;
 }
 
-const Form = ({ params }: Params) => {
-  const { is_new, id } = params;
-
+const Form = ({ is_new, id, adminUser }: Props) => {
   const router = useRouter();
-  const [adminUser, setAdminUser] = useState<AdminUser | null>(null);
   const { control, handleSubmit, setValue, formState: { errors } } = useForm<AdminUser>();
 
   const title = is_new ? "管理者登録" : "管理者詳細" ;
@@ -80,14 +76,6 @@ const Form = ({ params }: Params) => {
   };
 
   useEffect(() => {
-    if (!is_new) {
-      fetch(`http://localhost:8080/admin_users/${id}`)
-        .then((res) => res.json())
-        .then((admin_user) => setAdminUser(admin_user));
-    }
-  }, [is_new, id]);
-
-  useEffect(() => {
     if (!is_new && adminUser) {
       setValue("code", adminUser.code);
       setValue("first_name", adminUser.first_name);
@@ -109,6 +97,7 @@ const Form = ({ params }: Params) => {
         });
       }
       router.push('/admin/admin_users');
+      router.refresh();
     } catch (error: unknown) {
       const errorText = errorHandle(error)
       handleOpenNotification(errorText)
@@ -306,12 +295,12 @@ const Form = ({ params }: Params) => {
             </Grid>
           </div>
           <div className="flex justify-center">
-            <BackButton params={{path: '/admin/admin_users'}}/>
-            <SubmitButton params={{action_letter: action}}/>
+            <BackButton path={'/admin/admin_users'} />
+            <SubmitButton action_letter={action} />
           </div>
         </form>  
       </Paper>
-      <Notification params={{handleClose: handleCloseNotification, notification: notification}} />
+      <Notification handleClose={handleCloseNotification} notification={notification} />
     </>
   );
 };

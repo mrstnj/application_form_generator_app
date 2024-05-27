@@ -1,16 +1,17 @@
 import Form from '../../../../features/routes/admin_users/Form'
 
-type Params = {
+interface Props {
   params: {
     id: number;
   }
 }
 
-const AdminUserEdit = ({ params }: Params) => {
+const AdminUserEdit = async ({ params }: Props) => {
+  const admin_user = await fetch(`http://backend:8080/admin_users/${params.id}`, { cache: 'no-store' }).then((res) => res.json())
 
   return (
     <>
-      <Form params={{ is_new: false, id: params.id }}/>
+      <Form is_new={false} id={params.id} adminUser={admin_user} />
     </>
   );
 };

@@ -22,8 +22,8 @@ export default function RootLayout({
   
   return (
     <Box sx={{ display: 'flex' }}>
-      <AppBar params={{ open: open, handleDrawerOpen: handleDrawerOpen }}/>
-      <CustomDrawer params={{ open: open, handleDrawerClose: handleDrawerClose }}/>
+      <AppBar open={open} handleDrawerOpen={handleDrawerOpen} />
+      <CustomDrawer open={open} handleDrawerClose={handleDrawerClose} />
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
         {children}

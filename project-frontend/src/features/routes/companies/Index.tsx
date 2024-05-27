@@ -19,7 +19,7 @@ import {
 import axios from "axios";
 import { useRouter } from 'next/navigation'
 import { useForm, Controller } from 'react-hook-form';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SubmitButton from "@/components/button/SubmitButton";
 import EditButton from "@/components/button/EditButton";
 import DeleteButton from "@/components/button/DeleteButton";
@@ -33,11 +33,15 @@ type Company = {
   status: string;
 };
 
+interface Props {
+  companiesList: Company[];
+}
+
 type Valiant = 'success' | 'warning' | 'error' | 'info';
 
-const Index = () => {
+const Index = ({ companiesList }: Props) => {
   const router = useRouter();
-  const [companies, setCompanies] = useState<Company[]>([]);
+  const [companies, setCompanies] = useState<Company[]>(companiesList);
   const [notification, setNotification] = useState({
     open: false,
     message: '',
@@ -56,12 +60,6 @@ const Index = () => {
       open: false
     }));
   };
-
-  useEffect(() => {
-    fetch("http://localhost:8080/companies")
-      .then((res) => res.json())
-      .then((companies) => setCompanies(companies));
-  }, []);
 
   const handleShowDetails = (id?: number) => router.push(`/admin/companies/${id}`);
 
@@ -135,7 +133,7 @@ const Index = () => {
             </Grid>
           </div>
           <div className="flex justify-center">
-            <SubmitButton params={{action_letter: '検索'}}/>
+            <SubmitButton action_letter={'検索'} />
           </div>
         </form>  
       </Paper>
@@ -161,8 +159,8 @@ const Index = () => {
                     <TableCell>{company.name}</TableCell>
                     <TableCell>{company.status == "activate" ? '有効' : '無効'}</TableCell>
                     <TableCell>
-                      <EditButton params={{onClick: handleShowDetails, data: company.id}} />
-                      <DeleteButton params={{onClick: deleteCompany, data: company.id}} />
+                      <EditButton onClick={handleShowDetails} data={company.id} />
+                      <DeleteButton onClick={deleteCompany} data={company.id} />
                     </TableCell>
                   </TableRow>
                 );
@@ -171,7 +169,7 @@ const Index = () => {
           </Table>
         </TableContainer>
       </Paper>
-      <Notification params={{handleClose: handleCloseNotification, notification: notification}} />
+      <Notification handleClose={handleCloseNotification} notification={notification} />
     </>
   );
 };

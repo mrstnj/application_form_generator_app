@@ -2,15 +2,12 @@ import { Toolbar, IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AppBar from './custom/AppBar'
 
-type Params = {
-  params: {
-    open: boolean;
-    handleDrawerOpen: () => void;
-  }
+interface Props {
+  open: boolean;
+  handleDrawerOpen: () => void;
 }
 
-export default function CustomAppBar({ params }: Params) {
-  const { open, handleDrawerOpen } = params;
+export default function CustomAppBar({ open, handleDrawerOpen }: Props) {
 
   return (
     <AppBar position="fixed" open={open}>

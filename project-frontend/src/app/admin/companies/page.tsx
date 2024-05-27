@@ -1,10 +1,11 @@
-import Index from '../../../features/routes/companies/Index'
+import Index from '@/features/routes/companies/Index'
 
-const CompanyIndex = () => {
+const CompanyIndex = async () => {
+  const companies = await fetch("http://backend:8080/companies", { cache: 'no-store' }).then((res) => res.json())
 
   return (
     <>
-      <Index />
+      <Index companiesList={companies} />
     </>
   );
 };

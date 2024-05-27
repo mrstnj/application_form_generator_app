@@ -19,7 +19,7 @@ import {
 import axios from "axios";
 import { useRouter } from 'next/navigation'
 import { useForm, Controller } from 'react-hook-form';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SubmitButton from "@/components/button/SubmitButton";
 import EditButton from "@/components/button/EditButton";
 import DeleteButton from "@/components/button/DeleteButton";
@@ -35,11 +35,15 @@ type AdminUser = {
   status: string;
 };
 
+interface Props {
+  adminUsersList: AdminUser[];
+}
+
 type Valiant = 'success' | 'warning' | 'error' | 'info';
 
-const Index = () => {
+const Index = ({ adminUsersList }: Props) => {
   const router = useRouter();
-  const [adminUsers, setAdminUsers] = useState<AdminUser[]>([]);
+  const [adminUsers, setAdminUsers] = useState<AdminUser[]>(adminUsersList);
   const [notification, setNotification] = useState({
     open: false,
     message: '',
@@ -58,12 +62,6 @@ const Index = () => {
       open: false
     }));
   };
-
-  useEffect(() => {
-    fetch("http://localhost:8080/admin_users")
-      .then((res) => res.json())
-      .then((admin_users) => setAdminUsers(admin_users));
-  }, []);
 
   const handleShowDetails = (id?: number) => router.push(`/admin/admin_users/${id}`);
 

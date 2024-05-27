@@ -145,7 +145,7 @@ const Index = ({ adminUsersList }: Props) => {
             </Grid>
           </div>
           <div className="flex justify-center">
-            <SubmitButton params={{action_letter: '検索'}}/>
+            <SubmitButton action_letter={'検索'} />
           </div>
         </form>  
       </Paper>
@@ -173,8 +173,8 @@ const Index = ({ adminUsersList }: Props) => {
                     <TableCell>{admin_user.first_name}</TableCell>
                     <TableCell>{admin_user.status == "activate" ? '有効' : '無効'}</TableCell>
                     <TableCell>
-                      <EditButton params={{onClick: handleShowDetails, data: admin_user.id}} />
-                      <DeleteButton params={{onClick: deleteCompany, data: admin_user.id}} />
+                      <EditButton onClick={handleShowDetails} data={admin_user.id} />
+                      <DeleteButton onClick={deleteCompany} data={admin_user.id} />
                     </TableCell>
                   </TableRow>
                 );
@@ -183,7 +183,7 @@ const Index = ({ adminUsersList }: Props) => {
           </Table>
         </TableContainer>
       </Paper>
-      <Notification params={{handleClose: handleCloseNotification, notification: notification}} />
+      <Notification handleClose={handleCloseNotification} notification={notification} />
     </>
   );
 };

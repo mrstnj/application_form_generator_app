@@ -3,19 +3,16 @@ import Alert from '@mui/material/Alert';
 
 type Valiant = 'success' | 'warning' | 'error' | 'info';
 
-type Params = {
-  params: {
-    handleClose: () => void;
-    notification: {
-      open: boolean;
-      message: string;
-      valiant: Valiant;
-    };
-  }
+interface Props {
+  handleClose: () => void;
+  notification: {
+    open: boolean;
+    message: string;
+    valiant: Valiant;
+  };
 }
 
-const Notification = ({ params }: Params) => {
-  const { handleClose, notification } = params;
+const Notification = ({ handleClose, notification }: Props) => {
 
   return (
     <Snackbar

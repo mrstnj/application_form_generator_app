@@ -1,20 +1,18 @@
 import { Button } from "@mui/material"
 import VisibilityIcon from "@mui/icons-material/Visibility";
 
-type Params = {
-  params: {
-    onClick: (data: number) => void;
-    data: number;
-  }
+interface Props {
+  onClick: (data: number) => void;
+  data: number;
 }
   
-const EditButton = ({ params }: Params) => {
+const EditButton = ({ onClick, data }: Props) => {
   return (
     <Button
       variant="contained"
       color="primary"
       size="medium"
-      onClick={() => params.onClick(params.data)}
+      onClick={() => onClick(data)}
       className="m-2"
     >
       <VisibilityIcon />

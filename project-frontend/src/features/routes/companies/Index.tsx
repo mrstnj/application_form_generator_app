@@ -133,7 +133,7 @@ const Index = ({ companiesList }: Props) => {
             </Grid>
           </div>
           <div className="flex justify-center">
-            <SubmitButton params={{action_letter: '検索'}}/>
+            <SubmitButton action_letter={'検索'} />
           </div>
         </form>  
       </Paper>
@@ -159,8 +159,8 @@ const Index = ({ companiesList }: Props) => {
                     <TableCell>{company.name}</TableCell>
                     <TableCell>{company.status == "activate" ? '有効' : '無効'}</TableCell>
                     <TableCell>
-                      <EditButton params={{onClick: handleShowDetails, data: company.id}} />
-                      <DeleteButton params={{onClick: deleteCompany, data: company.id}} />
+                      <EditButton onClick={handleShowDetails} data={company.id} />
+                      <DeleteButton onClick={deleteCompany} data={company.id} />
                     </TableCell>
                   </TableRow>
                 );
@@ -169,7 +169,7 @@ const Index = ({ companiesList }: Props) => {
           </Table>
         </TableContainer>
       </Paper>
-      <Notification params={{handleClose: handleCloseNotification, notification: notification}} />
+      <Notification handleClose={handleCloseNotification} notification={notification} />
     </>
   );
 };

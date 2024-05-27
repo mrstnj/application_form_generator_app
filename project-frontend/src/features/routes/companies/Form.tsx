@@ -168,12 +168,12 @@ const Form = ({ is_new, id, company = null }: Props) => {
             </Grid>
           </div>
           <div className="flex justify-center">
-            <BackButton params={{path: '/admin/companies'}}/>
-            <SubmitButton params={{action_letter: action}}/>
+            <BackButton path={'/admin/companies'} />
+            <SubmitButton action_letter={action}/>
           </div>
         </form>  
       </Paper>
-      <Notification params={{handleClose: handleCloseNotification, notification: notification}} />
+      <Notification handleClose={handleCloseNotification} notification={notification} />
     </>
   );
 };

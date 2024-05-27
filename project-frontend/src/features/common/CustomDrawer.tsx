@@ -6,15 +6,12 @@ import DrawerHeader from './custom/DrawerHeader';
 import Drawer from './custom/Drawer';
 import DrawerList from './DrawerList';
 
-type Params = {
-  params: {
-    open: boolean;
-    handleDrawerClose: () => void;
-  }
+interface Props {
+  open: boolean;
+  handleDrawerClose: () => void;
 }
 
-export default function CustomDrawer({ params }: Params) {
-  const { open, handleDrawerClose } = params;
+export default function CustomDrawer({ open, handleDrawerClose }: Props) {
   const theme = useTheme();
 
   return (

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import styles from '@/app/LoginPage.module.css';
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -12,6 +11,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className={styles.loginPageBody}>{children}</div>
+    <div>{children}</div>
   );
 }

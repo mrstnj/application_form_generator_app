@@ -1,5 +1,6 @@
 class AdminUser < ApplicationRecord
   include UserAuthenticator
+  include Token
   attr_accessor :password
 
   belongs_to :company
@@ -19,4 +20,22 @@ class AdminUser < ApplicationRecord
     admin_users = admin_users.where(status: params[:status]) if params[:status].present?
     return admin_users.order(created_at: "desc")
   end
+
+  def self.authenticate_with_lock(code, password)
+    user = base_auth("code", code, password) do |user|
+      user.lock_check
+      user.update_columns(lock_count: user_lock_count += 1, unlock_time: 30.minutes.since)
+    end
+    if user.present?
+      user.lock_check
+      user.update_columns(:lock_count, 0) unless user.lock_count == 0
+    end
+    return user
+  end
+
+  def lock_check
+    self.update_column(lock_count, 0) unless self.unlock_time.present? && self.unlock_time >= Time.now
+    raise Exception.new('User is locked') if self.lock_count >= 6
+  end
+
 end

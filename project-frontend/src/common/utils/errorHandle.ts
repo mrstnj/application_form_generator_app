@@ -1,4 +1,4 @@
-export const errorHandle = (error: any) => {
+export const errorHandle = (error: any): string => {
   let errorText = JSON.stringify(error.response.data).replace(/^"(.*)"$/, '$1');
 
   switch (errorText) {

@@ -6,7 +6,7 @@ class AdminUser < ApplicationRecord
 
   enum status: { deactivate: 0, activate: 1 }
 
-  validates :code, uniqueness: true, length: { in: 1..10 }, :format => { :with => /\A[0-9a-zA-Z_]{1,10}\z/ }
+  validates :code, uniqueness: true, length: { in: 1..20 }, :format => { :with => /\A[0-9a-zA-Z_]{1,20}\z/ }
   validates :email, :format => { :with => /\A[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\z/ }
   validates :password, allow_blank: true, length: { in: 8..50 }, :format => { :with => /\A(?=.*[0-9])(?=.*[a-zA-Z])[0-9a-zA-Z]{8,50}\z/ }
   validates :password, presence: true, on: :create

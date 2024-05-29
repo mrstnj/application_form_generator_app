@@ -6,12 +6,15 @@ import {
   Grid,
   TextField,
 } from "@mui/material";
+import axios from "axios";
+import { useRouter } from 'next/navigation'
 import { useForm, Controller } from 'react-hook-form';
 import { useState } from "react";
 import SubmitButton from "@/components/button/SubmitButton";
 import Notification from "@/components/notification/Notification";
 import * as validators from "@/common/utils/validate";
 import { errorHandle } from "@/common/utils/errorHandle";
+import { cookies } from 'next/headers'
 
 type AdminUser = {
   id: number;
@@ -22,7 +25,7 @@ type AdminUser = {
 type Valiant = 'success' | 'warning' | 'error' | 'info';
 
 const Form = () => {
-//   const router = useRouter();
+  const router = useRouter();
   const { control, handleSubmit, formState: { errors } } = useForm<AdminUser>();
 
   const [notification, setNotification] = useState({
@@ -46,6 +49,12 @@ const Form = () => {
 
   const onSubmit = async (data: AdminUser) => {
     try {
+      const response = await axios.post('http://localhost:8080/sessions', {
+        session: data
+      });
+      console.log(response)
+      cookies().set('accessToken', response.data.access_token)
+      router.push('/admin/top');
     } catch (error: unknown) {
       const errorText = errorHandle(error)
       handleOpenNotification(errorText)

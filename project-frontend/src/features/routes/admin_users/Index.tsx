@@ -16,7 +16,6 @@ import {
   Grid,
   TextField,
 } from "@mui/material";
-import axios from "axios";
 import { useRouter } from 'next/navigation'
 import { useForm, Controller } from 'react-hook-form';
 import { useState } from "react";
@@ -24,7 +23,8 @@ import SubmitButton from "@/components/button/SubmitButton";
 import EditButton from "@/components/button/EditButton";
 import DeleteButton from "@/components/button/DeleteButton";
 import Notification from "@/components/notification/Notification";
-import { errorHandle } from "@/common/utils/errorHandle";
+import { searchAdminUser, deleteAdminUser } from "@/actions/adminUser"
+
 
 type AdminUser = {
   id: number;
@@ -65,19 +65,16 @@ const Index = ({ adminUsersList }: Props) => {
 
   const handleShowDetails = (id?: number) => router.push(`/admin/admin_users/${id}`);
 
-  const deleteCompany = async (id: number) => {
-    await axios.delete(`http://localhost:8080/admin_users/${id}`);
+  const handleDeleteAdminUser = async (id: number) => {
+    await deleteAdminUser(id)
     setAdminUsers(adminUsers.filter((admin_user) => admin_user.id !== id));
   };
 
   const onSubmit = async (data: AdminUser) => {
-    try {
-      const response = await axios.get('http://localhost:8080/admin_users', {
-        params: data
-      });
-      setAdminUsers(response.data);
-    } catch (error) {
-      const errorText = errorHandle(error)
+    const { result, response, errorText = '' } = await searchAdminUser(data)
+    if (result) {
+      setAdminUsers(response);
+    } else {
       handleOpenNotification(errorText)
     }
   };
@@ -174,7 +171,7 @@ const Index = ({ adminUsersList }: Props) => {
                     <TableCell>{admin_user.status == "activate" ? '有効' : '無効'}</TableCell>
                     <TableCell>
                       <EditButton onClick={handleShowDetails} data={admin_user.id} />
-                      <DeleteButton onClick={deleteCompany} data={admin_user.id} />
+                      <DeleteButton onClick={handleDeleteAdminUser} data={admin_user.id} />
                     </TableCell>
                   </TableRow>
                 );

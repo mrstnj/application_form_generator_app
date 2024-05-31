@@ -23,6 +23,7 @@ import BackButton from "@/components/button/BackButton";
 import Notification from "@/components/notification/Notification";
 import * as validators from "@/common/utils/validate";
 import { errorHandle } from "@/common/utils/errorHandle";
+import { updateAdminUser } from "@/actions/adminUser"
 
 type AdminUser = {
   id: number;
@@ -86,20 +87,11 @@ const Form = ({ is_new, id, adminUser }: Props) => {
   }, [is_new, adminUser, setValue]);
 
   const onSubmit = async (data: AdminUser) => {
-    try {
-      if (is_new) {
-        await axios.post('http://localhost:8080/admin_users', {
-          admin_user: data
-        }); 
-      } else {
-        await axios.put(`http://localhost:8080/admin_users/${id}`, {
-          admin_user: data
-        });
-      }
+    const { result, errorText = '' } = await updateAdminUser(is_new, data, id)
+    if (result) {
       router.push('/admin/admin_users');
       router.refresh();
-    } catch (error: unknown) {
-      const errorText = errorHandle(error)
+    } else {
       handleOpenNotification(errorText)
     }
   };

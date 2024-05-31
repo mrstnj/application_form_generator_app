@@ -1,4 +1,4 @@
-class SessionsController < ApplicationController
+class SessionsController < AdminController
   before_action :set_session, only: %i[ show update destroy ]
   before_action :authenticate_token, only: %i[ destroy ]
 
@@ -18,7 +18,7 @@ class SessionsController < ApplicationController
   def create
     begin
       admin_user = AdminUser.authenticate_with_lock(session_params[:code], session_params[:password])
-      render json: @session.errors, status: 400 unless admin_user.present?
+      return render_error('Invalid code or password', 400) unless admin_user.present?
       admin_user.issue_access_token
       render json: admin_user
     rescue => e

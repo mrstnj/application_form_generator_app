@@ -11,7 +11,6 @@ import {
   TextField,
   FormHelperText
 } from "@mui/material";
-import axios from "axios";
 import { useRouter } from 'next/navigation'
 import { useForm, Controller } from 'react-hook-form';
 import { useEffect, useState } from "react";
@@ -19,7 +18,7 @@ import SubmitButton from "@/components/button/SubmitButton";
 import BackButton from "@/components/button/BackButton";
 import Notification from "@/components/notification/Notification";
 import * as validators from "@/common/utils/validate";
-import { errorHandle } from "@/common/utils/errorHandle";
+import { updateCompany } from "@/actions/company"
 
 type Company = {
   id: number;
@@ -70,20 +69,11 @@ const Form = ({ is_new, id, company = null }: Props) => {
   }, [is_new, company, setValue]);
 
   const onSubmit = async (data: Company) => {
-    try {
-      if (is_new) {
-        await axios.post('http://localhost:8080/companies', {
-          company: data
-        }); 
-      } else {
-        await axios.put(`http://localhost:8080/companies/${id}`, {
-          company: data
-        });
-      }
+    const { result, errorText = '' } = await updateCompany(is_new, data, id)
+    if (result) {
       router.push('/admin/companies');
       router.refresh();
-    } catch (error: unknown) {
-      const errorText = errorHandle(error)
+    } else {
       handleOpenNotification(errorText)
     }
   };

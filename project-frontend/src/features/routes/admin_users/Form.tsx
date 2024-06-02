@@ -14,7 +14,6 @@ import {
   IconButton
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import axios from "axios";
 import { useRouter } from 'next/navigation'
 import { useForm, Controller } from 'react-hook-form';
 import { useEffect, useState, MouseEvent } from "react";
@@ -22,7 +21,6 @@ import SubmitButton from "@/components/button/SubmitButton";
 import BackButton from "@/components/button/BackButton";
 import Notification from "@/components/notification/Notification";
 import * as validators from "@/common/utils/validate";
-import { errorHandle } from "@/common/utils/errorHandle";
 import { updateAdminUser } from "@/actions/adminUser"
 
 type AdminUser = {

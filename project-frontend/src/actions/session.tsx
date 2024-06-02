@@ -26,3 +26,8 @@ export async function login(data: AdminUser) {
     return { result: false, errorText: errorText };
   }
 }
+
+export async function checkAccessToken() {
+  const accessToken = cookies().get('accessToken')
+  return accessToken;
+}

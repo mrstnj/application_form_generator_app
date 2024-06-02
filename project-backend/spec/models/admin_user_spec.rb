@@ -39,9 +39,9 @@ RSpec.describe AdminUser, type: :model do
           expect(subject).not_to be_valid
         end
       end
-      context '11文字以上が入力された場合' do
+      context '21文字以上が入力された場合' do
         it 'エラーになること' do
-          subject.code = "a" * 11
+          subject.code = "a" * 21
           expect(subject).not_to be_valid
         end
       end

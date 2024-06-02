@@ -1,4 +1,4 @@
-import Form from '../../../../features/routes/companies/Form'
+import Form from '../../../../../features/routes/companies/Form'
 
 interface Props {
   params: {

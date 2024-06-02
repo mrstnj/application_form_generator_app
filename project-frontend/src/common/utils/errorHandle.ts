@@ -1,10 +1,11 @@
-export const errorHandle = (error: any) => {
-  let errorText = JSON.stringify(error.response.data).replace(/^"(.*)"$/, '$1');
+export const errorHandle = (error: any): string => {
+  // let errorText = JSON.stringify(error.response.data).replace(/^"(.*)"$/, '$1');
+  let errorText = JSON.stringify(error).replace(/^"(.*)"$/, '$1');
 
   switch (errorText) {
-  // case 'code has already been taken':
-  //   errorText = "入力したコードはすでに使用されています。";
-  //   break;
+  case 'Invalid code or password':
+    errorText = "ログインIDもしくはパスワードが間違っています。";
+    break;
   default:
     if (errorText.includes('Code has already been taken')) {
       errorText = "入力したコードはすでに使用されています。";

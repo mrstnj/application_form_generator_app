@@ -1,7 +1,7 @@
 class Company < ApplicationRecord
   enum status: { deactivate: 0, activate: 1 }
 
-  validates :code, uniqueness: true, length: { in: 1..10 }, :format => { :with => /\A[0-9a-zA-Z_]{1,10}\z/ }
+  validates :code, uniqueness: true, length: { in: 1..20 }, :format => { :with => /\A[0-9a-zA-Z_]{1,20}\z/ }
   validates_presence_of :code, :name, :status
 
   def self.search(companies, params)

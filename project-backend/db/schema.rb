@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_22_112909) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_28_114756) do
   create_table "admin_users", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "company_id", null: false
     t.string "code", null: false
@@ -22,6 +22,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_22_112909) do
     t.integer "status", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "access_token"
+    t.datetime "access_token_expire_date"
+    t.integer "lock_count", default: 0
+    t.datetime "unlock_time"
     t.index ["company_id"], name: "index_admin_users_on_company_id"
   end
 

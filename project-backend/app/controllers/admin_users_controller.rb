@@ -1,4 +1,4 @@
-class AdminUsersController < ApplicationController
+class AdminUsersController < AdminController
   before_action :set_admin_user, only: %i[ show update destroy ]
 
   # GET /admin_users

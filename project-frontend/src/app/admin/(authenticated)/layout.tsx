@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import Box from '@mui/material/Box';
-import AppBar from '../../features/common/AppBar'
-import CustomDrawer from '../../features/common/CustomDrawer'
-import DrawerHeader from '../../features/common/custom/DrawerHeader'
+import AppBar from '../../../features/common/AppBar'
+import CustomDrawer from '../../../features/common/CustomDrawer'
+import DrawerHeader from '../../../features/common/custom/DrawerHeader'
+import "./globals.css";
 
 export default function RootLayout({
   children,
@@ -21,7 +22,7 @@ export default function RootLayout({
   };
   
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex' }} >
       <AppBar open={open} handleDrawerOpen={handleDrawerOpen} />
       <CustomDrawer open={open} handleDrawerClose={handleDrawerClose} />
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>

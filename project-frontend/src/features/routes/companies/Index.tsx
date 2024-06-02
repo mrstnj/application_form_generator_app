@@ -16,7 +16,6 @@ import {
   Grid,
   TextField,
 } from "@mui/material";
-import axios from "axios";
 import { useRouter } from 'next/navigation'
 import { useForm, Controller } from 'react-hook-form';
 import { useState } from "react";
@@ -24,7 +23,7 @@ import SubmitButton from "@/components/button/SubmitButton";
 import EditButton from "@/components/button/EditButton";
 import DeleteButton from "@/components/button/DeleteButton";
 import Notification from "@/components/notification/Notification";
-import { errorHandle } from "@/common/utils/errorHandle";
+import { searchCompany, deleteCompany } from "@/actions/company"
 
 type Company = {
   id: number;
@@ -63,19 +62,16 @@ const Index = ({ companiesList }: Props) => {
 
   const handleShowDetails = (id?: number) => router.push(`/admin/companies/${id}`);
 
-  const deleteCompany = async (id: number) => {
-    await axios.delete(`http://localhost:8080/companies/${id}`);
+  const handleDeleteCompany = async (id: number) => {
+    await deleteCompany(id)
     setCompanies(companies.filter((company) => company.id !== id));
   };
 
   const onSubmit = async (data: Company) => {
-    try {
-      const response = await axios.get('http://localhost:8080/companies', {
-        params: data
-      });
-      setCompanies(response.data);
-    } catch (error) {
-      const errorText = errorHandle(error)
+    const { result, response, errorText = '' } = await searchCompany(data)
+    if (result) {
+      setCompanies(response);
+    } else {
       handleOpenNotification(errorText)
     }
   };
@@ -160,7 +156,7 @@ const Index = ({ companiesList }: Props) => {
                     <TableCell>{company.status == "activate" ? '有効' : '無効'}</TableCell>
                     <TableCell>
                       <EditButton onClick={handleShowDetails} data={company.id} />
-                      <DeleteButton onClick={deleteCompany} data={company.id} />
+                      <DeleteButton onClick={handleDeleteCompany} data={company.id} />
                     </TableCell>
                   </TableRow>
                 );

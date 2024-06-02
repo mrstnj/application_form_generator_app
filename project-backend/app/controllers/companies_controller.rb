@@ -1,4 +1,4 @@
-class CompaniesController < ApplicationController
+class CompaniesController < AdminController
   before_action :set_company, only: %i[ show update destroy ]
 
   # GET /companies

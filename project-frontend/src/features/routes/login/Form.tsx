@@ -5,10 +5,13 @@ import {
   FormControl,
   Grid,
   TextField,
+  InputAdornment,
+  IconButton
 } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useForm, Controller } from 'react-hook-form';
 import { useRouter } from 'next/navigation'
-import { useState } from "react";
+import { useState, MouseEvent } from "react";
 import SubmitButton from "@/components/button/SubmitButton";
 import Notification from "@/components/notification/Notification";
 import * as validators from "@/common/utils/validate";
@@ -31,6 +34,7 @@ const Form = () => {
     message: '',
     valiant: 'info' as Valiant
   })
+  const [showPassword, setShowPassword] = useState(false);
   const handleOpenNotification = (message:string, valiant='error' as Valiant) =>{
     setNotification({
       open: true,
@@ -43,6 +47,12 @@ const Form = () => {
       ...prevNotification,
       open: false
     }));
+  };
+  const handleClickShowPassword = () => {
+    setShowPassword(!(showPassword))
+  }
+  const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
   };
 
   const onSubmit = async (data: AdminUser) => {
@@ -96,9 +106,23 @@ const Form = () => {
                     }}
                     render={({ field }) => <TextField
                       {...field}
+                      type={showPassword ? "text" : "password"}
                       label="パスワード"
                       error={Boolean(errors.password)}
                       helperText={errors.password?.message}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowPassword}
+                              onMouseDown={handleMouseDownPassword}
+                            >
+                              {showPassword ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                          </InputAdornment>
+                        )
+                      }}
                     />}
                   />
                 </FormControl>

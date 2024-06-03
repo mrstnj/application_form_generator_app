@@ -21,8 +21,10 @@ class SessionsController < AdminController
       return render_error('Invalid code or password', 400) unless admin_user.present?
       admin_user.issue_access_token
       render json: admin_user
+    rescue ActiveRecord::MyException => e
+      return render_error("#{e.message}", :unprocessable_entity)
     rescue => e
-      render json: { err: e.message }, status: :unprocessable_entity
+      return render_error('エラーが発生しました', :internal_server_error)
     end
   end
 

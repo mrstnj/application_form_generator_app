@@ -159,5 +159,75 @@ RSpec.describe AdminUser, type: :model do
         expect(AdminUser.search(AdminUser, params).present?).to be_truthy
       end
     end
+
+    context 'authenticate_with_lock' do
+      subject {FactoryBot.create(:admin_user)}
+      context '存在する管理者の場合' do
+        it '対象の管理者を返すこと' do
+          expect(AdminUser.authenticate_with_lock(subject.code, subject.password)).to eq(subject)
+        end
+        it 'ログイン失敗回数が0回になること' do
+          AdminUser.authenticate_with_lock(subject.code, subject.password)
+          expect(subject.lock_count).to eq(0)
+        end
+      end
+      context '存在しない管理者の場合' do
+        it 'nilを返すこと' do
+          expect(AdminUser.authenticate_with_lock(subject.code, nil)).to eq(nil)
+        end
+        it 'ログイン失敗回数が1増えること' do
+          expect{
+            AdminUser.authenticate_with_lock(subject.code, "test")
+            subject.reload  
+          }.to change {subject.lock_count}.by(1)
+        end
+      end
+    end
+
+    context 'lock_check' do
+      subject {FactoryBot.create(:admin_user)}
+      context 'unlock_timeがnilの場合' do
+        it 'lock_countが0になること' do
+          subject.unlock_time = nil
+          subject.lock_count = 5
+          subject.lock_check
+          expect(subject.lock_count).to eq(0)
+        end
+        it 'エラーが発生しないこと' do
+          subject.unlock_time = nil
+          expect{subject.lock_check}.not_to raise_error
+        end
+      end
+      context '現在時刻がunlock_timeを超過している場合' do
+        it 'lock_countが0になること' do
+          subject.unlock_time = Time.now.ago(10.minutes)
+          subject.lock_count = 6
+          subject.lock_check
+          expect(subject.lock_count).to eq(0)
+        end
+        context 'ログイン失敗回数がunlock_countを超過している場合' do
+          it 'エラーが発生しないこと' do
+            subject.unlock_time = Time.now.ago(10.minutes)
+            subject.lock_count = 6
+            expect{subject.lock_check}.not_to raise_error
+          end
+        end
+      end
+      context '現在時刻がunlock_timeを超過していない場合' do
+        it 'lock_countが変わらないこと' do
+          subject.unlock_time = Time.now.since(10.minutes)
+          subject.lock_count = 5
+          subject.lock_check
+          expect(subject.lock_count).to eq(5)
+        end
+        context 'ログイン失敗回数がunlock_countを超過している場合' do
+          it 'エラーが発生すること' do
+            subject.unlock_time = Time.now.since(10.minutes)
+            subject.lock_count = 6
+            expect{subject.lock_check}.to raise_error(ActiveRecord::MyException)
+          end
+        end
+      end
+    end
   end
 end

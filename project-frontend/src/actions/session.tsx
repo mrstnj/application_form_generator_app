@@ -31,3 +31,7 @@ export async function checkAccessToken() {
   const accessToken = cookies().get('accessToken')
   return accessToken;
 }
+
+export async function logout() {
+  cookies().delete('accessToken')
+}

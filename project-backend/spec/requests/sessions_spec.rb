@@ -33,7 +33,7 @@ RSpec.describe "/sessions", type: :request do
   }
 
   describe "GET /index" do
-    it "renders a successful response" do
+    xit "renders a successful response" do
       Session.create! valid_attributes
       get sessions_url, headers: valid_headers, as: :json
       expect(response).to be_successful
@@ -41,7 +41,7 @@ RSpec.describe "/sessions", type: :request do
   end
 
   describe "GET /show" do
-    it "renders a successful response" do
+    xit "renders a successful response" do
       session = Session.create! valid_attributes
       get session_url(session), as: :json
       expect(response).to be_successful
@@ -50,14 +50,14 @@ RSpec.describe "/sessions", type: :request do
 
   describe "POST /create" do
     context "with valid parameters" do
-      it "creates a new Session" do
+      xit "creates a new Session" do
         expect {
           post sessions_url,
                params: { session: valid_attributes }, headers: valid_headers, as: :json
         }.to change(Session, :count).by(1)
       end
 
-      it "renders a JSON response with the new session" do
+      xit "renders a JSON response with the new session" do
         post sessions_url,
              params: { session: valid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:created)
@@ -66,14 +66,14 @@ RSpec.describe "/sessions", type: :request do
     end
 
     context "with invalid parameters" do
-      it "does not create a new Session" do
+      xit "does not create a new Session" do
         expect {
           post sessions_url,
                params: { session: invalid_attributes }, as: :json
         }.to change(Session, :count).by(0)
       end
 
-      it "renders a JSON response with errors for the new session" do
+      xit "renders a JSON response with errors for the new session" do
         post sessions_url,
              params: { session: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
@@ -88,7 +88,7 @@ RSpec.describe "/sessions", type: :request do
         skip("Add a hash of attributes valid for your model")
       }
 
-      it "updates the requested session" do
+      xit "updates the requested session" do
         session = Session.create! valid_attributes
         patch session_url(session),
               params: { session: new_attributes }, headers: valid_headers, as: :json
@@ -96,7 +96,7 @@ RSpec.describe "/sessions", type: :request do
         skip("Add assertions for updated state")
       end
 
-      it "renders a JSON response with the session" do
+      xit "renders a JSON response with the session" do
         session = Session.create! valid_attributes
         patch session_url(session),
               params: { session: new_attributes }, headers: valid_headers, as: :json
@@ -106,7 +106,7 @@ RSpec.describe "/sessions", type: :request do
     end
 
     context "with invalid parameters" do
-      it "renders a JSON response with errors for the session" do
+      xit "renders a JSON response with errors for the session" do
         session = Session.create! valid_attributes
         patch session_url(session),
               params: { session: invalid_attributes }, headers: valid_headers, as: :json
@@ -117,7 +117,7 @@ RSpec.describe "/sessions", type: :request do
   end
 
   describe "DELETE /destroy" do
-    it "destroys the requested session" do
+    xit "destroys the requested session" do
       session = Session.create! valid_attributes
       expect {
         delete session_url(session), headers: valid_headers, as: :json

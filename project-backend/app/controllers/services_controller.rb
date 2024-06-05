@@ -15,21 +15,25 @@ class ServicesController < ApplicationController
 
   # POST /services
   def create
-    @service = Service.new(service_params)
-
-    if @service.save
+    begin
+      # TODO ログイン機能が実装後ログイン中の管理者の企業を登録
+      company = Company.find_by(id: 1)
+      @service = Service.new(service_params)
+      @service.company = company
+      @service.save!
       render json: @service, status: :created, location: @service
-    else
-      render json: @service.errors, status: :unprocessable_entity
+    rescue => e
+      render json: { err: e.message }, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /services/1
   def update
-    if @service.update(service_params)
+    begin
+      @service.update!(service_params)
       render json: @service
-    else
-      render json: @service.errors, status: :unprocessable_entity
+    rescue => e
+      render json: { err: e.message }, status: :unprocessable_entity
     end
   end
 

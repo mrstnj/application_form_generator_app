@@ -3,6 +3,8 @@ class Service < ApplicationRecord
 
   enum status: { deactivate: 0, activate: 1 }
 
+  mount_uploader :img, ImageUploader
+
   def self.search(services, params)
     services = services.where("name LIKE ?", "%#{params[:name]}%") if params[:name].present?
     services = services.where(status: params[:status]) if params[:status].present?

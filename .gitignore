@@ -69,3 +69,5 @@
 
 # Ignore master key for decrypting credentials and more.
 /project-backend/config/master.key
+
+/project-backend/public/uploads/*

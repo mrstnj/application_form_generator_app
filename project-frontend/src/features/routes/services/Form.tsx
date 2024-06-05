@@ -23,6 +23,7 @@ import { updateService } from "@/actions/service"
 type Service = {
   id: number;
   name: string;
+  content: string;
   status: string;
 };
 
@@ -101,6 +102,23 @@ const Form = ({ is_new, id, service = null }: Props) => {
                       label="サービス名"
                       error={Boolean(errors.name)}
                       helperText={errors.name?.message}
+                    />}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl fullWidth>
+                  <Controller
+                    name="content"
+                    control={control}
+                    defaultValue=""
+                    render={({ field }) => <TextField
+                      {...field}
+                      label="サービス内容"
+                      multiline
+                      rows={4}
+                      error={Boolean(errors.content)}
+                      helperText={errors.content?.message}
                     />}
                   />
                 </FormControl>

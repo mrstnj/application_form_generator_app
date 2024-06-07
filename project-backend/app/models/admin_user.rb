@@ -28,7 +28,7 @@ class AdminUser < ApplicationRecord
     end
     if user.present?
       user.lock_check
-      user.update_columns(:lock_count, 0) unless user.lock_count == 0
+      user.update_column(:lock_count, 0) unless user.lock_count == 0
     end
     return user
   end

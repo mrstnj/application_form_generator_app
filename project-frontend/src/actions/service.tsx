@@ -4,7 +4,8 @@ import { errorHandle } from "@/common/utils/errorHandle";
 
 type Service = {
   name: string;
-  content: string;
+  content?: string;
+  img?: any;
   status: string;
 };
 

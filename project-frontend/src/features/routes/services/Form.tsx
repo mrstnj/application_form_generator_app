@@ -19,11 +19,13 @@ import BackButton from "@/components/button/BackButton";
 import Notification from "@/components/notification/Notification";
 import * as validators from "@/common/utils/validate";
 import { updateService } from "@/actions/service"
+import MyDropzone from '@/components/dropzone/MyDropzone';
 
 type Service = {
   id: number;
   name: string;
   content: string;
+  img?: string | Blob;
   status: string;
 };
 
@@ -37,7 +39,7 @@ interface Props {
 
 const Form = ({ is_new, id, service = null }: Props) => {
   const router = useRouter();
-  const { control, handleSubmit, setValue, formState: { errors } } = useForm<Service>();
+  const { control, handleSubmit, setValue, watch, formState: { errors } } = useForm<Service>();
 
   const title = is_new ? "サービス登録" : "サービス詳細" ;
   const action = is_new ? "登録" : "更新" ;
@@ -61,13 +63,24 @@ const Form = ({ is_new, id, service = null }: Props) => {
   };
 
   useEffect(() => {
-    if (!is_new && service) {
-      setValue("name", service.name);
-      setValue("status", service.status);
-    }
+    const fetchData = async () => {
+      if (!is_new && service) {
+        setValue("name", service.name);
+        setValue("content", service.content);
+        setValue("status", service.status);
+        if (service.img) {
+          const blobImg = await fetch(`http://localhost:8080/${service.img}`, { mode: 'cors' }).then((res) => res.blob());
+          setValue("img", blobImg);
+        }
+      }
+    };
+    fetchData();
   }, [is_new, service, setValue]);
 
   const onSubmit = async (data: Service) => {
+    if (data.img instanceof Blob) {
+      delete data.img;
+    }
     const { result, errorText = '' } = await updateService(is_new, data, id)
     if (result) {
       router.push('/admin/services');
@@ -76,6 +89,8 @@ const Form = ({ is_new, id, service = null }: Props) => {
       handleOpenNotification(errorText)
     }
   };
+
+  const watchImg = watch('img');
 
   return (
     <>
@@ -119,6 +134,20 @@ const Form = ({ is_new, id, service = null }: Props) => {
                       rows={4}
                       error={Boolean(errors.content)}
                       helperText={errors.content?.message}
+                    />}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl fullWidth>
+                  <Controller
+                    name="img"
+                    control={control}
+                    defaultValue=""
+                    render={() => <MyDropzone 
+                      setValue={setValue}
+                      watchImg={watchImg}
+                      text="Drag and drop an image file here or click"
                     />}
                   />
                 </FormControl>

@@ -16,11 +16,7 @@ class ServicesController < ApplicationController
   # POST /services
   def create
     begin
-      # TODO ログイン機能が実装後ログイン中の管理者の企業を登録
-      company = Company.find_by(id: 1)
-      @service = Service.new(service_params)
-      @service.company = company
-      @service.save!
+      @service = Service.create_service(service_params)
       render json: @service, status: :created, location: @service
     rescue => e
       render json: { err: e.message }, status: :unprocessable_entity
@@ -30,7 +26,7 @@ class ServicesController < ApplicationController
   # PATCH/PUT /services/1
   def update
     begin
-      @service.update!(service_params)
+      Service.update_service(service_params, @service)
       render json: @service
     rescue => e
       render json: { err: e.message }, status: :unprocessable_entity

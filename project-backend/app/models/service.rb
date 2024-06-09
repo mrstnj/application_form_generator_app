@@ -4,6 +4,8 @@ class Service < ApplicationRecord
 
   enum status: { deactivate: 0, activate: 1 }
 
+  validates_presence_of :name, :status
+
   mount_uploader :img, ImageUploader
 
   def self.create_service(params)

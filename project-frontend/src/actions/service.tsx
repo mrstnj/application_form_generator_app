@@ -4,11 +4,15 @@ import { errorHandle } from "@/common/utils/errorHandle";
 
 type Service = {
   name: string;
-  content?: string;
-  //TODO string型に固定する
-  img?: any;
+  content: string;
+  img?: string | Blob;
   status: string;
 };
+
+type ServiceParams = {
+  name: string;
+  status: string;
+}
 
 export async function updateService(is_new: boolean, data: Service, id?: number) {
   const url = is_new ? 'http://backend:8080/services' : `http://backend:8080/services/${id}`;
@@ -30,7 +34,7 @@ export async function updateService(is_new: boolean, data: Service, id?: number)
   }
 }
 
-export async function searchService(data: Service) {
+export async function searchService(data: ServiceParams) {
   try {
     const params = new URLSearchParams(data);
     const res = await fetch(`http://backend:8080/services?${params}`);

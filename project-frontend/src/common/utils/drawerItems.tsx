@@ -1,3 +1,4 @@
+import StorefrontIcon from '@mui/icons-material/Storefront';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import BusinessIcon from '@mui/icons-material/Business';
 import ListIcon from '@mui/icons-material/List';
@@ -16,6 +17,32 @@ interface DrawerItem {
 }
 
 const drawerItems: DrawerItem[] = [
+  {
+    name: "サービス管理",
+    icon: <StorefrontIcon />,
+    child: [
+      {
+        name: "サービス一覧",
+        icon: <ListIcon />,
+        path: "/admin/services",
+      },
+      {
+        name: "サービス登録",
+        icon: <CreateIcon />,
+        path: "/admin/services/new",
+      },
+      // {
+      //   name: "プラン一覧",
+      //   icon: <ListIcon />,
+      //   path: "/admin/plans",
+      // },
+      // {
+      //   name: "プラン登録",
+      //   icon: <CreateIcon />,
+      //   path: "/admin/plans/new",
+      // },
+    ],
+  },
   {
     name: "管理者管理",
     icon: <AdminPanelSettingsIcon />,

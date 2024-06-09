@@ -9,3 +9,4 @@
 #   end
 sample_company = FactoryBot.create(:company, code: "sample", name: "sample", status: 1)
 FactoryBot.create(:admin_user, company: sample_company, code: "super_admin", last_name: "山田", first_name: "太郎", password: "password123", email: "test@test.com", status: 1)
+FactoryBot.create(:service, company: sample_company, name: "サンプルサービス", content:nil, img:nil, status: 1)

@@ -5,6 +5,7 @@ import { errorHandle } from "@/common/utils/errorHandle";
 type Service = {
   name: string;
   content?: string;
+  //TODO string型に固定する
   img?: any;
   status: string;
 };

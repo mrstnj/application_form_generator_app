@@ -24,6 +24,7 @@ class Service < ApplicationRecord
       params[:img] = base64_conversion(params[:img]) if params[:img].present?
       service.update!(params)
     end
+    return service
   end
 
   def self.search(services, params)

@@ -7,9 +7,8 @@ interface Props {
 }
 
 const ServiceEdit = async ({ params }: Props) => {
-  let service = await fetch(`http://backend:8080/services/${params.id}`, { cache: 'no-store' }).then((res) => res.json())
+  const service = await fetch(`http://backend:8080/services/${params.id}`, { cache: 'no-store' }).then((res) => res.json())
   service.img = service.img.url;
-  console.log(service)
 
   return (
     <>

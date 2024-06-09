@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { useRouter } from 'next/navigation'
 import { useForm, Controller } from 'react-hook-form';
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import SubmitButton from "@/components/button/SubmitButton";
 import BackButton from "@/components/button/BackButton";
 import Notification from "@/components/notification/Notification";
@@ -33,11 +33,11 @@ type Valiant = 'success' | 'warning' | 'error' | 'info';
 
 interface Props {
   is_new: boolean;
-  id?: number;
-  service?: Service | null;
+  id: number;
+  service: Service;
 }
 
-const Form = ({ is_new, id, service = null }: Props) => {
+const Form = ({ is_new, id, service }: Props) => {
   const router = useRouter();
   const { control, handleSubmit, setValue, watch, formState: { errors } } = useForm<Service>();
 
@@ -62,20 +62,21 @@ const Form = ({ is_new, id, service = null }: Props) => {
     }));
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!is_new && service) {
-        setValue("name", service.name);
-        setValue("content", service.content);
-        setValue("status", service.status);
-        if (service.img) {
-          const blobImg = await fetch(`http://localhost:8080/${service.img}`, { mode: 'cors' }).then((res) => res.blob());
-          setValue("img", blobImg);
-        }
+  const fetchData = useCallback(async () => {
+    if (!is_new && service) {
+      setValue("name", service.name);
+      setValue("content", service.content);
+      setValue("status", service.status);
+      if (service.img) {
+        const blobImg = await fetch(`http://localhost:8080/${service.img}`, { mode: 'cors' }).then((res) => res.blob());
+        setValue("img", blobImg);
       }
-    };
-    fetchData();
+    }
   }, [is_new, service, setValue]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const onSubmit = async (data: Service) => {
     if (data.img instanceof Blob) {

@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { IconButton } from "@mui/material";
 
 interface Props {
-  setValue: any;
+  setValue: (arg1: "img", arg2: string) => void;
   watchImg?: string | Blob;
   text: string;
 }
@@ -75,7 +75,7 @@ const MyDropzone = ({ setValue, watchImg, text }: Props) => {
   };
 
   const handleRemove = () => {
-    setValue("img", null);
+    setValue("img", "");
   };
 
   const Preview = () => {

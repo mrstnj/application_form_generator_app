@@ -26,7 +26,7 @@ class ServicesController < ApplicationController
   # PATCH/PUT /services/1
   def update
     begin
-      Service.update_service(service_params, @service)
+      @service = Service.update_service(service_params, @service)
       render json: @service
     rescue => e
       render json: { err: e.message }, status: :unprocessable_entity

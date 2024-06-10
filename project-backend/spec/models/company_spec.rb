@@ -73,6 +73,30 @@ RSpec.describe Company, type: :model do
   end
 
   describe 'メソッド動作テスト' do
+    context 'create_company' do 
+      context '引数が正常の場合' do 
+        it 'companyが返ること' do
+          params = {
+            code: Faker::Alphanumeric.alpha(number: 10),
+            name: Faker::Company.name,
+            status: 1
+          }
+          expect(Company.create_company(params).present?).to be_truthy
+        end
+      end
+    end
+
+    context 'update_company' do 
+      subject {FactoryBot.create(:company)}
+      context '引数が正常の場合' do 
+        it 'companyが返ること' do
+          params = {}
+          params[:status] = 0
+          expect(Company.update_company(params, subject).present?).to be_truthy
+        end
+      end
+    end
+
     context 'search' do 
       subject {FactoryBot.create(:company)}
       it 'code' do

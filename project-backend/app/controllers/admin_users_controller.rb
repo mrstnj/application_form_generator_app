@@ -26,7 +26,7 @@ class AdminUsersController < AdminController
   # PATCH/PUT /admin_users/1
   def update
     begin
-      @admin_user = Service.update_service(admin_user_params, @admin_user)
+      @admin_user = AdminUser.update_admin_user(admin_user_params, @admin_user)
       render json: @admin_user
     rescue => e
       render json: { err: e.message }, status: :unprocessable_entity

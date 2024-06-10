@@ -16,11 +16,7 @@ class AdminUsersController < AdminController
   # POST /admin_users
   def create
     begin
-      # TODO ログイン機能が実装後ログイン中の管理者の企業を登録
-      company = Company.find_by(id: 1)
-      @admin_user = AdminUser.new(admin_user_params)
-      @admin_user.company = company
-      @admin_user.save!
+      @admin_user = AdminUser.create_admin_user(admin_user_params, current_company)
       render json: @admin_user, status: :created, location: @admin_user
     rescue => e
       render json: { err: e.message }, status: :unprocessable_entity
@@ -30,7 +26,7 @@ class AdminUsersController < AdminController
   # PATCH/PUT /admin_users/1
   def update
     begin
-      @admin_user.update!(admin_user_params)
+      @admin_user = Service.update_service(admin_user_params, @admin_user)
       render json: @admin_user
     rescue => e
       render json: { err: e.message }, status: :unprocessable_entity

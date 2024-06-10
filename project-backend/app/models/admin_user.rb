@@ -13,6 +13,23 @@ class AdminUser < ApplicationRecord
   validates :password, presence: true, on: :create
   validates_presence_of :code, :first_name, :last_name, :email, :status
 
+  def self.create_admin_user(params, company)
+    admin_user = nil
+    ActiveRecord::Base::transaction do
+      admin_user = self.new(params)
+      admin_user.company = company
+      admin_user.save!
+    end
+    return admin_user
+  end
+
+  def self.update_admin_user(params, admin_user)
+    ActiveRecord::Base::transaction do
+      admin_user.update!(params)
+    end
+    return admin_user
+  end
+
   def self.search(admin_users, params)
     admin_users = admin_users.where("code LIKE ?", "%#{params[:code]}%") if params[:code].present?
     admin_users = admin_users.where("first_name LIKE ?", "%#{params[:first_name]}%") if params[:first_name].present?

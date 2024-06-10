@@ -1,4 +1,4 @@
-class ServicesController < ApplicationController
+class ServicesController < AdminController
   before_action :set_service, only: %i[ show update destroy ]
 
   # GET /services
@@ -16,7 +16,7 @@ class ServicesController < ApplicationController
   # POST /services
   def create
     begin
-      @service = Service.create_service(service_params)
+      @service = Service.create_service(service_params, current_company)
       render json: @service, status: :created, location: @service
     rescue => e
       render json: { err: e.message }, status: :unprocessable_entity

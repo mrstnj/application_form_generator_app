@@ -8,12 +8,10 @@ class Service < ApplicationRecord
 
   mount_uploader :img, ImageUploader
 
-  def self.create_service(params)
+  def self.create_service(params, company)
     service = nil
     ActiveRecord::Base::transaction do
       params[:img] = base64_conversion(params[:img]) if params[:img].present?
-      # TODO ログイン機能が実装後ログイン中の管理者の企業を登録
-      company = Company.find_by(id: 1)
       service = self.new(params)
       service.company = company
       service.save!

@@ -16,8 +16,7 @@ class CompaniesController < AdminController
   # POST /companies
   def create
     begin
-      @company = Company.new(company_params)
-      @company.save!
+      @company = Company.create_company(company_params)
       render json: @company, status: :created, location: @company
     rescue => e
       render json: { err: e.message }, status: :unprocessable_entity
@@ -27,7 +26,7 @@ class CompaniesController < AdminController
   # PATCH/PUT /companies/1
   def update
     begin
-      @company.update!(company_params)
+      @company = Company.update_company(company_params, @company)
       render json: @company
     rescue => e
       render json: { err: e.message }, status: :unprocessable_entity

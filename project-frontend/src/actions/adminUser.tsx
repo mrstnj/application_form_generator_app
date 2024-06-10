@@ -1,5 +1,6 @@
 'use server'
- 
+
+import { cookies } from 'next/headers'
 import { errorHandle } from "@/common/utils/errorHandle";
 
 type AdminUser = {
@@ -10,15 +11,18 @@ type AdminUser = {
   status: string;
 };
 
+const accessToken = cookies().get('accessToken');
+
 export async function updateAdminUser(is_new: boolean, data: AdminUser, id?: number) {
   const url = is_new ? 'http://backend:8080/admin_users' : `http://backend:8080/admin_users/${id}`;
   const method = is_new ? 'POST' : 'PUT';
   try {
     const res = await fetch(url, {
       method,
-      headers: {
+      headers: accessToken ? {
+        'AccessToken': `${accessToken.value}`,
         'Content-Type': 'application/json'
-      },
+      } : {},
       body: JSON.stringify({admin_user: data})
     })
     const response = await res.json();
@@ -33,7 +37,11 @@ export async function updateAdminUser(is_new: boolean, data: AdminUser, id?: num
 export async function searchAdminUser(data: AdminUser) {
   try {
     const params = new URLSearchParams(data);
-    const res = await fetch(`http://backend:8080/admin_users?${params}`);
+    const res = await fetch(`http://backend:8080/admin_users?${params}`, {
+      headers: accessToken ? {
+        'AccessToken': `${accessToken.value}`
+      } : {}
+    });
     const response = await res.json();
     if (!res.ok) throw new Error(response.err);
     return { result: true, response };
@@ -44,5 +52,10 @@ export async function searchAdminUser(data: AdminUser) {
 }
 
 export async function deleteAdminUser(id: number) {
-  await fetch(`http://backend:8080/admin_users/${id}`, {method: 'DELETE'});
+  await fetch(`http://backend:8080/admin_users/${id}`, {
+    method: 'DELETE',
+    headers: accessToken ? {
+      'AccessToken': `${accessToken.value}`
+    } : {}
+  });
 }

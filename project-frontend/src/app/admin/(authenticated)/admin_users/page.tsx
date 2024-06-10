@@ -1,7 +1,14 @@
+import { cookies } from 'next/headers'
 import Index from '../../../../features/routes/admin_users/Index'
 
 const CompanyIndex = async () => {
-  const admin_users = await fetch("http://backend:8080/admin_users", { cache: 'no-store' }).then((res) => res.json())
+  const accessToken = cookies().get('accessToken');
+  const admin_users = await fetch("http://backend:8080/admin_users", {
+    cache: 'no-store',
+    headers: accessToken ? {
+      'AccessToken': `${accessToken.value}`
+    } : {}
+  }).then((res) => res.json())
 
   return (
     <>

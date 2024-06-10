@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers'
 import Form from '../../../../../features/routes/companies/Form'
 
 interface Props {
@@ -7,7 +8,13 @@ interface Props {
 }
 
 const CompanyEdit = async ({ params }: Props) => {
-  const company = await fetch(`http://backend:8080/companies/${params.id}`, { cache: 'no-store' }).then((res) => res.json())
+  const accessToken = cookies().get('accessToken');
+  const company = await fetch(`http://backend:8080/companies/${params.id}`, {
+    cache: 'no-store',
+    headers: accessToken ? {
+      'AccessToken': `${accessToken.value}`
+    } : {}
+  }).then((res) => res.json())
 
   return (
     <>

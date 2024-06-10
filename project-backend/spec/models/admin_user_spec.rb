@@ -136,6 +136,35 @@ RSpec.describe AdminUser, type: :model do
   end
 
   describe 'メソッド動作テスト' do
+    context 'create_admin_user' do 
+      subject {FactoryBot.create(:company)}
+      context '引数が正常の場合' do 
+        it 'admin_userが返ること' do
+          params = {
+            company: FactoryBot.create(:company),
+            code: Faker::Alphanumeric.alpha(number: 10),
+            first_name: Faker::Name.first_name,
+            last_name: Faker::Name.last_name,
+            password: "password123",
+            email: Faker::Internet.email,
+            status: 1
+          }
+          expect(AdminUser.create_admin_user(params, subject).present?).to be_truthy
+        end
+      end
+    end
+
+    context 'update_admin_user' do 
+      subject {FactoryBot.create(:admin_user)}
+      context '引数が正常の場合' do 
+        it 'admin_userが返ること' do
+          params = {}
+          params[:status] = 0
+          expect(AdminUser.update_admin_user(params, subject).present?).to be_truthy
+        end
+      end
+    end
+
     context 'search' do 
       subject {FactoryBot.create(:admin_user)}
       it 'code' do

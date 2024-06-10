@@ -47,6 +47,7 @@ RSpec.describe Service, type: :model do
 
   describe 'メソッド動作テスト' do
     context 'create_service' do 
+      subject {FactoryBot.create(:company)}
       context '引数が正常の場合' do 
         it 'serviceが返ること' do
           params = {
@@ -55,7 +56,7 @@ RSpec.describe Service, type: :model do
             img: "",
             status: 1
           }
-          expect(Service.create_service(params).present?).to be_truthy
+          expect(Service.create_service(params, subject).present?).to be_truthy
         end
       end
     end

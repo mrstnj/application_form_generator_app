@@ -3,6 +3,10 @@ export const errorHandle = (error: any): string => {
   let errorText = JSON.stringify(error).replace(/^"(.*)"$/, '$1');
 
   switch (errorText) {
+  case 'Access Denied. token is expired':
+  case 'Access Denied. Please set token':
+    errorText = "認証エラーです。ログインし直してください。";
+    break;
   case 'Invalid code or password':
     errorText = "ログインIDもしくはパスワードが間違っています。";
     break;

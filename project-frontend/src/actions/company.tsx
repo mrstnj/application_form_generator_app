@@ -12,7 +12,7 @@ type Company = {
 const accessToken = cookies().get('accessToken');
 
 export async function updateCompany(is_new: boolean, data: Company, id?: number) {
-  const url = is_new ? 'http://backend:8080/companies' : `http://backend:8080/companies/${id}`;
+  const url = is_new ? `${process.env.API_BASE_URL}/companies` : `${process.env.API_BASE_URL}/companies/${id}`;
   const method = is_new ? 'POST' : 'PUT';
   try {
     const res = await fetch(url, {
@@ -35,7 +35,7 @@ export async function updateCompany(is_new: boolean, data: Company, id?: number)
 export async function searchCompany(data: Company) {
   try {
     const params = new URLSearchParams(data);
-    const res = await fetch(`http://backend:8080/companies?${params}`, {
+    const res = await fetch(`${process.env.API_BASE_URL}/companies?${params}`, {
       headers: accessToken ? {
         'AccessToken': `${accessToken.value}`
       } : {}
@@ -50,7 +50,7 @@ export async function searchCompany(data: Company) {
 }
 
 export async function deleteCompany(id: number) {
-  await fetch(`http://backend:8080/companies/${id}`, {
+  await fetch(`${process.env.API_BASE_URL}/companies/${id}`, {
     method: 'DELETE',
     headers: accessToken ? {
       'AccessToken': `${accessToken.value}`

@@ -10,7 +10,7 @@ type AdminUser = {
 
 export async function login(data: AdminUser) {
   try {
-    const res = await fetch('http://backend:8080/sessions', {
+    const res = await fetch(`${process.env.API_BASE_URL}/sessions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

@@ -18,7 +18,7 @@ type ServiceParams = {
 const accessToken = cookies().get('accessToken');
 
 export async function updateService(is_new: boolean, data: Service, id?: number) {
-  const url = is_new ? 'http://backend:8080/services' : `http://backend:8080/services/${id}`;
+  const url = is_new ? `${process.env.API_BASE_URL}/services` : `${process.env.API_BASE_URL}/services/${id}`;
   const method = is_new ? 'POST' : 'PUT';
   try {
     const res = await fetch(url, {
@@ -41,7 +41,7 @@ export async function updateService(is_new: boolean, data: Service, id?: number)
 export async function searchService(data: ServiceParams) {
   try {
     const params = new URLSearchParams(data);
-    const res = await fetch(`http://backend:8080/services?${params}`, {
+    const res = await fetch(`${process.env.API_BASE_URL}/services?${params}`, {
       headers: accessToken ? {
         'AccessToken': `${accessToken.value}`
       } : {}
@@ -56,7 +56,7 @@ export async function searchService(data: ServiceParams) {
 }
 
 export async function deleteService(id: number) {
-  await fetch(`http://backend:8080/services/${id}`, {
+  await fetch(`${process.env.API_BASE_URL}/services/${id}`, {
     method: 'DELETE',
     headers: accessToken ? {
       'AccessToken': `${accessToken.value}`

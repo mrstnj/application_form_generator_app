@@ -3,7 +3,7 @@ import Index from '../../../../features/routes/admin_users/Index'
 
 const CompanyIndex = async () => {
   const accessToken = cookies().get('accessToken');
-  const admin_users = await fetch("http://backend:8080/admin_users", {
+  const admin_users = await fetch(`${process.env.API_BASE_URL}/admin_users`, {
     cache: 'no-store',
     headers: accessToken ? {
       'AccessToken': `${accessToken.value}`

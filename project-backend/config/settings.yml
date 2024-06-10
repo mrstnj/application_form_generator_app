@@ -1,0 +1,4 @@
+admin_user:
+  access_token_expire_date: 30
+  lock_count_limit: 6
+  unlock_period: 30

@@ -12,7 +12,7 @@ class AdminController < ApplicationController
     if access_token.present?
       admin_user = AdminUser.authenticate_access_token(access_token)
       if admin_user.present?
-        admin_user.access_token_expire_date = 30.minutes.since
+        admin_user.access_token_expire_date = Settings.admin_user.access_token_expire_date.minutes.since
         admin_user.save(validate: false)
         @current_admin = admin_user
       else

@@ -9,7 +9,7 @@ interface Props {
 
 const CompanyEdit = async ({ params }: Props) => {
   const accessToken = cookies().get('accessToken');
-  const company = await fetch(`http://backend:8080/companies/${params.id}`, {
+  const company = await fetch(`${process.env.API_BASE_URL}/companies/${params.id}`, {
     cache: 'no-store',
     headers: accessToken ? {
       'AccessToken': `${accessToken.value}`

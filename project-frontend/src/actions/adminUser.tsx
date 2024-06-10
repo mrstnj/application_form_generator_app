@@ -14,7 +14,7 @@ type AdminUser = {
 const accessToken = cookies().get('accessToken');
 
 export async function updateAdminUser(is_new: boolean, data: AdminUser, id?: number) {
-  const url = is_new ? 'http://backend:8080/admin_users' : `http://backend:8080/admin_users/${id}`;
+  const url = is_new ? `${process.env.API_BASE_URL}/admin_users` : `${process.env.API_BASE_URL}/admin_users/${id}`;
   const method = is_new ? 'POST' : 'PUT';
   try {
     const res = await fetch(url, {
@@ -37,7 +37,7 @@ export async function updateAdminUser(is_new: boolean, data: AdminUser, id?: num
 export async function searchAdminUser(data: AdminUser) {
   try {
     const params = new URLSearchParams(data);
-    const res = await fetch(`http://backend:8080/admin_users?${params}`, {
+    const res = await fetch(`${process.env.API_BASE_URL}/admin_users?${params}`, {
       headers: accessToken ? {
         'AccessToken': `${accessToken.value}`
       } : {}
@@ -52,7 +52,7 @@ export async function searchAdminUser(data: AdminUser) {
 }
 
 export async function deleteAdminUser(id: number) {
-  await fetch(`http://backend:8080/admin_users/${id}`, {
+  await fetch(`${process.env.API_BASE_URL}/admin_users/${id}`, {
     method: 'DELETE',
     headers: accessToken ? {
       'AccessToken': `${accessToken.value}`

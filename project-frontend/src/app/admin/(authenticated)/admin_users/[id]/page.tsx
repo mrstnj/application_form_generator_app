@@ -9,7 +9,7 @@ interface Props {
 
 const AdminUserEdit = async ({ params }: Props) => {
   const accessToken = cookies().get('accessToken');
-  const admin_user = await fetch(`http://backend:8080/admin_users/${params.id}`, {
+  const admin_user = await fetch(`${process.env.API_BASE_URL}/admin_users/${params.id}`, {
     cache: 'no-store',
     headers: accessToken ? {
       'AccessToken': `${accessToken.value}`

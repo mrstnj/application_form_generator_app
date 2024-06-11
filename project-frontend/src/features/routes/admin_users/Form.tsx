@@ -185,23 +185,19 @@ const Form = ({ is_new, id, adminUser }: Props) => {
                   />
                 </FormControl>
               </Grid>
-              {/* { !is_new &&
+              { !is_new &&
                 <Grid item xs={12}>
                   <FormControl fullWidth>
                     <Controller
                       name="current_password"
                       control={control}
                       defaultValue=""
-                      rules={{
-                        validate: {
-                          required: validators.required
-                        }
-                      }}
                       render={({ field }) => <TextField
                         {...field}
+                        type={showPassword ? "text" : "password"}
                         label="現在のパスワード"
-                        error={Boolean(errors.password)}
-                        helperText={errors.password?.message}
+                        error={Boolean(errors.current_password)}
+                        helperText={errors.current_password?.message}
                         InputProps={{
                           endAdornment: (
                             <InputAdornment position="end">
@@ -219,7 +215,7 @@ const Form = ({ is_new, id, adminUser }: Props) => {
                     />
                   </FormControl>
                 </Grid>
-              } */}
+              }
               <Grid item xs={12}>
                 <FormControl fullWidth>
                   <Controller

@@ -33,8 +33,8 @@ type Valiant = 'success' | 'warning' | 'error' | 'info';
 
 interface Props {
   is_new: boolean;
-  id: number;
-  service: Service;
+  id?: number;
+  service?: Service;
 }
 
 const Form = ({ is_new, id, service }: Props) => {

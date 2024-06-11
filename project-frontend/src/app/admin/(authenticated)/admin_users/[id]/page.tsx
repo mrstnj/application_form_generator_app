@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers'
-import Form from '../../../../../features/routes/admin_users/Form'
+import Form from '@/features/routes/admin_users/Form'
 
 interface Props {
   params: {

@@ -1,4 +1,4 @@
-import Form from '../../../../../features/routes/admin_users/Form'
+import Form from '@/features/routes/admin_users/Form'
 
 const AdminUserCreate = () => {
 

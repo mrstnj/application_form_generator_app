@@ -15,9 +15,8 @@ type ServiceParams = {
   status: string;
 }
 
-const accessToken = cookies().get('accessToken');
-
 export async function updateService(is_new: boolean, data: Service, id?: number) {
+  const accessToken = cookies().get('accessToken');
   const url = is_new ? `${process.env.API_BASE_URL}/services` : `${process.env.API_BASE_URL}/services/${id}`;
   const method = is_new ? 'POST' : 'PUT';
   try {
@@ -39,6 +38,7 @@ export async function updateService(is_new: boolean, data: Service, id?: number)
 }
 
 export async function searchService(data: ServiceParams) {
+  const accessToken = cookies().get('accessToken');
   try {
     const params = new URLSearchParams(data);
     const res = await fetch(`${process.env.API_BASE_URL}/services?${params}`, {
@@ -56,6 +56,7 @@ export async function searchService(data: ServiceParams) {
 }
 
 export async function deleteService(id: number) {
+  const accessToken = cookies().get('accessToken');
   await fetch(`${process.env.API_BASE_URL}/services/${id}`, {
     method: 'DELETE',
     headers: accessToken ? {

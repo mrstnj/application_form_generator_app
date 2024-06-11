@@ -7,13 +7,14 @@ type AdminUser = {
   code: string;
   first_name: string;
   last_name: string;
+  current_password?: string;
+  password?: string;
   email: string;
   status: string;
 };
 
-const accessToken = cookies().get('accessToken');
-
 export async function updateAdminUser(is_new: boolean, data: AdminUser, id?: number) {
+  const accessToken = cookies().get('accessToken');
   const url = is_new ? `${process.env.API_BASE_URL}/admin_users` : `${process.env.API_BASE_URL}/admin_users/${id}`;
   const method = is_new ? 'POST' : 'PUT';
   try {
@@ -35,6 +36,7 @@ export async function updateAdminUser(is_new: boolean, data: AdminUser, id?: num
 }
 
 export async function searchAdminUser(data: AdminUser) {
+  const accessToken = cookies().get('accessToken');
   try {
     const params = new URLSearchParams(data);
     const res = await fetch(`${process.env.API_BASE_URL}/admin_users?${params}`, {
@@ -52,6 +54,7 @@ export async function searchAdminUser(data: AdminUser) {
 }
 
 export async function deleteAdminUser(id: number) {
+  const accessToken = cookies().get('accessToken');
   await fetch(`${process.env.API_BASE_URL}/admin_users/${id}`, {
     method: 'DELETE',
     headers: accessToken ? {

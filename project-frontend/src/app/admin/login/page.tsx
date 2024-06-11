@@ -1,4 +1,4 @@
-import Form from '@/features/routes/login/Form'
+import Form from '@/features/routes/admin/login/Form'
 
 const Login = () => {
 

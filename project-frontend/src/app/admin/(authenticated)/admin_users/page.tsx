@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers'
-import Index from '@/features/routes/admin_users/Index'
+import Index from '@/features/routes/admin/admin_users/Index'
 
 const CompanyIndex = async () => {
   const accessToken = cookies().get('accessToken');

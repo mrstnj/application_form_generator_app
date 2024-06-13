@@ -15,7 +15,6 @@ const ServiceEdit = async ({ params }: Props) => {
       'AccessToken': `${accessToken.value}`
     } : {}
   }).then((res) => res.json())
-  service.img = service.img.url;
 
   return (
     <>

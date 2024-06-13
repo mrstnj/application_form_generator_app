@@ -20,7 +20,7 @@ const ServiceCarousel = ({ services }: Props) => {
   const isMobile = useMediaQuery('(max-width:600px)');
 
   return (
-    <Box sx={{ maxWidth: '100%' }}>
+    <Box sx={{ maxWidth: '100%', background: 'white' }}>
       <Splide
         aria-label="My Favorite Images"
         options={{
@@ -35,6 +35,9 @@ const ServiceCarousel = ({ services }: Props) => {
         {services.map(service => (
           <SplideSlide key={service.id} className="flex justify-center items-center">
             <img className="slide-img" src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${service.img}`} alt={service.name}/>
+            <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2">
+              {service.name}
+            </div>
           </SplideSlide>
         ))}
       </Splide>

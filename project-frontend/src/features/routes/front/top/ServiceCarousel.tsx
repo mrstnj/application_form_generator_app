@@ -17,7 +17,6 @@ interface Props {
 }
 
 const ServiceCarousel = ({ services }: Props) => {
-  console.log(services)
   const isMobile = useMediaQuery('(max-width:600px)');
 
   return (

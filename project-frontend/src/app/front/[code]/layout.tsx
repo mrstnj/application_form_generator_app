@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import AppBar from '@/features/routes/front/AppBar'
 
 export const metadata: Metadata = {
   title: "トップ"
@@ -10,6 +11,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div>{children}</div>
+    <>
+      <AppBar />
+      {children}
+    </>
   );
 }

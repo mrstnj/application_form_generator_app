@@ -1,5 +1,4 @@
 import ServiceCarousel from '@/features/routes/front/top/ServiceCarousel'
-import Menu from '@/features/routes/front/top/Menu'
 import Content from '@/features/routes/front/top/Content'
 
 interface Props {
@@ -14,10 +13,7 @@ const Top = async({ params }: Props) => {
   return (
     <div>
       <ServiceCarousel services={company.services_attributes} />
-      <div style={{ height: '50vh', display: 'flex' }}>
-        <Menu/>
-        <Content/>
-      </div>
+      <Content services={company.services_attributes} />
     </div>
   );
 };

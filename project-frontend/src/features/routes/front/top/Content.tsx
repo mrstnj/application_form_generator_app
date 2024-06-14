@@ -5,6 +5,8 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
+import ServiceCard from './ServiceCard'
+import Grid from '@mui/material/Grid';
 
 interface TabPanelProps {
   children?: ReactNode;
@@ -62,7 +64,11 @@ const Content = ({ services }: Props) => {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        Item One
+      <Grid container spacing={2}>
+        {services.map((service, index) => (
+          <ServiceCard service={service} key={index}/>
+        ))}
+        </Grid>
       </CustomTabPanel>
       {/* <CustomTabPanel value={value} index={1}>
         Item Two

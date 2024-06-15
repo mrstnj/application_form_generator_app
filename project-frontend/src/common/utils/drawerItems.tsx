@@ -3,6 +3,7 @@ import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import BusinessIcon from '@mui/icons-material/Business';
 import ListIcon from '@mui/icons-material/List';
 import CreateIcon from '@mui/icons-material/Create';
+import RedeemIcon from '@mui/icons-material/Redeem';
 
 interface ChildItem {
   name: string;
@@ -31,16 +32,22 @@ const drawerItems: DrawerItem[] = [
         icon: <CreateIcon />,
         path: "/admin/services/new",
       },
-      // {
-      //   name: "プラン一覧",
-      //   icon: <ListIcon />,
-      //   path: "/admin/plans",
-      // },
-      // {
-      //   name: "プラン登録",
-      //   icon: <CreateIcon />,
-      //   path: "/admin/plans/new",
-      // },
+    ],
+  },
+  {
+    name: "プラン管理",
+    icon: <RedeemIcon />,
+    child: [
+      {
+        name: "プラン一覧",
+        icon: <ListIcon />,
+        path: "/admin/plans",
+      },
+      {
+        name: "プラン登録",
+        icon: <CreateIcon />,
+        path: "/admin/plans/new",
+      },
     ],
   },
   {

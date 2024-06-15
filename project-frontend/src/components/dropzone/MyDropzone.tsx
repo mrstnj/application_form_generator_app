@@ -88,8 +88,8 @@ const MyDropzone = ({ setValue, watchImg, text }: Props) => {
     }
     const url = URL.createObjectURL(blobImg);
     return (
-      <div className="relative inline-block">
-        <Image src={url} alt="preview" className="file-preview shadow-md" width={500} height={300} style={{width: '100%', height: 'auto'}} />
+      <div className="relative mx-auto inline-block">
+        <Image src={url} alt="preview" className="file-preview shadow-md" width={200} height={200} />
         <IconButton className="absolute top-0 right-0 p-2" onClick={() => handleRemove()}>
           <DeleteIcon />
         </IconButton>

@@ -68,7 +68,7 @@ const Form = ({ is_new, id, service }: Props) => {
       setValue("content", service.content);
       setValue("status", service.status);
       if (service.img) {
-        const blobImg = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${service.img}`, { mode: 'cors' }).then((res) => res.blob());
+        const blobImg = await fetch(`${service.img}`, { mode: 'cors' }).then((res) => res.blob());
         setValue("img", blobImg);
       }
     }

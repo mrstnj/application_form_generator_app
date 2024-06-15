@@ -71,3 +71,4 @@
 /project-backend/config/master.key
 
 /project-backend/public/uploads/*
+/minio/*

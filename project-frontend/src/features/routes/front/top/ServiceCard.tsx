@@ -25,7 +25,7 @@ const ServiceCard = ({ service }: Props) => {
       <Card sx={{ maxWidth: 345 }}>
         <CardMedia
           sx={{ height: 140 }}
-          image={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${service.img}`}
+          image={service.img}
           title="service"
         />
         <CardContent>

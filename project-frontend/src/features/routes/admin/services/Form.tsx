@@ -140,6 +140,9 @@ const Form = ({ is_new, id, service }: Props) => {
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
+                <Typography variant="body1" gutterBottom style={{ color: '#757575' }}>
+                  サービス画像
+                </Typography>
                 <FormControl fullWidth>
                   <Controller
                     name="img"

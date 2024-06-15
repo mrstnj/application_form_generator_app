@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers'
-import Form from '@/features/routes/services/Form'
+import Form from '@/features/routes/admin/services/Form'
 
 interface Props {
   params: {
@@ -15,7 +15,6 @@ const ServiceEdit = async ({ params }: Props) => {
       'AccessToken': `${accessToken.value}`
     } : {}
   }).then((res) => res.json())
-  service.img = service.img.url;
 
   return (
     <>

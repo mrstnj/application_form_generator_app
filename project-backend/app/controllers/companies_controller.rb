@@ -1,5 +1,6 @@
 class CompaniesController < AdminController
   before_action :set_company, only: %i[ show update destroy ]
+  skip_before_action :authenticate_token, only: %i[ show_by_code ]
 
   # GET /companies
   def index
@@ -10,7 +11,12 @@ class CompaniesController < AdminController
 
   # GET /companies/1
   def show
-    render json: @company
+    render json: @company, serializer: CompanySerializer, root: nil
+  end
+
+  def show_by_code
+    @company = Company.find_by(code: params[:code])
+    render json: @company, serializer: CompanySerializer, root: nil
   end
 
   # POST /companies

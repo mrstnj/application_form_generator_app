@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import Box from '@mui/material/Box';
-import AppBar from '../../../features/common/AppBar'
-import CustomDrawer from '../../../features/common/CustomDrawer'
-import DrawerHeader from '../../../features/common/custom/DrawerHeader'
+import AppBar from '@/features/common/AppBar'
+import CustomDrawer from '@/features/common/CustomDrawer'
+import DrawerHeader from '@/features/common/custom/DrawerHeader'
 import "./globals.css";
 
 export default function RootLayout({

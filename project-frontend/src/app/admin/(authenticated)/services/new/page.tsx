@@ -1,4 +1,4 @@
-import Form from '@/features/routes/services/Form'
+import Form from '@/features/routes/admin/services/Form'
 
 const ServiceCreate = () => {
 

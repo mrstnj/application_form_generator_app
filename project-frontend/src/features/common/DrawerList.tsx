@@ -8,7 +8,7 @@ import {
   Collapse
 } from "@mui/material";
 import { useState } from "react";
-import drawerItems from '../../common/utils/drawerItems';
+import drawerItems from '@/common/utils/drawerItems';
 
 interface Props {
   handleDrawerClose: () => void;

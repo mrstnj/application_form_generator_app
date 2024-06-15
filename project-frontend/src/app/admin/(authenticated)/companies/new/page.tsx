@@ -1,4 +1,4 @@
-import Form from '@/features/routes/companies/Form'
+import Form from '@/features/routes/admin/companies/Form'
 
 const CompanyCreate = () => {
 

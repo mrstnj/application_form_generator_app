@@ -5,19 +5,19 @@ class ServicesController < AdminController
   def index
     @services = Service.all
     @services = @services.search(@services, params)
-    render json: @services
+    render json: @services, each_serializer: ServiceSerializer, root: nil
   end
 
   # GET /services/1
   def show
-    render json: @service
+    render json: @service, serializer: ServiceSerializer, root: nil
   end
 
   # POST /services
   def create
     begin
       @service = Service.create_service(service_params, current_company)
-      render json: @service, status: :created, location: @service
+      render json: @service, status: :created, location: @service, serializer: ServiceSerializer, root: nil
     rescue => e
       render json: { err: e.message }, status: :unprocessable_entity
     end
@@ -27,7 +27,7 @@ class ServicesController < AdminController
   def update
     begin
       @service = Service.update_service(service_params, @service)
-      render json: @service
+      render json: @service, serializer: ServiceSerializer, root: nil
     rescue => e
       render json: { err: e.message }, status: :unprocessable_entity
     end

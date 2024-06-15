@@ -6,12 +6,12 @@ class CompaniesController < AdminController
   def index
     @companies = Company.all
     @companies = @companies.search(@companies, params)
-    render json: @companies
+    render json: @companies, each_serializer: CompanySerializer, root: nil, is_show: true
   end
 
   # GET /companies/1
   def show
-    render json: @company, serializer: CompanySerializer, root: nil
+    render json: @company, serializer: CompanySerializer, root: nil, is_show: true
   end
 
   def show_by_code
@@ -23,7 +23,7 @@ class CompaniesController < AdminController
   def create
     begin
       @company = Company.create_company(company_params)
-      render json: @company, status: :created, location: @company
+      render json: @company, status: :created, location: @company, serializer: CompanySerializer, root: nil
     rescue => e
       render json: { err: e.message }, status: :unprocessable_entity
     end
@@ -33,7 +33,7 @@ class CompaniesController < AdminController
   def update
     begin
       @company = Company.update_company(company_params, @company)
-      render json: @company
+      render json: @company, serializer: CompanySerializer, root: nil
     rescue => e
       render json: { err: e.message }, status: :unprocessable_entity
     end

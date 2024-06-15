@@ -5,19 +5,19 @@ class AdminUsersController < AdminController
   def index
     @admin_users = AdminUser.all
     @admin_users = @admin_users.search(@admin_users, params)
-    render json: @admin_users
+    render json: @admin_users, each_serializer: AdminUserSerializer, root: nil
   end
 
   # GET /admin_users/1
   def show
-    render json: @admin_user
+    render json: @admin_user, serializer: AdminUserSerializer, root: nil
   end
 
   # POST /admin_users
   def create
     begin
       @admin_user = AdminUser.create_admin_user(admin_user_params, current_company)
-      render json: @admin_user, status: :created, location: @admin_user
+      render json: @admin_user, status: :created, location: @admin_user, serializer: AdminUserSerializer, root: nil
     rescue => e
       render json: { err: e.message }, status: :unprocessable_entity
     end
@@ -35,7 +35,7 @@ class AdminUsersController < AdminController
       end
       params.delete(:current_password)
       @admin_user = AdminUser.update_admin_user(params, @admin_user)
-      render json: @admin_user
+      render json: @admin_user, serializer: AdminUserSerializer, root: nil
     rescue => e
       render json: { err: e.message }, status: :unprocessable_entity
     end

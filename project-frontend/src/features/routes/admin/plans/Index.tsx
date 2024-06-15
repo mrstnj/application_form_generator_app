@@ -26,9 +26,7 @@ import Notification from "@/components/notification/Notification";
 import { searchPlan, deletePlan } from "@/actions/plan"
 
 type Service = {
-  id: number;
   name: string;
-  status: string;
 };
 
 type Plan = {
@@ -37,6 +35,12 @@ type Plan = {
   name: string;
   status: string;
 };
+
+type PlanParams = {
+  service: string;
+  name: string;
+  status: string;
+}
 
 interface Props {
   services: Service[];
@@ -74,7 +78,7 @@ const Index = ({ plansList, services }: Props) => {
     setPlans(plans.filter((plan) => plan.id !== id));
   };
 
-  const onSubmit = async (data: Plan) => {
+  const onSubmit = async (data: PlanParams) => {
     const { result, response, errorText = '' } = await searchPlan(data)
     if (result) {
       setPlans(response);
@@ -83,7 +87,7 @@ const Index = ({ plansList, services }: Props) => {
     }
   };
 
-  const { control, handleSubmit } = useForm<Plan>();
+  const { control, handleSubmit } = useForm<PlanParams>();
 
   return (
     <>
@@ -97,16 +101,15 @@ const Index = ({ plansList, services }: Props) => {
               <Grid item xs={12}>
                 <FormControl fullWidth>
                   <Controller
-                    name="status"
+                    name="service"
                     control={control}
                     defaultValue=""
                     render={({ field }) => (
                       <FormControl fullWidth>
                         <InputLabel>サービス</InputLabel>
                         <Select {...field} label="ステータス">
-                          <MenuItem value="">選択してください</MenuItem>
                           {services.map((service, index) => (
-                            <MenuItem key={index} value={service.id}>{service.name}</MenuItem>
+                            <MenuItem key={index} value={service.name}>{service.name}</MenuItem>
                           ))}
                         </Select>
                       </FormControl>
@@ -158,8 +161,8 @@ const Index = ({ plansList, services }: Props) => {
           <Table align="center">
             <TableHead>
               <TableRow>
-                <TableCell className="font-bold">プラン名</TableCell>
                 <TableCell className="font-bold">サービス名</TableCell>
+                <TableCell className="font-bold">プラン名</TableCell>
                 <TableCell className="font-bold">ステータス</TableCell>
                 <TableCell className="font-bold">アクション</TableCell>
               </TableRow>
@@ -168,8 +171,8 @@ const Index = ({ plansList, services }: Props) => {
               {plans.map((plan) => {
                 return (
                   <TableRow key={plan.id}>
-                    <TableCell>{plan.name}</TableCell>
                     <TableCell>{plan.service.name}</TableCell>
+                    <TableCell>{plan.name}</TableCell>
                     <TableCell>{plan.status == "activate" ? '有効' : '無効'}</TableCell>
                     <TableCell>
                       <EditButton onClick={handleShowDetails} data={plan.id} />

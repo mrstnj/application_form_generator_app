@@ -4,12 +4,14 @@ import { cookies } from 'next/headers'
 import { errorHandle } from "@/common/utils/errorHandle";
 
 type Plan = {
+  service_id: number;
   name: string;
   content: string;
   status: string;
 };
 
 type PlanParams = {
+  service: string;
   name: string;
   status: string;
 }

@@ -27,10 +27,11 @@ type Service = {
 
 type Plan = {
   id: number;
-  service: number;
+  service_id: number;
   name: string;
   content: string;
   status: string;
+  service: Service;
 };
 
 type Valiant = 'success' | 'warning' | 'error' | 'info';
@@ -69,6 +70,7 @@ const Form = ({ is_new, services, id, plan }: Props) => {
 
   useEffect(() => {
     if (!is_new && plan) {
+      setValue("service_id", plan.service.id);
       setValue("name", plan.name);
       setValue("content", plan.content);
       setValue("status", plan.status);
@@ -97,7 +99,7 @@ const Form = ({ is_new, services, id, plan }: Props) => {
               <Grid item xs={12}>
                 <FormControl fullWidth>
                   <Controller
-                    name="service"
+                    name="service_id"
                     control={control}
                     defaultValue={services[0].id}
                     rules={{

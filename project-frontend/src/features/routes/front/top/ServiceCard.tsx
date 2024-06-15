@@ -1,11 +1,12 @@
-import * as React from 'react';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
+import {
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Button,
+  Typography,
+  Grid
+} from '@mui/material';
 
 type Service = {
   id: number;
@@ -25,7 +26,7 @@ const ServiceCard = ({ service }: Props) => {
         <CardMedia
           sx={{ height: 140 }}
           image={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${service.img}`}
-          title="green iguana"
+          title="service"
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">

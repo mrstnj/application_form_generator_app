@@ -1,9 +1,9 @@
 FactoryBot.define do
   factory :plan do
-    service { nil }
+    service { FactoryBot.create(:service) }
     form_item { nil }
-    name { "MyString" }
-    content { "MyText" }
+    name { "sample plan" }
+    content { "test" }
     status { 1 }
   end
 end

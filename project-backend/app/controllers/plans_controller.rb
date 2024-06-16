@@ -16,7 +16,7 @@ class PlansController < AdminController
   # POST /plans
   def create
     begin
-      @plan = Plan.create_plan(plan_params, current_company)
+      @plan = Plan.create_plan(plan_params)
       render json: @plan, status: :created, location: @plan, serializer: PlanSerializer, root: nil
     rescue => e
       render json: { err: e.message }, status: :unprocessable_entity

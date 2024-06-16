@@ -6,7 +6,7 @@ class Plan < ApplicationRecord
 
   validates_presence_of :service_id, :name, :status
 
-  def self.create_plan(params, company)
+  def self.create_plan(params)
     plan = nil
     ActiveRecord::Base::transaction do
       plan = self.new(params)

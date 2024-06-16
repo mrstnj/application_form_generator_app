@@ -108,17 +108,17 @@ const Form = ({ is_new, services, id, plan }: Props) => {
                       }
                     }}
                     render={({ field }) => (
-                      <FormControl fullWidth error={Boolean(errors.status)}>
-                        <InputLabel>サービス</InputLabel>
+                      <FormControl fullWidth error={Boolean(errors.service_id)}>
+                        <InputLabel>サービス名</InputLabel>
                         <Select
                           {...field}
-                          label="サービス"
+                          label="サービス名"
                         >
                           {services.map((service, index) => (
                             <MenuItem key={index} value={service.id}>{service.name}</MenuItem>
                           ))}
                         </Select>
-                        <FormHelperText>{errors.status?.message}</FormHelperText>
+                        <FormHelperText>{errors.service_id?.message}</FormHelperText>
                       </FormControl>
                     )}
                   />

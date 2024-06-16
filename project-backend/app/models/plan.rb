@@ -4,6 +4,8 @@ class Plan < ApplicationRecord
 
   enum status: { deactivate: 0, activate: 1 }
 
+  validates_presence_of :service_id, :name, :status
+
   def self.create_plan(params, company)
     plan = nil
     ActiveRecord::Base::transaction do

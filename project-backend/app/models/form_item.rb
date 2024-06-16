@@ -1,3 +1,3 @@
 class FormItem < ApplicationRecord
-  belongs_to :company
+  belongs_to :form
 end

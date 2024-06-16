@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :form_item do
-    company { nil }
+    form { nil }
     name { "MyString" }
     is_required { false }
     type { 1 }

@@ -15,6 +15,12 @@ import BackButton from "@/components/button/BackButton";
 import Notification from "@/components/notification/Notification";
 import * as validators from "@/common/utils/validate";
 import { updateForm } from "@/actions/form"
+import { DndContext, closestCenter } from "@dnd-kit/core";
+import { arrayMove, SortableContext } from "@dnd-kit/sortable";
+import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
+import { SimpleSortableItem } from "./SimpleSortableItem";
+import { Stack, Box } from "@mui/material";
+import List from '@mui/material/List';
 
 type Form = {
   id: number;
@@ -28,6 +34,14 @@ interface Props {
   id?: number;
   form?: Form;
 }
+
+const INITIAL_ITEMS = [
+  { id: crypto.randomUUID(), name: "ソータブルアイテム　A" },
+  { id: crypto.randomUUID(), name: "ソータブルアイテム　B" },
+  { id: crypto.randomUUID(), name: "ソータブルアイテム　C" },
+  { id: crypto.randomUUID(), name: "ソータブルアイテム　D" },
+  { id: crypto.randomUUID(), name: "ソータブルアイテム　E" }
+];
 
 const Form = ({ is_new, id, form }: Props) => {
   const router = useRouter();
@@ -70,6 +84,8 @@ const Form = ({ is_new, id, form }: Props) => {
     }
   };
 
+  const [items, setItems] = useState(INITIAL_ITEMS);
+
   return (
     <>
       <Paper elevation={0} className="sm:mx-auto sm:max-w-prose mb-4">
@@ -98,6 +114,33 @@ const Form = ({ is_new, id, form }: Props) => {
                     />}
                   />
                 </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <DndContext
+                  collisionDetection={closestCenter} //中央を越えたら入れ替え
+                  //ドラッグアイテムがドロップされた後に発火するイベントハンドラ
+                  // active：動かしたコンポーネントの移動開始時の状態
+                  // over：移動終了時の状態
+                  onDragEnd={(event) => {
+                    const { active, over } = event;
+                    if (over == null || active.id === over.id) {
+                      return;
+                    }
+                    const oldIndex = items.findIndex((item) => item.id === active.id);
+                    const newIndex = items.findIndex((item) => item.id === over.id);
+                    const newItems = arrayMove(items, oldIndex, newIndex);
+                    setItems(newItems);
+                  }}
+                >
+                  {/* 並び替え可能な要素のコレクションを管理するプロバイダーです。 */}
+                  <SortableContext items={items}>
+                    <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                      {items.map((item) => (
+                        <SimpleSortableItem id={item.id} name={item.name} key={item.id} />
+                      ))}
+                    </List>
+                  </SortableContext>
+                </DndContext>
               </Grid>
             </Grid>
           </div>

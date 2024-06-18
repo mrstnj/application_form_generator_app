@@ -4,7 +4,9 @@ import { CSS } from "@dnd-kit/utilities";
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import IconButton from '@mui/material/IconButton';
-import CommentIcon from '@mui/icons-material/Comment';
+import Divider from '@mui/material/Divider';
+import MenuIcon from '@mui/icons-material/Menu';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 
 type Props = {
   id: string;
@@ -35,27 +37,22 @@ export const SimpleSortableItem: FC<Props> = ({ id, name }) => {
     >
       <ListItem
         key={id}
+        sx={{
+          height: 60, // 適切な高さをピクセルで指定
+        }}
         secondaryAction={
           <IconButton edge="end" aria-label="comments">
-            <CommentIcon />
+            <RemoveCircleIcon />
           </IconButton>
         }
         disablePadding
       >
-          <ListItemText id={id} primary={name} />
+        <IconButton aria-label="menu">
+          <MenuIcon />
+        </IconButton>
+        <ListItemText id={id} primary={name} />
       </ListItem>
-      {/* <Box
-        sx={{
-          border: "1px solid black",
-          p: 2,
-          display: "flex",
-          alignItems: "center",
-          bgcolor: "white",
-          cursor: isDragging ? "grabbing" : "grab",
-        }}
-      >
-        <Box sx={{ ml: 2 }}>{name}</Box>
-      </Box> */}
+      <Divider />
     </div>
   );
 };

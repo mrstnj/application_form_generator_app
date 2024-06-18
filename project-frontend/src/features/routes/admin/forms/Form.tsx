@@ -116,6 +116,7 @@ const Form = ({ is_new, id, form }: Props) => {
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
+              <FormControl fullWidth>
                 <DndContext
                   collisionDetection={closestCenter} //中央を越えたら入れ替え
                   //ドラッグアイテムがドロップされた後に発火するイベントハンドラ
@@ -134,13 +135,14 @@ const Form = ({ is_new, id, form }: Props) => {
                 >
                   {/* 並び替え可能な要素のコレクションを管理するプロバイダーです。 */}
                   <SortableContext items={items}>
-                    <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                    <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
                       {items.map((item) => (
                         <SimpleSortableItem id={item.id} name={item.name} key={item.id} />
                       ))}
                     </List>
                   </SortableContext>
                 </DndContext>
+                </FormControl>
               </Grid>
             </Grid>
           </div>

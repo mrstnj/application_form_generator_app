@@ -22,9 +22,16 @@ import { SimpleSortableItem } from "./SimpleSortableItem";
 import { Stack, Box } from "@mui/material";
 import List from '@mui/material/List';
 
+type FormItem = {
+  name: string;
+  is_require: boolean;
+  type: string;
+};
+
 type Form = {
   id: number;
   name: string;
+  form_items: FormItem[];
 };
 
 type Valiant = 'success' | 'warning' | 'error' | 'info';
@@ -119,6 +126,7 @@ const Form = ({ is_new, id, form }: Props) => {
                 <FormControl fullWidth>
                   <DndContext
                     collisionDetection={closestCenter} //中央を越えたら入れ替え
+                    modifiers={[restrictToVerticalAxis]}
                     //ドラッグアイテムがドロップされた後に発火するイベントハンドラ
                     // active：動かしたコンポーネントの移動開始時の状態
                     // over：移動終了時の状態

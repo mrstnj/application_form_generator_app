@@ -11,7 +11,6 @@ import {
   MenuItem,
   Grid,
   TextField,
-  FormHelperText
 } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
@@ -103,7 +102,7 @@ const SortableFormItem: FC<Props> = ({ id, name }) => {
                   }
                 }}
                 render={({ field }) => (
-                  <FormControl fullWidth variant="standard" error={Boolean(errors.type)}>
+                  <FormControl fullWidth variant="standard">
                     <Select
                       {...field}
                       label="フォーム種別"

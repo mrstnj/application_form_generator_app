@@ -8,8 +8,8 @@ import {
   TextField,
 } from "@mui/material";
 import { useRouter } from 'next/navigation'
-import { useForm, Controller } from 'react-hook-form';
-import { useEffect, useState, useCallback } from "react";
+import { FormProvider, useForm, Controller } from 'react-hook-form';
+import { useEffect, useState } from "react";
 import SubmitButton from "@/components/button/SubmitButton";
 import BackButton from "@/components/button/BackButton";
 import Notification from "@/components/notification/Notification";
@@ -48,7 +48,7 @@ const INITIAL_ITEMS = [
 
 const Form = ({ is_new, id, form }: Props) => {
   const router = useRouter();
-  const { control, handleSubmit, setValue, formState: { errors } } = useForm<Form>();
+  const { control, handleSubmit, setValue, methods, formState: { errors } } = useForm<Form>();
 
   const title = is_new ? "フォーム登録" : "フォーム詳細" ;
   const action = is_new ? "登録" : "更新" ;
@@ -88,11 +88,10 @@ const Form = ({ is_new, id, form }: Props) => {
     }
   };
 
-  const [items, setItems] = useState(INITIAL_ITEMS);
-
   return (
     <>
       <Paper elevation={0} className="sm:mx-auto sm:max-w-prose mb-4">
+      <FormProvider {...methods} >
         <form onSubmit={handleSubmit(onSubmit)} className="p-8">
           <Typography variant="h6">
             {title}
@@ -139,6 +138,7 @@ const Form = ({ is_new, id, form }: Props) => {
             <SubmitButton action_letter={action}/>
           </div>
         </form>  
+        </FormProvider>
       </Paper>
       <Notification handleClose={handleCloseNotification} notification={notification} />
     </>

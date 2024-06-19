@@ -18,19 +18,20 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { useForm, Controller } from 'react-hook-form';
 import * as validators from "@/common/utils/validate";
 
-type Props = {
-  id: string;
-  name: string;
-};
-
 type FormItem = {
+  id: number,
   name: string;
-  is_require: boolean;
   type: string;
+  is_required: boolean;
 };
 
-export const SimpleSortableItem: FC<Props> = ({ id, name }) => {
-  const { control, handleSubmit, setValue, formState: { errors } } = useForm<FormItem>();
+type Props = {
+  id: number;
+  name: string;
+};
+
+const SortableFormItem: FC<Props> = ({ id, name }) => {
+  const { control, formState: { errors } } = useForm<FormItem>();
   const {
     setNodeRef,
     setActivatorNodeRef,
@@ -122,3 +123,5 @@ export const SimpleSortableItem: FC<Props> = ({ id, name }) => {
     </div>
   );
 };
+
+export default SortableFormItem;

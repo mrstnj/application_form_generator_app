@@ -15,17 +15,13 @@ import BackButton from "@/components/button/BackButton";
 import Notification from "@/components/notification/Notification";
 import * as validators from "@/common/utils/validate";
 import { updateForm } from "@/actions/form"
-import { DndContext, closestCenter } from "@dnd-kit/core";
-import { arrayMove, SortableContext } from "@dnd-kit/sortable";
-import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
-import { SimpleSortableItem } from "./SimpleSortableItem";
-import { Stack, Box } from "@mui/material";
-import List from '@mui/material/List';
+import FormItemList from "./FormItemList"
 
 type FormItem = {
+  id: number,
   name: string;
-  is_require: boolean;
   type: string;
+  is_required: boolean;
 };
 
 type Form = {
@@ -43,11 +39,11 @@ interface Props {
 }
 
 const INITIAL_ITEMS = [
-  { id: crypto.randomUUID(), name: "ソータブルアイテム　A" },
-  { id: crypto.randomUUID(), name: "ソータブルアイテム　B" },
-  { id: crypto.randomUUID(), name: "ソータブルアイテム　C" },
-  { id: crypto.randomUUID(), name: "ソータブルアイテム　D" },
-  { id: crypto.randomUUID(), name: "ソータブルアイテム　E" }
+  { id: 1, name: "ソータブルアイテム A", type: 'text', is_required: false },
+  { id: 2, name: "ソータブルアイテム B", type: 'text', is_required: false },
+  { id: 3, name: "ソータブルアイテム C", type: 'text', is_required: false },
+  { id: 4, name: "ソータブルアイテム D", type: 'text', is_required: false },
+  { id: 5, name: "ソータブルアイテム E", type: 'text', is_required: false }
 ];
 
 const Form = ({ is_new, id, form }: Props) => {
@@ -82,6 +78,7 @@ const Form = ({ is_new, id, form }: Props) => {
   }, [is_new, form, setValue]);
 
   const onSubmit = async (data: Form) => {
+    console.log(data)
     const { result, errorText = '' } = await updateForm(is_new, data, id)
     if (result) {
       router.push('/admin/forms');
@@ -124,32 +121,15 @@ const Form = ({ is_new, id, form }: Props) => {
               </Grid>
               <Grid item xs={12}>
                 <FormControl fullWidth>
-                  <DndContext
-                    collisionDetection={closestCenter} //中央を越えたら入れ替え
-                    modifiers={[restrictToVerticalAxis]}
-                    //ドラッグアイテムがドロップされた後に発火するイベントハンドラ
-                    // active：動かしたコンポーネントの移動開始時の状態
-                    // over：移動終了時の状態
-                    onDragEnd={(event) => {
-                      const { active, over } = event;
-                      if (over == null || active.id === over.id) {
-                        return;
-                      }
-                      const oldIndex = items.findIndex((item) => item.id === active.id);
-                      const newIndex = items.findIndex((item) => item.id === over.id);
-                      const newItems = arrayMove(items, oldIndex, newIndex);
-                      setItems(newItems);
-                    }}
-                  >
-                    {/* 並び替え可能な要素のコレクションを管理するプロバイダーです。 */}
-                    <SortableContext items={items}>
-                      <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-                        {items.map((item) => (
-                          <SimpleSortableItem id={item.id} name={item.name} key={item.id} />
-                        ))}
-                      </List>
-                    </SortableContext>
-                  </DndContext>
+                  <Controller
+                    name="form_items"
+                    control={control}
+                    defaultValue={INITIAL_ITEMS}
+                    render={({ field }) => <FormItemList
+                      {...field}
+                      initial_items={INITIAL_ITEMS}
+                    />}
+                  />
                 </FormControl>
               </Grid>
             </Grid>

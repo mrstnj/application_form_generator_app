@@ -30,6 +30,7 @@ const FormItemList = ({ control }: Props) => {
 
   return (
     <DndContext
+      id="unique-dnd-context-id"
       collisionDetection={closestCenter}
       modifiers={[restrictToVerticalAxis]}
       onDragEnd={(event) => {
@@ -42,15 +43,14 @@ const FormItemList = ({ control }: Props) => {
         move(oldIndex, newIndex)
       }}
     >
-      {/* 並び替え可能な要素のコレクションを管理するプロバイダーです。 */}
       <SortableContext items={fields}>
         <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
           {fields.map((field, index) => (
             <SortableFormItem
-              key={index}
+              key={field.id}
               field={field}
-              index={index}
               control={control}
+              index={index}
             />
           ))}
         </List>

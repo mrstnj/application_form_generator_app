@@ -40,9 +40,9 @@ interface Props {
 
 const INITIAL_ITEMS = [
   { name: "ソータブルアイテム A", type: 'text', is_required: false },
-  { name: "ソータブルアイテム B", type: 'text', is_required: false },
+  { name: "ソータブルアイテム B", type: 'text', is_required: true },
   { name: "ソータブルアイテム C", type: 'text', is_required: false },
-  { name: "ソータブルアイテム D", type: 'text', is_required: false },
+  { name: "ソータブルアイテム D", type: 'text', is_required: true },
   { name: "ソータブルアイテム E", type: 'text', is_required: false }
 ];
 

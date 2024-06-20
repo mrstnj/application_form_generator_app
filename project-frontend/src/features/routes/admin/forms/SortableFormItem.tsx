@@ -3,18 +3,19 @@ import { FC } from "react";
 import { CSS } from "@dnd-kit/utilities";
 import {
   ListItem,
+  Box,
   IconButton,
   Divider,
   FormControl,
-  InputLabel,
   Select,
   MenuItem,
   Grid,
   TextField,
+  Checkbox 
 } from "@mui/material";
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import { Control, Controller } from 'react-hook-form';
+import { Control, Controller, FieldArrayWithId } from 'react-hook-form';
 import * as validators from "@/common/utils/validate";
 
 type FormItem = {
@@ -31,12 +32,12 @@ type Form = {
 };
 
 type Props = {
-  field: any;
-  index: number;
+  field: FieldArrayWithId<FormItem>;
   control: Control<Form>;
+  index: number;
 };
 
-const SortableFormItem: FC<Props> = ({ field, index, control }) => {
+const SortableFormItem: FC<Props> = ({ field, control, index }) => {
   const {
     setNodeRef,
     setActivatorNodeRef,
@@ -63,7 +64,7 @@ const SortableFormItem: FC<Props> = ({ field, index, control }) => {
           height: 60, // 適切な高さをピクセルで指定
         }}
         secondaryAction={
-          <IconButton edge="end" aria-label="comments">
+          <IconButton edge="end" aria-label="comments" color="error">
             <RemoveCircleIcon />
           </IconButton>
         }
@@ -71,21 +72,23 @@ const SortableFormItem: FC<Props> = ({ field, index, control }) => {
       >
         <Grid container>
           <Grid item xs={1}>
-            <IconButton 
+            <Box
               aria-label="menu"
               ref={setActivatorNodeRef}
               {...attributes}
               {...listeners}
+              sx={{
+                cursor: isDragging ? "grabbing" : "grab"
+              }}
             >
               <DragIndicatorIcon />
-            </IconButton>
+            </Box>
           </Grid>
           <Grid item xs={6}>
             <FormControl fullWidth>
               <Controller
                 name={`form_items.${index}.name`}
                 control={control}
-                defaultValue={`field.${index}.name`}
                 render={({ field }) => <TextField
                   {...field}
                   hiddenLabel
@@ -101,7 +104,6 @@ const SortableFormItem: FC<Props> = ({ field, index, control }) => {
               <Controller
                 name={`form_items.${index}.type`}
                 control={control}
-                defaultValue={`form_items.${index}.type`}
                 rules={{
                   validate: {
                     required: validators.required,
@@ -119,6 +121,24 @@ const SortableFormItem: FC<Props> = ({ field, index, control }) => {
                     </Select>
                   </FormControl>
                 )}
+              />
+            </FormControl>
+          </Grid>
+          <Grid item xs={1}>
+            <FormControl fullWidth>
+              <Controller
+                name={`form_items.${index}.is_required`}
+                control={control}
+                rules={{
+                  validate: {
+                    required: validators.required,
+                  }
+                }}
+                render={({ field }) => <Checkbox 
+                  {...field}
+                  size="small"
+                  checked={field.value}
+                />}                
               />
             </FormControl>
           </Grid>

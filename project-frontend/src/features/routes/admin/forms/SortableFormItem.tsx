@@ -12,9 +12,9 @@ import {
   Grid,
   TextField,
 } from "@mui/material";
-import MenuIcon from '@mui/icons-material/Menu';
+import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import { useForm, Controller } from 'react-hook-form';
+import { Control, Controller } from 'react-hook-form';
 import * as validators from "@/common/utils/validate";
 
 type FormItem = {
@@ -24,13 +24,19 @@ type FormItem = {
   is_required: boolean;
 };
 
-type Props = {
+type Form = {
   id: number;
   name: string;
+  form_items: FormItem[];
 };
 
-const SortableFormItem: FC<Props> = ({ id, name }) => {
-  const { control, formState: { errors } } = useForm<FormItem>();
+type Props = {
+  field: any;
+  index: number;
+  control: Control<Form>;
+};
+
+const SortableFormItem: FC<Props> = ({ field, index, control }) => {
   const {
     setNodeRef,
     setActivatorNodeRef,
@@ -40,7 +46,7 @@ const SortableFormItem: FC<Props> = ({ id, name }) => {
     transition,
     isDragging,
   } = useSortable({
-    id,
+    id: field.id
   });
 
   return (
@@ -52,7 +58,7 @@ const SortableFormItem: FC<Props> = ({ id, name }) => {
       }}
     >
       <ListItem
-        key={id}
+        key={field.id}
         sx={{
           height: 60, // 適切な高さをピクセルで指定
         }}
@@ -71,15 +77,15 @@ const SortableFormItem: FC<Props> = ({ id, name }) => {
               {...attributes}
               {...listeners}
             >
-              <MenuIcon />
+              <DragIndicatorIcon />
             </IconButton>
           </Grid>
           <Grid item xs={6}>
             <FormControl fullWidth>
               <Controller
-                name="name"
+                name={`form_items.${index}.name`}
                 control={control}
-                defaultValue={name}
+                defaultValue={`field.${index}.name`}
                 render={({ field }) => <TextField
                   {...field}
                   hiddenLabel
@@ -93,9 +99,9 @@ const SortableFormItem: FC<Props> = ({ id, name }) => {
           <Grid item xs={3}>
             <FormControl fullWidth>
               <Controller
-                name="type"
+                name={`form_items.${index}.type`}
                 control={control}
-                defaultValue=""
+                defaultValue={`form_items.${index}.type`}
                 rules={{
                   validate: {
                     required: validators.required,

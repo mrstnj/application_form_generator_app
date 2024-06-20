@@ -1,8 +1,7 @@
-import { useState } from "react";
 import { DndContext, closestCenter } from "@dnd-kit/core";
-import { arrayMove, SortableContext } from "@dnd-kit/sortable";
+import { SortableContext } from "@dnd-kit/sortable";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
-import { useForm,useFieldArray, Controller, useFormContext } from 'react-hook-form';
+import { Control, useFieldArray } from "react-hook-form";
 import List from '@mui/material/List';
 import SortableFormItem from "./SortableFormItem";
 
@@ -20,23 +19,14 @@ type Form = {
 };
 
 interface Props {
-  initial_items: Form[];
+  control: Control<Form>;
 }
 
-const FormItemList = ({ initial_items }: Props) => {  
-  const { register } = useFormContext();
-  console.log(register)
-  const { control } = useForm({
-    defaultValues: {
-      form_items: [{ name: "", type: "text", is_required: false }]
-    }
+const FormItemList = ({ control }: Props) => {
+  const { fields, append, remove, move } = useFieldArray({
+    control: control,
+    name: "form_items",
   });
-  // const { fields, append, remove } = useFieldArray({
-  //   control,
-  //   name: "form_items"
-  // });
-
-  const [items, setItems] = useState(initial_items);
 
   return (
     <DndContext
@@ -47,28 +37,20 @@ const FormItemList = ({ initial_items }: Props) => {
         if (over == null || active.id === over.id) {
           return;
         }
-        const oldIndex = items.findIndex((item) => item.id === active.id);
-        const newIndex = items.findIndex((item) => item.id === over.id);
-        const newItems = arrayMove(items, oldIndex, newIndex);
-        setItems(newItems);
+        const oldIndex = fields.findIndex((field) => field.id === active.id);
+        const newIndex = fields.findIndex((field) => field.id === over.id);
+        move(oldIndex, newIndex)
       }}
     >
       {/* 並び替え可能な要素のコレクションを管理するプロバイダーです。 */}
-      <SortableContext items={items}>
+      <SortableContext items={fields}>
         <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-          {items.map((item, index) => (
-            <Controller
-              key={item.id}
-              name={`form_items[${index}]`}
+          {fields.map((field, index) => (
+            <SortableFormItem
+              key={index}
+              field={field}
+              index={index}
               control={control}
-              defaultValue={`item[${index}]`}
-              render={({ field }) => (
-                <SortableFormItem
-                  {...field}
-                  id={item.id}
-                  name={item.name}
-                />
-              )}
             />
           ))}
         </List>

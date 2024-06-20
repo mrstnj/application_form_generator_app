@@ -8,7 +8,7 @@ import {
   TextField,
 } from "@mui/material";
 import { useRouter } from 'next/navigation'
-import { FormProvider, useForm, Controller } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { useEffect, useState } from "react";
 import SubmitButton from "@/components/button/SubmitButton";
 import BackButton from "@/components/button/BackButton";
@@ -39,16 +39,21 @@ interface Props {
 }
 
 const INITIAL_ITEMS = [
-  { id: 1, name: "ソータブルアイテム A", type: 'text', is_required: false },
-  { id: 2, name: "ソータブルアイテム B", type: 'text', is_required: false },
-  { id: 3, name: "ソータブルアイテム C", type: 'text', is_required: false },
-  { id: 4, name: "ソータブルアイテム D", type: 'text', is_required: false },
-  { id: 5, name: "ソータブルアイテム E", type: 'text', is_required: false }
+  { name: "ソータブルアイテム A", type: 'text', is_required: false },
+  { name: "ソータブルアイテム B", type: 'text', is_required: false },
+  { name: "ソータブルアイテム C", type: 'text', is_required: false },
+  { name: "ソータブルアイテム D", type: 'text', is_required: false },
+  { name: "ソータブルアイテム E", type: 'text', is_required: false }
 ];
 
 const Form = ({ is_new, id, form }: Props) => {
   const router = useRouter();
-  const { control, handleSubmit, setValue, methods, formState: { errors } } = useForm<Form>();
+  const defaultValue = { name: "メールアドレス", type: "email", is_required: false };
+  const { control, handleSubmit, setValue, formState: { errors } } = useForm<Form>({
+    defaultValues: {
+      form_items: INITIAL_ITEMS,
+    },
+  });
 
   const title = is_new ? "フォーム登録" : "フォーム詳細" ;
   const action = is_new ? "登録" : "更新" ;
@@ -91,7 +96,6 @@ const Form = ({ is_new, id, form }: Props) => {
   return (
     <>
       <Paper elevation={0} className="sm:mx-auto sm:max-w-prose mb-4">
-      <FormProvider {...methods} >
         <form onSubmit={handleSubmit(onSubmit)} className="p-8">
           <Typography variant="h6">
             {title}
@@ -120,14 +124,8 @@ const Form = ({ is_new, id, form }: Props) => {
               </Grid>
               <Grid item xs={12}>
                 <FormControl fullWidth>
-                  <Controller
-                    name="form_items"
+                  <FormItemList
                     control={control}
-                    defaultValue={INITIAL_ITEMS}
-                    render={({ field }) => <FormItemList
-                      {...field}
-                      initial_items={INITIAL_ITEMS}
-                    />}
                   />
                 </FormControl>
               </Grid>
@@ -138,7 +136,6 @@ const Form = ({ is_new, id, form }: Props) => {
             <SubmitButton action_letter={action}/>
           </div>
         </form>  
-        </FormProvider>
       </Paper>
       <Notification handleClose={handleCloseNotification} notification={notification} />
     </>

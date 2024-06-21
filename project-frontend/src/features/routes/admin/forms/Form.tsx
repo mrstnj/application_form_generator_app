@@ -41,7 +41,7 @@ interface Props {
 const Form = ({ is_new, id, form }: Props) => {
   const router = useRouter();
   const defaultValue = { name: "メールアドレス", type: "email", is_required: true };
-  const { control, handleSubmit, setValue, formState: { errors } } = useForm<Form>({
+  const { control, handleSubmit, setValue, watch, formState: { errors } } = useForm<Form>({
     defaultValues: {
       form_items: [defaultValue],
     },
@@ -118,6 +118,7 @@ const Form = ({ is_new, id, form }: Props) => {
                 <FormControl fullWidth>
                   <FormItemList
                     control={control}
+                    watch={watch}
                   />
                 </FormControl>
               </Grid>

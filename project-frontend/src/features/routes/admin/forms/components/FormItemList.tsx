@@ -1,7 +1,7 @@
 import { DndContext, closestCenter } from "@dnd-kit/core";
 import { SortableContext } from "@dnd-kit/sortable";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
-import { Control, useFieldArray } from "react-hook-form";
+import { Control, useFieldArray, UseFormWatch } from "react-hook-form";
 import {
   List,
   ListItem,
@@ -27,9 +27,10 @@ type Form = {
 
 interface Props {
   control: Control<Form>;
+  watch: UseFormWatch<Form>;
 }
 
-const FormItemList = ({ control }: Props) => {
+const FormItemList = ({ control, watch }: Props) => {
   const { fields, append, remove, move } = useFieldArray({
     control: control,
     name: "form_items",
@@ -81,6 +82,7 @@ const FormItemList = ({ control }: Props) => {
                 control={control}
                 index={index}
                 remove={remove}
+                watch={watch}
               />
             ))}
           </List>

@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import { Control, Controller, FieldArrayWithId } from 'react-hook-form';
+import { Control, Controller, FieldArrayWithId, UseFormWatch } from 'react-hook-form';
 import * as validators from "@/common/utils/validate";
 
 type FormItem = {
@@ -36,9 +36,10 @@ type Props = {
   control: Control<Form>;
   index: number;
   remove: (arg0: number) => void;
+  watch: UseFormWatch<Form>;
 };
 
-const SortableFormItem: FC<Props> = ({ field, control, index, remove }) => {
+const SortableFormItem: FC<Props> = ({ field, control, index, remove, watch }) => {
   const {
     setNodeRef,
     setActivatorNodeRef,
@@ -73,11 +74,12 @@ const SortableFormItem: FC<Props> = ({ field, control, index, remove }) => {
               ref={setActivatorNodeRef}
               {...attributes}
               {...listeners}
-              sx={{
-                cursor: isDragging ? "grabbing" : "grab",
-              }}
             >
-              <DragIndicatorIcon />
+              <DragIndicatorIcon
+                sx={{
+                  cursor: isDragging ? "grabbing" : "grab",
+                }}
+              />
             </Box>
           </Grid>
           <Grid item xs={6}>
@@ -91,6 +93,7 @@ const SortableFormItem: FC<Props> = ({ field, control, index, remove }) => {
                   id="standard-basic"
                   variant="standard"
                   InputProps={{ disableUnderline: true }}
+                  disabled={field.value === "メールアドレス"}
                 />}
               />
             </FormControl>
@@ -110,6 +113,7 @@ const SortableFormItem: FC<Props> = ({ field, control, index, remove }) => {
                     <Select
                       {...field}
                       label="フォーム種別"
+                      disabled={watch(`form_items.${index}.name`) === "メールアドレス"}
                     >
                       <MenuItem value="text">テキスト</MenuItem>
                       <MenuItem value="number">数字</MenuItem>
@@ -130,14 +134,17 @@ const SortableFormItem: FC<Props> = ({ field, control, index, remove }) => {
                   {...field}
                   size="small"
                   checked={field.value}
+                  disabled={watch(`form_items.${index}.name`) === "メールアドレス"}
                 />}                
               />
             </FormControl>
           </Grid>
           <Grid item xs={1}>
-            <IconButton edge="end" aria-label="comments" color="error" onClick={() => remove(index)}>
-              <RemoveCircleIcon />
-            </IconButton>
+            {watch(`form_items.${index}.name`) !== "メールアドレス" &&
+              <IconButton edge="end" aria-label="comments" color="error" onClick={() => remove(index)}>
+                <RemoveCircleIcon />
+              </IconButton>
+            }
           </Grid>
         </Grid>
       </ListItem>

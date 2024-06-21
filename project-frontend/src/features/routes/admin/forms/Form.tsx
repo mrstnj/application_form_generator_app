@@ -15,10 +15,10 @@ import BackButton from "@/components/button/BackButton";
 import Notification from "@/components/notification/Notification";
 import * as validators from "@/common/utils/validate";
 import { updateForm } from "@/actions/form"
-import FormItemList from "./FormItemList"
+import FormItemList from "./components/FormItemList"
 
 type FormItem = {
-  id: number,
+  id?: number,
   name: string;
   type: string;
   is_required: boolean;
@@ -38,20 +38,12 @@ interface Props {
   form?: Form;
 }
 
-const INITIAL_ITEMS = [
-  { name: "ソータブルアイテム A", type: 'text', is_required: false },
-  { name: "ソータブルアイテム B", type: 'text', is_required: true },
-  { name: "ソータブルアイテム C", type: 'text', is_required: false },
-  { name: "ソータブルアイテム D", type: 'text', is_required: true },
-  { name: "ソータブルアイテム E", type: 'text', is_required: false }
-];
-
 const Form = ({ is_new, id, form }: Props) => {
   const router = useRouter();
-  const defaultValue = { name: "メールアドレス", type: "email", is_required: false };
+  const defaultValue = { name: "メールアドレス", type: "email", is_required: true };
   const { control, handleSubmit, setValue, formState: { errors } } = useForm<Form>({
     defaultValues: {
-      form_items: INITIAL_ITEMS,
+      form_items: [defaultValue],
     },
   });
 

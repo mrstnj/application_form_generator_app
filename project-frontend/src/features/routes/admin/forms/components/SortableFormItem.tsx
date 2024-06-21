@@ -19,7 +19,7 @@ import { Control, Controller, FieldArrayWithId } from 'react-hook-form';
 import * as validators from "@/common/utils/validate";
 
 type FormItem = {
-  id: number,
+  id?: number,
   name: string;
   type: string;
   is_required: boolean;
@@ -35,9 +35,10 @@ type Props = {
   field: FieldArrayWithId<FormItem>;
   control: Control<Form>;
   index: number;
+  remove: (arg0: number) => void;
 };
 
-const SortableFormItem: FC<Props> = ({ field, control, index }) => {
+const SortableFormItem: FC<Props> = ({ field, control, index, remove }) => {
   const {
     setNodeRef,
     setActivatorNodeRef,
@@ -61,16 +62,11 @@ const SortableFormItem: FC<Props> = ({ field, control, index }) => {
       <ListItem
         key={field.id}
         sx={{
-          height: 60, // 適切な高さをピクセルで指定
+          height: 60,
         }}
-        secondaryAction={
-          <IconButton edge="end" aria-label="comments" color="error">
-            <RemoveCircleIcon />
-          </IconButton>
-        }
         disablePadding
       >
-        <Grid container>
+        <Grid container alignItems="center" justifyContent="center">
           <Grid item xs={1}>
             <Box
               aria-label="menu"
@@ -78,7 +74,7 @@ const SortableFormItem: FC<Props> = ({ field, control, index }) => {
               {...attributes}
               {...listeners}
               sx={{
-                cursor: isDragging ? "grabbing" : "grab"
+                cursor: isDragging ? "grabbing" : "grab",
               }}
             >
               <DragIndicatorIcon />
@@ -117,6 +113,7 @@ const SortableFormItem: FC<Props> = ({ field, control, index }) => {
                     >
                       <MenuItem value="text">テキスト</MenuItem>
                       <MenuItem value="number">数字</MenuItem>
+                      <MenuItem value="date">日付</MenuItem>
                       <MenuItem value="email">メールアドレス</MenuItem>
                     </Select>
                   </FormControl>
@@ -129,11 +126,6 @@ const SortableFormItem: FC<Props> = ({ field, control, index }) => {
               <Controller
                 name={`form_items.${index}.is_required`}
                 control={control}
-                rules={{
-                  validate: {
-                    required: validators.required,
-                  }
-                }}
                 render={({ field }) => <Checkbox 
                   {...field}
                   size="small"
@@ -141,6 +133,11 @@ const SortableFormItem: FC<Props> = ({ field, control, index }) => {
                 />}                
               />
             </FormControl>
+          </Grid>
+          <Grid item xs={1}>
+            <IconButton edge="end" aria-label="comments" color="error" onClick={() => remove(index)}>
+              <RemoveCircleIcon />
+            </IconButton>
           </Grid>
         </Grid>
       </ListItem>

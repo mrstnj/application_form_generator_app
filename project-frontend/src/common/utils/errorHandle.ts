@@ -19,6 +19,8 @@ export const errorHandle = (error: any): string => {
   default:
     if (errorText.includes('Code has already been taken')) {
       errorText = "入力したコードはすでに使用されています。";
+    } else if (errorText.includes('Form items name has already been taken')) {
+      errorText = "同じフォーム項目名は2つ以上登録できません。";
     } else {
       errorText = "エラーが発生しました。";
     }

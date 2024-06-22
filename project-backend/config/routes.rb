@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   resources :plans
-  resources :form_items
+  resources :forms
   resources :services
   resources :sessions
   resources :admin_users

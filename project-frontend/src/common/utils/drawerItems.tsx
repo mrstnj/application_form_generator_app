@@ -4,6 +4,7 @@ import BusinessIcon from '@mui/icons-material/Business';
 import ListIcon from '@mui/icons-material/List';
 import CreateIcon from '@mui/icons-material/Create';
 import RedeemIcon from '@mui/icons-material/Redeem';
+import FeedIcon from '@mui/icons-material/Feed';
 
 interface ChildItem {
   name: string;
@@ -47,6 +48,22 @@ const drawerItems: DrawerItem[] = [
         name: "プラン登録",
         icon: <CreateIcon />,
         path: "/admin/plans/new",
+      },
+    ],
+  },
+  {
+    name: "フォーム管理",
+    icon: <FeedIcon />,
+    child: [
+      {
+        name: "フォーム一覧",
+        icon: <ListIcon />,
+        path: "/admin/forms",
+      },
+      {
+        name: "フォーム登録",
+        icon: <CreateIcon />,
+        path: "/admin/forms/new",
       },
     ],
   },

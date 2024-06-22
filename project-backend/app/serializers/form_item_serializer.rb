@@ -1,4 +1,4 @@
 class FormItemSerializer < ActiveModel::Serializer
-  attributes :id, :name, :is_required, :type, :position
-  has_one :company
+  attributes :id, :name, :form_type, :is_required
 end
+  

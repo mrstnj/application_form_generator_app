@@ -12,9 +12,9 @@ require 'rails_helper'
 # of tools you can use to make these specs even more expressive, but we're
 # sticking to rails and rspec-rails APIs to keep things simple and stable.
 
-RSpec.describe "/form_items", type: :request do
+RSpec.describe "/forms", type: :request do
   # This should return the minimal set of attributes required to create a valid
-  # FormItem. As you add validations to FormItem, be sure to
+  # Form. As you add validations to Form, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
     skip("Add a hash of attributes valid for your model")
@@ -26,7 +26,7 @@ RSpec.describe "/form_items", type: :request do
 
   # This should return the minimal set of values that should be in the headers
   # in order to pass any filters (e.g. authentication) defined in
-  # FormItemsController, or in your router and rack
+  # FormsController, or in your router and rack
   # middleware. Be sure to keep this updated too.
   let(:valid_headers) {
     {}
@@ -34,48 +34,48 @@ RSpec.describe "/form_items", type: :request do
 
   describe "GET /index" do
     it "renders a successful response" do
-      FormItem.create! valid_attributes
-      get form_items_url, headers: valid_headers, as: :json
+      Form.create! valid_attributes
+      get forms_url, headers: valid_headers, as: :json
       expect(response).to be_successful
     end
   end
 
   describe "GET /show" do
     it "renders a successful response" do
-      form_item = FormItem.create! valid_attributes
-      get form_item_url(form_item), as: :json
+      form = Form.create! valid_attributes
+      get form_url(form), as: :json
       expect(response).to be_successful
     end
   end
 
   describe "POST /create" do
     context "with valid parameters" do
-      it "creates a new FormItem" do
+      it "creates a new Form" do
         expect {
-          post form_items_url,
-               params: { form_item: valid_attributes }, headers: valid_headers, as: :json
-        }.to change(FormItem, :count).by(1)
+          post forms_url,
+               params: { form: valid_attributes }, headers: valid_headers, as: :json
+        }.to change(Form, :count).by(1)
       end
 
-      it "renders a JSON response with the new form_item" do
-        post form_items_url,
-             params: { form_item: valid_attributes }, headers: valid_headers, as: :json
+      it "renders a JSON response with the new form" do
+        post forms_url,
+             params: { form: valid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:created)
         expect(response.content_type).to match(a_string_including("application/json"))
       end
     end
 
     context "with invalid parameters" do
-      it "does not create a new FormItem" do
+      it "does not create a new Form" do
         expect {
-          post form_items_url,
-               params: { form_item: invalid_attributes }, as: :json
-        }.to change(FormItem, :count).by(0)
+          post forms_url,
+               params: { form: invalid_attributes }, as: :json
+        }.to change(Form, :count).by(0)
       end
 
-      it "renders a JSON response with errors for the new form_item" do
-        post form_items_url,
-             params: { form_item: invalid_attributes }, headers: valid_headers, as: :json
+      it "renders a JSON response with errors for the new form" do
+        post forms_url,
+             params: { form: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to match(a_string_including("application/json"))
       end
@@ -88,28 +88,28 @@ RSpec.describe "/form_items", type: :request do
         skip("Add a hash of attributes valid for your model")
       }
 
-      it "updates the requested form_item" do
-        form_item = FormItem.create! valid_attributes
-        patch form_item_url(form_item),
-              params: { form_item: new_attributes }, headers: valid_headers, as: :json
-        form_item.reload
+      it "updates the requested form" do
+        form = Form.create! valid_attributes
+        patch form_url(form),
+              params: { form: new_attributes }, headers: valid_headers, as: :json
+        form.reload
         skip("Add assertions for updated state")
       end
 
-      it "renders a JSON response with the form_item" do
-        form_item = FormItem.create! valid_attributes
-        patch form_item_url(form_item),
-              params: { form_item: new_attributes }, headers: valid_headers, as: :json
+      it "renders a JSON response with the form" do
+        form = Form.create! valid_attributes
+        patch form_url(form),
+              params: { form: new_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:ok)
         expect(response.content_type).to match(a_string_including("application/json"))
       end
     end
 
     context "with invalid parameters" do
-      it "renders a JSON response with errors for the form_item" do
-        form_item = FormItem.create! valid_attributes
-        patch form_item_url(form_item),
-              params: { form_item: invalid_attributes }, headers: valid_headers, as: :json
+      it "renders a JSON response with errors for the form" do
+        form = Form.create! valid_attributes
+        patch form_url(form),
+              params: { form: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to match(a_string_including("application/json"))
       end
@@ -117,11 +117,11 @@ RSpec.describe "/form_items", type: :request do
   end
 
   describe "DELETE /destroy" do
-    it "destroys the requested form_item" do
-      form_item = FormItem.create! valid_attributes
+    it "destroys the requested form" do
+      form = Form.create! valid_attributes
       expect {
-        delete form_item_url(form_item), headers: valid_headers, as: :json
-      }.to change(FormItem, :count).by(-1)
+        delete form_url(form), headers: valid_headers, as: :json
+      }.to change(Form, :count).by(-1)
     end
   end
 end

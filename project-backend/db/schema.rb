@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_15_095238) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_16_021734) do
   create_table "admin_users", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "company_id", null: false
     t.string "code", null: false
@@ -38,25 +38,33 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_095238) do
   end
 
   create_table "form_items", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.bigint "company_id", null: false
+    t.bigint "form_id", null: false
     t.string "name", null: false
     t.boolean "is_required", default: false
-    t.integer "type", null: false
+    t.integer "form_type", null: false
     t.integer "position", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["company_id"], name: "index_form_items_on_company_id"
+    t.index ["form_id"], name: "index_form_items_on_form_id"
+  end
+
+  create_table "forms", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.bigint "company_id", null: false
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id"], name: "index_forms_on_company_id"
   end
 
   create_table "plans", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "service_id", null: false
-    t.bigint "form_item_id"
+    t.bigint "form_id"
     t.string "name", null: false
     t.text "content"
     t.integer "status", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["form_item_id"], name: "index_plans_on_form_item_id"
+    t.index ["form_id"], name: "index_plans_on_form_id"
     t.index ["service_id"], name: "index_plans_on_service_id"
   end
 
@@ -71,8 +79,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_15_095238) do
     t.index ["company_id"], name: "index_services_on_company_id"
   end
 
-  add_foreign_key "form_items", "companies"
-  add_foreign_key "plans", "form_items"
+  add_foreign_key "form_items", "forms"
+  add_foreign_key "forms", "companies"
+  add_foreign_key "plans", "forms"
   add_foreign_key "plans", "services"
   add_foreign_key "services", "companies"
 end

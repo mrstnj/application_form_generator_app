@@ -1,9 +1,9 @@
 FactoryBot.define do
   factory :form_item do
-    company { nil }
-    name { "MyString" }
+    form { FactoryBot.create(:form) }
+    name { "sample form item" }
     is_required { false }
-    type { 1 }
+    form_type { 1 }
     position { 1 }
   end
 end

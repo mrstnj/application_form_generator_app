@@ -26,6 +26,33 @@ RSpec.describe Service, type: :model do
       end
     end
 
+    context 'サービスコード' do
+      context '入力しない場合' do
+        it 'エラーになること' do
+          subject.code = nil
+          expect(subject).not_to be_valid
+        end
+      end
+      context 'コードが重複している場合' do
+        it 'エラーになること' do
+          FactoryBot.create(:service, code: subject.code)
+          expect(subject).not_to be_valid
+        end
+      end
+      context '21文字以上が入力された場合' do
+        it 'エラーになること' do
+          subject.code = "a" * 21
+          expect(subject).not_to be_valid
+        end
+      end
+      context '異常なフォーマットで入力された場合' do
+        it 'エラーになること' do
+          subject.code = "あああ"
+          expect(subject).not_to be_valid
+        end
+      end
+    end
+
     context 'サービス名' do
       context '入力しない場合' do
         it 'エラーになること' do
@@ -51,6 +78,7 @@ RSpec.describe Service, type: :model do
       context '引数が正常の場合' do 
         it 'serviceが返ること' do
           params = {
+            code: 'sample_service',
             name: 'sample service',
             content: 'test',
             img: "",

@@ -5,6 +5,7 @@ import { errorHandle } from "@/common/utils/errorHandle";
 
 type Service = {
   name: string;
+  code: string;
   content: string;
   img?: string | Blob;
   status: string;

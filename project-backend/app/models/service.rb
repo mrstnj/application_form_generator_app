@@ -4,7 +4,8 @@ class Service < ApplicationRecord
 
   enum status: { deactivate: 0, activate: 1 }
 
-  validates_presence_of :name, :status
+  validates :code, uniqueness: true, length: { in: 1..20 }, :format => { :with => /\A[0-9a-zA-Z_]{1,20}\z/ }
+  validates_presence_of :code, :name, :status
 
   mount_uploader :img, ImageUploader
 

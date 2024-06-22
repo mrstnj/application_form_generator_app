@@ -1,6 +1,7 @@
 class Company < ApplicationRecord
   has_many :services
   has_many :admin_users
+  has_many :forms
 
   enum status: { deactivate: 0, activate: 1 }
 

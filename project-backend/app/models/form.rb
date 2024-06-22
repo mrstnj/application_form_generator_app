@@ -4,7 +4,7 @@ class Form < ApplicationRecord
 
   accepts_nested_attributes_for :form_items, allow_destroy: true
 
-  validates_presence_of :company_id, :name
+  validates_presence_of :name
 
   def self.create_form(params, company)
     form = nil

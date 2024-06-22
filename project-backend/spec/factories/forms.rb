@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :form do
-    company { nil }
-    name { "MyString" }
+    company { FactoryBot.create(:company) }
+    name { "sample form" }
   end
 end

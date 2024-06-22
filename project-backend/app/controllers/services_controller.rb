@@ -1,5 +1,6 @@
 class ServicesController < AdminController
   before_action :set_service, only: %i[ show update destroy ]
+  skip_before_action :authenticate_token, only: %i[ show_by_code ]
 
   # GET /services
   def index
@@ -10,6 +11,11 @@ class ServicesController < AdminController
 
   # GET /services/1
   def show
+    render json: @service, serializer: ServiceSerializer, root: nil
+  end
+
+  def show_by_code
+    @service = Service.find_by(code: params[:code])
     render json: @service, serializer: ServiceSerializer, root: nil
   end
 

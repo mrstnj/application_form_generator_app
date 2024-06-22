@@ -1,5 +1,6 @@
 class ServiceSerializer < ActiveModel::Serializer
   attributes :id, :code, :name, :content, :img, :status
+  has_many :plans, key: :plans_attributes, serializer: PlanSerializer
 
   def img
     object.img.url if object.img.present?

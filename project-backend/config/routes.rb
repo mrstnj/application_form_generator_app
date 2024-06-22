@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
   resources :plans
   resources :forms
-  resources :services
+  resources :services do
+    get 'show_by_code', on: :collection
+  end
   resources :sessions
   resources :admin_users
   resources :companies do

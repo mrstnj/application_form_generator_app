@@ -1,6 +1,7 @@
 class Service < ApplicationRecord
   include UpdateImage
   belongs_to :company
+  has_many :plans
 
   enum status: { deactivate: 0, activate: 1 }
 

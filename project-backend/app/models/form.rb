@@ -1,8 +1,8 @@
 class Form < ApplicationRecord
   belongs_to :company
-  has_many :form_items
+  has_many :form_items, ->{order('form_items.position')}, dependent: :destroy
 
-  accepts_nested_attributes_for :form_items, allow_destroy: true, reject_if: :all_blank
+  accepts_nested_attributes_for :form_items
 
   def self.create_form(params, company)
     form = nil
@@ -12,5 +12,17 @@ class Form < ApplicationRecord
       form.save!      
     end
     return form
+  end
+
+  def self.update_form(params, form)
+    ActiveRecord::Base::transaction do
+      form.update!(params)
+    end
+    return form
+  end
+
+  def self.search(forms, params)
+    forms = forms.where("name LIKE ?", "%#{params[:name]}%") if params[:name].present?
+    return forms.order(created_at: "desc")
   end
 end

@@ -4,8 +4,8 @@ class FormsController < AdminController
   # GET /forms
   def index
     @forms = Form.all
-
-    render json: @forms
+    @forms = @forms.search(@forms, params)
+    render json: @forms, each_serializer: FormSerializer, root: nil
   end
 
   # GET /forms/1
@@ -25,10 +25,11 @@ class FormsController < AdminController
 
   # PATCH/PUT /forms/1
   def update
-    if @form.update(form_params)
-      render json: @form
-    else
-      render json: @form.errors, status: :unprocessable_entity
+    begin
+      @form = Form.update_form(form_params, @form)
+      render json: @form, serializer: FormSerializer, root: nil
+    rescue => e
+      render json: { err: e.message }, status: :unprocessable_entity
     end
   end
 
@@ -45,6 +46,6 @@ class FormsController < AdminController
 
     # Only allow a list of trusted parameters through.
     def form_params
-      params.require(:form).permit(:company_id, :name, form_items_attributes: [:name, :form_type, :is_required, :position])
+      params.require(:form).permit(:company_id, :name, form_items_attributes: [:id, :name, :form_type, :is_required, :position])
     end
 end

@@ -41,7 +41,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_16_021734) do
     t.bigint "form_id", null: false
     t.string "name", null: false
     t.boolean "is_required", default: false
-    t.integer "type", null: false
+    t.integer "form_type", null: false
     t.integer "position", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

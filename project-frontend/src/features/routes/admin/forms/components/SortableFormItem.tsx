@@ -21,14 +21,14 @@ import * as validators from "@/common/utils/validate";
 type FormItem = {
   id?: number,
   name: string;
-  type: string;
+  form_type: string;
   is_required: boolean;
 };
 
 type Form = {
   id: number;
   name: string;
-  form_items: FormItem[];
+  form_items_attributes: FormItem[];
 };
 
 type Props = {
@@ -85,7 +85,7 @@ const SortableFormItem: FC<Props> = ({ field, control, index, remove, watch }) =
           <Grid item xs={6}>
             <FormControl fullWidth>
               <Controller
-                name={`form_items.${index}.name`}
+                name={`form_items_attributes.${index}.name`}
                 control={control}
                 render={({ field }) => <TextField
                   {...field}
@@ -101,7 +101,7 @@ const SortableFormItem: FC<Props> = ({ field, control, index, remove, watch }) =
           <Grid item xs={3}>
             <FormControl fullWidth>
               <Controller
-                name={`form_items.${index}.type`}
+                name={`form_items_attributes.${index}.form_type`}
                 control={control}
                 rules={{
                   validate: {
@@ -113,7 +113,7 @@ const SortableFormItem: FC<Props> = ({ field, control, index, remove, watch }) =
                     <Select
                       {...field}
                       label="フォーム種別"
-                      disabled={watch(`form_items.${index}.name`) === "メールアドレス"}
+                      disabled={watch(`form_items_attributes.${index}.name`) === "メールアドレス"}
                     >
                       <MenuItem value="text">テキスト</MenuItem>
                       <MenuItem value="number">数字</MenuItem>
@@ -128,19 +128,19 @@ const SortableFormItem: FC<Props> = ({ field, control, index, remove, watch }) =
           <Grid item xs={1}>
             <FormControl fullWidth>
               <Controller
-                name={`form_items.${index}.is_required`}
+                name={`form_items_attributes.${index}.is_required`}
                 control={control}
                 render={({ field }) => <Checkbox 
                   {...field}
                   size="small"
                   checked={field.value}
-                  disabled={watch(`form_items.${index}.name`) === "メールアドレス"}
+                  disabled={watch(`form_items_attributes.${index}.name`) === "メールアドレス"}
                 />}                
               />
             </FormControl>
           </Grid>
           <Grid item xs={1}>
-            {watch(`form_items.${index}.name`) !== "メールアドレス" &&
+            {watch(`form_items_attributes.${index}.name`) !== "メールアドレス" &&
               <IconButton edge="end" aria-label="comments" color="error" onClick={() => remove(index)}>
                 <RemoveCircleIcon />
               </IconButton>

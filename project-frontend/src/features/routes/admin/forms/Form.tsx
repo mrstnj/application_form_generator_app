@@ -20,14 +20,14 @@ import FormItemList from "./components/FormItemList"
 type FormItem = {
   id?: number,
   name: string;
-  type: string;
+  form_type: string;
   is_required: boolean;
 };
 
 type Form = {
   id: number;
   name: string;
-  form_items: FormItem[];
+  form_items_attributes: FormItem[];
 };
 
 type Valiant = 'success' | 'warning' | 'error' | 'info';
@@ -40,10 +40,10 @@ interface Props {
 
 const Form = ({ is_new, id, form }: Props) => {
   const router = useRouter();
-  const defaultValue = { name: "メールアドレス", type: "email", is_required: true };
+  const defaultValue = { name: "メールアドレス", form_type: "email", is_required: true };
   const { control, handleSubmit, setValue, watch, formState: { errors } } = useForm<Form>({
     defaultValues: {
-      form_items: [defaultValue],
+      form_items_attributes: form?.form_items_attributes || [defaultValue],
     },
   });
 
@@ -75,7 +75,6 @@ const Form = ({ is_new, id, form }: Props) => {
   }, [is_new, form, setValue]);
 
   const onSubmit = async (data: Form) => {
-    console.log(data)
     const { result, errorText = '' } = await updateForm(is_new, data, id)
     if (result) {
       router.push('/admin/forms');

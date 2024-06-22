@@ -1,4 +1,4 @@
-class FormsController < ApplicationController
+class FormsController < AdminController
   before_action :set_form, only: %i[ show update destroy ]
 
   # GET /forms
@@ -15,12 +15,11 @@ class FormsController < ApplicationController
 
   # POST /forms
   def create
-    @form = Form.new(form_params)
-
-    if @form.save
-      render json: @form, status: :created, location: @form
-    else
-      render json: @form.errors, status: :unprocessable_entity
+    begin
+      @form = Form.create_form(form_params, current_company)
+      render json: @form, status: :created, location: @form, serializer: FormSerializer, root: nil
+    rescue => e
+      render json: { err: e.message }, status: :unprocessable_entity
     end
   end
 
@@ -46,6 +45,6 @@ class FormsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def form_params
-      params.require(:form).permit(:company_id, :name, :is_required, :type, :position)
+      params.require(:form).permit(:company_id, :name, form_items_attributes: [:name, :form_type, :is_required, :position])
     end
 end

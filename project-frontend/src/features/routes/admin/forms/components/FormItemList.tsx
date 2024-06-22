@@ -15,14 +15,14 @@ import SortableFormItem from "./SortableFormItem";
 type FormItem = {
   id?: number,
   name: string;
-  type: string;
+  form_type: string;
   is_required: boolean;
 };
 
 type Form = {
   id: number;
   name: string;
-  form_items: FormItem[];
+  form_items_attributes: FormItem[];
 };
 
 interface Props {
@@ -33,7 +33,7 @@ interface Props {
 const FormItemList = ({ control, watch }: Props) => {
   const { fields, append, remove, move } = useFieldArray({
     control: control,
-    name: "form_items",
+    name: "form_items_attributes",
   });
 
   return (
@@ -96,7 +96,7 @@ const FormItemList = ({ control, watch }: Props) => {
       >
         <Grid container alignItems="center" justifyContent="center">
           <Grid item xs={1}>
-            <IconButton onClick={() => append({ name: '', type: '', is_required: false })}>
+            <IconButton onClick={() => append({ name: '', form_type: '', is_required: false })}>
               <AddCircleOutlineIcon />
             </IconButton>
           </Grid>

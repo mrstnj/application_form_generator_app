@@ -3,8 +3,16 @@
 import { cookies } from 'next/headers'
 import { errorHandle } from "@/common/utils/errorHandle";
 
+type FormItem = {
+  name: string;
+  form_type: string;
+  is_required: boolean;
+  position?: number;
+};
+
 type Form = {
   name: string;
+  form_items_attributes: FormItem[];
 };
 
 type FormParams = {
@@ -12,6 +20,9 @@ type FormParams = {
 }
 
 export async function updateForm(is_new: boolean, data: Form, id?: number) {
+  data.form_items_attributes.forEach((item, index) => {
+    item.position = index + 1;
+  });
   const accessToken = cookies().get('accessToken');
   const url = is_new ? `${process.env.API_BASE_URL}/forms` : `${process.env.API_BASE_URL}/forms/${id}`;
   const method = is_new ? 'POST' : 'PUT';

@@ -1,6 +1,6 @@
 class Plan < ApplicationRecord
   belongs_to :service
-  belongs_to :form_item, optional: true
+  belongs_to :form, optional: true
 
   enum status: { deactivate: 0, activate: 1 }
 
@@ -9,6 +9,7 @@ class Plan < ApplicationRecord
   def self.create_plan(params)
     plan = nil
     ActiveRecord::Base::transaction do
+      params[:form_id] = nil if params[:form_id] == 0
       plan = self.new(params)
       plan.save!
     end
@@ -17,6 +18,7 @@ class Plan < ApplicationRecord
 
   def self.update_plan(params, plan)
     ActiveRecord::Base::transaction do
+      params[:form_id] = nil if params[:form_id] == 0
       plan.update!(params)
     end
     return plan

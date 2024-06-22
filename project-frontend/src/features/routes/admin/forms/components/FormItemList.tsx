@@ -77,7 +77,7 @@ const FormItemList = ({ control, watch }: Props) => {
             </ListItem>
             <Divider />
             {fields.map((field, index) => (
-              <>
+              <div key={index}>
                 {!watch(`form_items_attributes.${index}._destroy`) &&
                   <SortableFormItem
                     key={field.id}
@@ -88,7 +88,7 @@ const FormItemList = ({ control, watch }: Props) => {
                     watch={watch}
                   />
                 }
-              </>
+              </div>
             ))}
           </List>
         </SortableContext>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_16_021734) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_22_090643) do
   create_table "admin_users", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "company_id", null: false
     t.string "code", null: false
@@ -76,6 +76,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_16_021734) do
     t.integer "status", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "code", null: false
     t.index ["company_id"], name: "index_services_on_company_id"
   end
 

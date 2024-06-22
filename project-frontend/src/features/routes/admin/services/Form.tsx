@@ -23,6 +23,7 @@ import MyDropzone from '@/components/dropzone/MyDropzone';
 
 type Service = {
   id: number;
+  code: string;
   name: string;
   content: string;
   img?: string | Blob;
@@ -64,6 +65,7 @@ const Form = ({ is_new, id, service }: Props) => {
 
   const fetchData = useCallback(async () => {
     if (!is_new && service) {
+      setValue("code", service.code);
       setValue("name", service.name);
       setValue("content", service.content);
       setValue("status", service.status);
@@ -102,6 +104,27 @@ const Form = ({ is_new, id, service }: Props) => {
           </Typography>
           <div className="my-4">
             <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <FormControl fullWidth>
+                  <Controller
+                    name="code"
+                    control={control}
+                    defaultValue=""
+                    rules={{
+                      validate: {
+                        required: validators.required,
+                        pattern: validators.code
+                      }
+                    }}
+                    render={({ field }) => <TextField
+                      {...field}
+                      label="サービスコード"
+                      error={Boolean(errors.code)}
+                      helperText={errors.code?.message}
+                    />}
+                  />
+                </FormControl>
+              </Grid>
               <Grid item xs={12}>
                 <FormControl fullWidth>
                   <Controller

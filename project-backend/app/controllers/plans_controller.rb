@@ -46,6 +46,6 @@ class PlansController < AdminController
 
     # Only allow a list of trusted parameters through.
     def plan_params
-      params.require(:plan).permit(:service_id, :form_item_id, :name, :content, :status)
+      params.require(:plan).permit(:service_id, :form_id, :name, :content, :status)
     end
 end

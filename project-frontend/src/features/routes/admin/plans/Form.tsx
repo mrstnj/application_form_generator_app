@@ -25,13 +25,20 @@ type Service = {
   name: string;
 };
 
+type Form = {
+  id: number;
+  name: string;
+};
+
 type Plan = {
   id: number;
   service_id: number;
   name: string;
   content: string;
+  form_id: number;
   status: string;
   service: Service;
+  form: Form;
 };
 
 type Valiant = 'success' | 'warning' | 'error' | 'info';
@@ -39,11 +46,12 @@ type Valiant = 'success' | 'warning' | 'error' | 'info';
 interface Props {
   is_new: boolean;
   services: Service[];
+  forms: Form[];
   id?: number;
   plan?: Plan;
 }
 
-const Form = ({ is_new, services, id, plan }: Props) => {
+const Form = ({ is_new, services, forms, id, plan }: Props) => {
   const router = useRouter();
   const { control, handleSubmit, setValue, formState: { errors } } = useForm<Plan>();
 
@@ -73,6 +81,7 @@ const Form = ({ is_new, services, id, plan }: Props) => {
       setValue("service_id", plan.service.id);
       setValue("name", plan.name);
       setValue("content", plan.content);
+      setValue("form_id", plan.form?.id);
       setValue("status", plan.status);
     }
   }, [is_new, plan, setValue]);
@@ -158,6 +167,35 @@ const Form = ({ is_new, services, id, plan }: Props) => {
                       error={Boolean(errors.content)}
                       helperText={errors.content?.message}
                     />}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl fullWidth>
+                  <Controller
+                    name="form_id"
+                    control={control}
+                    defaultValue={0}
+                    rules={{
+                      validate: {
+                        required: validators.required,
+                      }
+                    }}
+                    render={({ field }) => (
+                      <FormControl fullWidth error={Boolean(errors.form_id)}>
+                        <InputLabel>フォーム名</InputLabel>
+                        <Select
+                          {...field}
+                          label="フォーム名"
+                        >
+                          <MenuItem value={0}>デフォルト</MenuItem>
+                          {forms.map((form, index) => (
+                            <MenuItem key={index} value={form.id}>{form.name}</MenuItem>
+                          ))}
+                        </Select>
+                        <FormHelperText>{errors.form_id?.message}</FormHelperText>
+                      </FormControl>
+                    )}
                   />
                 </FormControl>
               </Grid>

@@ -7,6 +7,7 @@ type Plan = {
   service_id: number;
   name: string;
   content: string;
+  form_id: number;
   status: string;
 };
 

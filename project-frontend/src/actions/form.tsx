@@ -8,6 +8,7 @@ type FormItem = {
   form_type: string;
   is_required: boolean;
   position?: number;
+  _destroy: boolean;
 };
 
 type Form = {
@@ -20,7 +21,7 @@ type FormParams = {
 }
 
 export async function updateForm(is_new: boolean, data: Form, id?: number) {
-  data.form_items_attributes.forEach((item, index) => {
+  data.form_items_attributes.filter(item => !item._destroy).forEach((item, index) => {
     item.position = index + 1;
   });
   const accessToken = cookies().get('accessToken');

@@ -17,6 +17,7 @@ type FormItem = {
   name: string;
   form_type: string;
   is_required: boolean;
+  _destroy: boolean;
 };
 
 type Form = {
@@ -76,14 +77,18 @@ const FormItemList = ({ control, watch }: Props) => {
             </ListItem>
             <Divider />
             {fields.map((field, index) => (
-              <SortableFormItem
-                key={field.id}
-                field={field}
-                control={control}
-                index={index}
-                remove={remove}
-                watch={watch}
-              />
+              <>
+                {!watch(`form_items_attributes.${index}._destroy`) &&
+                  <SortableFormItem
+                    key={field.id}
+                    field={field}
+                    control={control}
+                    index={index}
+                    remove={remove}
+                    watch={watch}
+                  />
+                }
+              </>
             ))}
           </List>
         </SortableContext>
@@ -96,7 +101,7 @@ const FormItemList = ({ control, watch }: Props) => {
       >
         <Grid container alignItems="center" justifyContent="center">
           <Grid item xs={1}>
-            <IconButton onClick={() => append({ name: '', form_type: '', is_required: false })}>
+            <IconButton onClick={() => append({ name: '', form_type: '', is_required: false, _destroy: false })}>
               <AddCircleOutlineIcon />
             </IconButton>
           </Grid>

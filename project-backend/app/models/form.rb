@@ -2,7 +2,7 @@ class Form < ApplicationRecord
   belongs_to :company
   has_many :form_items, ->{order('form_items.position')}, dependent: :destroy
 
-  accepts_nested_attributes_for :form_items
+  accepts_nested_attributes_for :form_items, allow_destroy: true
 
   def self.create_form(params, company)
     form = nil

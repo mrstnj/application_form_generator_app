@@ -22,6 +22,7 @@ type FormItem = {
   name: string;
   form_type: string;
   is_required: boolean;
+  _destroy: boolean;
 };
 
 type Form = {
@@ -40,7 +41,7 @@ interface Props {
 
 const Form = ({ is_new, id, form }: Props) => {
   const router = useRouter();
-  const defaultValue = { name: "メールアドレス", form_type: "email", is_required: true };
+  const defaultValue = { name: "メールアドレス", form_type: "email", is_required: true, _destroy: false };
   const { control, handleSubmit, setValue, watch, formState: { errors } } = useForm<Form>({
     defaultValues: {
       form_items_attributes: form?.form_items_attributes || [defaultValue],

@@ -23,6 +23,7 @@ type FormItem = {
   name: string;
   form_type: string;
   is_required: boolean;
+  _destroy: boolean;
 };
 
 type Form = {
@@ -141,9 +142,22 @@ const SortableFormItem: FC<Props> = ({ field, control, index, remove, watch }) =
           </Grid>
           <Grid item xs={1}>
             {watch(`form_items_attributes.${index}.name`) !== "メールアドレス" &&
-              <IconButton edge="end" aria-label="comments" color="error" onClick={() => remove(index)}>
-                <RemoveCircleIcon />
-              </IconButton>
+              <FormControl fullWidth>
+                <Controller
+                  name={`form_items_attributes.${index}._destroy`}
+                  control={control}
+                  render={({ field }) => 
+                    <IconButton
+                      edge="end"
+                      aria-label="comments"
+                      color="error"
+                      onClick={() => field.onChange(true)}
+                    >
+                      <RemoveCircleIcon />
+                    </IconButton>
+                  }
+                />
+              </FormControl>
             }
           </Grid>
         </Grid>

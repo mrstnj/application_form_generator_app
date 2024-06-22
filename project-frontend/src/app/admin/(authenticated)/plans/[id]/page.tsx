@@ -15,6 +15,12 @@ const PlanEdit = async ({ params }: Props) => {
       'AccessToken': `${accessToken.value}`
     } : {}
   }).then((res) => res.json())
+  const forms = await fetch(`${process.env.API_BASE_URL}/forms`, { 
+    cache: 'no-store',
+    headers: accessToken ? {
+      'AccessToken': `${accessToken.value}`
+    } : {}
+  }).then((res) => res.json())
   const plan = await fetch(`${process.env.API_BASE_URL}/plans/${params.id}`, {
     cache: 'no-store',
     headers: accessToken ? {
@@ -24,7 +30,7 @@ const PlanEdit = async ({ params }: Props) => {
 
   return (
     <>
-      <Form is_new={false} id={params.id} plan={plan} services={services} />
+      <Form is_new={false} id={params.id} plan={plan} services={services} forms={forms} />
     </>
   );
 };

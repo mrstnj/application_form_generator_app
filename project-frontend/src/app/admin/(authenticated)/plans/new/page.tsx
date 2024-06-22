@@ -9,10 +9,16 @@ const PlanCreate = async () => {
       'AccessToken': `${accessToken.value}`
     } : {}
   }).then((res) => res.json())
+  const forms = await fetch(`${process.env.API_BASE_URL}/forms`, { 
+    cache: 'no-store',
+    headers: accessToken ? {
+      'AccessToken': `${accessToken.value}`
+    } : {}
+  }).then((res) => res.json())
 
   return (
     <>
-      <Form is_new={true} services={services}/>
+      <Form is_new={true} services={services} forms={forms}/>
     </>
   );
 };

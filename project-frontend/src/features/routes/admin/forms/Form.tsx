@@ -18,7 +18,7 @@ import { updateForm } from "@/actions/form"
 import FormItemList from "./components/FormItemList"
 
 type FormItem = {
-  id?: number,
+  id?: number;
   name: string;
   form_type: string;
   is_required: boolean;

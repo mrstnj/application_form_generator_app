@@ -16,6 +16,7 @@ interface TabPanelProps {
 
 type Service = {
   id: number;
+  code: string;
   name: string;
   content: string;
   img: string;
@@ -23,6 +24,7 @@ type Service = {
 
 interface Props {
   services: Service[];
+  company_code: string;
 }
 
 function CustomTabPanel(props: TabPanelProps) {
@@ -48,7 +50,7 @@ function a11yProps(index: number) {
   };
 }
 
-const Content = ({ services }: Props) => {
+const Content = ({ services, company_code }: Props) => {
   const [value, setValue] = useState(0);
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
@@ -66,7 +68,7 @@ const Content = ({ services }: Props) => {
       <CustomTabPanel value={value} index={0}>
       <Grid container spacing={2}>
         {services.map((service, index) => (
-          <ServiceCard service={service} key={index}/>
+          <ServiceCard service={service} company_code={company_code} key={index}/>
         ))}
         </Grid>
       </CustomTabPanel>

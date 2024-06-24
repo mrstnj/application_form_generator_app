@@ -3,11 +3,12 @@ import {
   Divider,
   Typography
 } from '@mui/material';
-import Image from 'next/image'
+// import Image from 'next/image'
 
 type Service = {
   name: string;
   content: string;
+  img: string;
 }
 
 interface Props {
@@ -25,7 +26,8 @@ const ServiceInfo = ({ service }: Props) => {
       <Typography variant="subtitle1" gutterBottom className='pt-5'>
         {service.content}
       </Typography>
-      {/* <Image src={service.img} alt="preview" className="file-preview shadow-md" width={200} height={200} /> */}
+      {/* TODO: 画像を表示させる */}
+      {/* <Image src={service.img} alt="preview" width={200} height={200} /> */}
     </Box>
   );
 };

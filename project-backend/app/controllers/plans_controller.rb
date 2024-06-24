@@ -1,5 +1,6 @@
 class PlansController < AdminController
   before_action :set_plan, only: %i[ show update destroy ]
+  skip_before_action :authenticate_token, only: %i[ show ]
 
   # GET /plans
   def index

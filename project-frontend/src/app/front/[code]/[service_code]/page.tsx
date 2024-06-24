@@ -21,7 +21,6 @@ interface Props {
 
 const ServiceTop = async({ params }: Props) => {
   const service = await fetch(`${process.env.API_BASE_URL}/services/show_by_code?code=${params.service_code}`, {cache: 'no-store'}).then((res) => res.json())
-  console.log(service)
   
   return (
     <div>

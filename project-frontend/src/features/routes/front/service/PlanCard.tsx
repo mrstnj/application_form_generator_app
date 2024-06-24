@@ -1,48 +1,38 @@
 import {
   Card,
-  CardContent,
   CardActionArea,
-  CardMedia,
+  CardContent,
   Typography,
   Grid
 } from '@mui/material';
 
-type Service = {
-  id: number;
-  code: string;
+type Plan = {
   name: string;
   content: string;
-  img: string;
-};
-
-interface Props {
-  service: Service;
-  company_code: string;
 }
 
-const ServiceCard = ({ service, company_code }: Props) => {
+interface Props {
+  plan: Plan;
+}
+
+const PlanCard = ({ plan }: Props) => {  
 
   return (
     <Grid item xs={12} sm={4} md={3}>
       <Card sx={{ maxWidth: 345 }}>
-        <CardActionArea href={`/front/${company_code}/${service.code}`}>
-          <CardMedia
-            sx={{ height: 140 }}
-            image={service.img}
-            title="service"
-          />
+        <CardActionArea href="/admin/login">
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
-              {service.name}
+              {plan.name}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {service.content}
+              {plan.content}
             </Typography>
           </CardContent>
         </CardActionArea>
       </Card>
     </Grid>
   );
-}
+};
 
-export default ServiceCard;
+export default PlanCard;

@@ -13,7 +13,7 @@ const Top = async({ params }: Props) => {
   return (
     <div>
       <ServiceCarousel services={company.services_attributes} />
-      <Content services={company.services_attributes} />
+      <Content services={company.services_attributes} company_code={params.code}/>
     </div>
   );
 };

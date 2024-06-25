@@ -6,6 +6,8 @@ import PlanForm from '@/features/routes/front/plan/PlanForm'
 
 interface Props {
   params: {
+    company_code: string;
+    service_code: string;
     plan_id: number;
   }
 }
@@ -17,9 +19,9 @@ const PlanTop = async({ params }: Props) => {
 
   return (
     <div>
-      <Paper elevation={3} className='m-5'>
+      <Paper elevation={3} className="sm:mx-auto sm:max-w-prose m-5 p-8" >
         <PlanInfo plan={plan} />
-        <PlanForm form_items={form.form_items_attributes} />
+        <PlanForm company_code={params.company_code} service_code={params.service_code} form_items={form.form_items_attributes} />
       </Paper>
     </div>
   );

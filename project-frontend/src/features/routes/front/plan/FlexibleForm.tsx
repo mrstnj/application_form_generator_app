@@ -1,25 +1,13 @@
 "use client";
 
 import {
-  Typography,
-  Paper,
   FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   Grid,
   TextField,
-  FormHelperText
 } from "@mui/material";
-import { useRouter } from 'next/navigation'
-import { useForm, Controller } from 'react-hook-form';
-import { useEffect, useState, useCallback } from "react";
-import SubmitButton from "@/components/button/SubmitButton";
-import BackButton from "@/components/button/BackButton";
-import Notification from "@/components/notification/Notification";
+import { Controller } from 'react-hook-form';
 import * as validators from "@/common/utils/validate";
-import { updatePlan } from "@/actions/plan"
-import { Control, useFieldArray, UseFormWatch } from "react-hook-form";
+import { Control } from "react-hook-form";
 
 type FormItem = {
   id: number;
@@ -35,7 +23,6 @@ type FormItemAnswer = {
 };
 
 type User = {
-  email: string;
   form_item_answer: FormItemAnswer[];
 };
 
@@ -43,30 +30,37 @@ interface Props {
   form_item: FormItem;
   index: number;
   control: Control<User>;
+  errors: any;
 }
 
-const FlexibleForm = ({ form_item, index, control }: Props) => {
+const FlexibleForm = ({ form_item, index, control, errors }: Props) => {
 
   return (
     <>
       <div className="my-4">
         <Grid container spacing={3}>
-        <Grid item xs={12}>
+          {false &&
+            <Controller
+              name={`form_item_answer.${index}.form_item_id`}
+              control={control}
+              defaultValue={form_item.id}
+              render={({ field }) => <TextField {...field} />}
+            />
+          }
+          <Grid item xs={12}>
             <FormControl fullWidth>
               <Controller
                 name={`form_item_answer.${index}.value`}
                 control={control}
                 defaultValue=""
                 rules={{
-                  validate: {
-                    required: validators.required
-                  }
+                  required: 'This field is required',
                 }}
                 render={({ field }) => <TextField
                   {...field}
                   label={form_item.name}
-                  // error={Boolean(errors.name)}
-                  // helperText={errors.name?.message}
+                  error={Boolean(errors[`form_item_answer.${index}.value`])}
+                  helperText={errors[`form_item_answer.${index}.value`]?.message}
                 />}
               />
             </FormControl>

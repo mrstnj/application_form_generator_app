@@ -2,23 +2,13 @@
 
 import {
   Typography,
-  Paper,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Grid,
-  TextField,
-  FormHelperText
+  Button,
 } from "@mui/material";
 import { useRouter } from 'next/navigation'
-import { useForm, Controller } from 'react-hook-form';
-import { useEffect, useState, useCallback } from "react";
-import SubmitButton from "@/components/button/SubmitButton";
+import { useForm } from 'react-hook-form';
+import { useState } from "react";
 import BackButton from "@/components/button/BackButton";
 import Notification from "@/components/notification/Notification";
-import * as validators from "@/common/utils/validate";
-import { updatePlan } from "@/actions/plan"
 import FlexibleForm from "./FlexibleForm";
 
 type FormItemAnswer = {
@@ -28,7 +18,6 @@ type FormItemAnswer = {
 };
 
 type User = {
-  email: string;
   form_item_answer: FormItemAnswer[];
 };
 
@@ -42,12 +31,14 @@ type FormItem = {
 type Valiant = 'success' | 'warning' | 'error' | 'info';
 
 interface Props {
+  company_code: string;
+  service_code: string;
   form_items: FormItem[];
 }
 
-const PlanForm = ({ form_items }: Props) => {
+const PlanForm = ({ company_code, service_code, form_items }: Props) => {
   const router = useRouter();
-  const { control, handleSubmit, setValue, formState: { errors } } = useForm<User>();
+  const { control, handleSubmit, formState: { errors } } = useForm<User>();
 
   const [notification, setNotification] = useState({
     open: false,
@@ -68,31 +59,28 @@ const PlanForm = ({ form_items }: Props) => {
     }));
   };
 
-  const onSubmit = async (data: User) => {
-    // const { result, errorText = '' } = await updatePlan(is_new, data, id)
-    // if (result) {
-    //   router.push('/admin/plans');
-    //   router.refresh();
-    // } else {
-    //   handleOpenNotification(errorText)
-    // }
+  const onSubmit = (data: User) => {
+    console.log("送信")
   };
 
   return (
     <>
-      <Paper elevation={0} className="sm:mx-auto sm:max-w-prose mb-4">
-        <form onSubmit={handleSubmit(onSubmit)} className="p-8">
-          {form_items.map((form_item, index) => {
-            return (
-              <FlexibleForm key={index} form_item={form_item} index={index} control={control}/>
-            )
-          })}
-          <div className="flex justify-center">
-            <BackButton path={'/admin/plans'} />
-            <SubmitButton action_letter="送信"/>
-          </div>
-        </form>  
-      </Paper>
+      <form onSubmit={handleSubmit(onSubmit)} className="p-8">
+        <Typography variant="body2" gutterBottom className='pt-5'>
+          申込をする場合は下記フォームを入力の上送信してください。
+        </Typography>
+        {form_items.map((form_item, index) => {
+          return (
+            <FlexibleForm key={index} form_item={form_item} index={index} control={control} errors={errors} />
+          )
+        })}
+        <div className="flex justify-center">
+          <BackButton path={`/front/${company_code}/${service_code}`} />
+          <Button variant="contained" className="bg-green-500 m-2 hover:bg-green-600" size="large" type="submit">
+            送信
+          </Button>
+        </div>
+      </form>  
       <Notification handleClose={handleCloseNotification} notification={notification} />
     </>
   );

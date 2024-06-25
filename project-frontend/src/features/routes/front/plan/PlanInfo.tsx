@@ -17,12 +17,12 @@ interface Props {
 const PlanInfo = ({ plan }: Props) => {  
 
   return (
-    <Box className="p-8">
+    <Box>
       <Typography variant="h4" gutterBottom>
         {plan.name}
       </Typography>
       <Divider/>
-      <Typography variant="subtitle1" gutterBottom className='pt-5'>
+      <Typography variant="body2" gutterBottom className='pt-5'>
         {plan.content}
       </Typography>
     </Box>

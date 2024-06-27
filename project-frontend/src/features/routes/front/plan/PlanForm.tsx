@@ -15,9 +15,11 @@ type FormItemAnswer = {
   id: number;
   form_item_id: number;
   value: string;
+  date_value: Date;
 };
 
 type User = {
+  email: string;
   form_item_answer: FormItemAnswer[];
 };
 
@@ -61,6 +63,7 @@ const PlanForm = ({ company_code, service_code, form_items }: Props) => {
 
   const onSubmit = (data: User) => {
     console.log("送信")
+    console.log(data)
   };
 
   return (

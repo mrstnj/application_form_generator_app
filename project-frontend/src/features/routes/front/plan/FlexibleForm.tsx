@@ -28,7 +28,6 @@ type FormItemAnswer = {
   id: number;
   form_item_id: number;
   value: string;
-  date_value: Date;
 };
 
 type User = {
@@ -44,7 +43,6 @@ interface Props {
 }
 
 const FlexibleForm = ({ form_item, index, control, errors }: Props) => {
-console.log(errors)
 
   switch (form_item.form_type) {
     case "email":
@@ -59,7 +57,8 @@ console.log(errors)
                   defaultValue=""
                   rules={{
                     validate: {
-                      required: validators.required,
+                      ...(form_item.is_required && { required: validators.required }),
+                      pattern: validators.email
                     }
                   }}
                   render={({ field }) => <TextField
@@ -89,11 +88,11 @@ console.log(errors)
               <Grid item xs={12}>
                 <FormControl fullWidth>
                   <Controller
-                    name={`form_item_answer.${index}.date_value`}
+                    name={`form_item_answer.${index}.value`}
                     control={control}
                     rules={{
                       validate: {
-                        required: validators.required,
+                        ...(form_item.is_required && { required: validators.required }),
                       }
                     }}
                     render={({ field }) => 
@@ -104,11 +103,11 @@ console.log(errors)
                             label={form_item.name} 
                             format="YYYY/MM/DD" 
                             value={field.value ? dayjs(field.value) : null}
-                            onChange={(newValue) => field.onChange(newValue)}
+                            onChange={ newValue => field.onChange(dayjs(newValue).format("YYYY/MM/DD"))}
                             slotProps={{
                               textField: {
-                                error: Boolean(errors.form_item_answer?.[index]?.date_value),
-                                helperText: errors.form_item_answer?.[index].date_value?.message,
+                                error: Boolean(errors.form_item_answer?.[index]?.value),
+                                helperText: errors.form_item_answer?.[index]?.value?.message,
                               },
                             }}
                           />
@@ -141,7 +140,8 @@ console.log(errors)
                   defaultValue=""
                   rules={{
                     validate: {
-                      required: validators.required,
+                      ...(form_item.is_required && { required: validators.required }),
+                      ...(form_item.form_type == 'number' && { pattern: validators.number }),
                     }
                   }}
                   render={({ field }) => <TextField

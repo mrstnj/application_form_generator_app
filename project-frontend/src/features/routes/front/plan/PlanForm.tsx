@@ -9,13 +9,13 @@ import { useForm } from 'react-hook-form';
 import { useState } from "react";
 import BackButton from "@/components/button/BackButton";
 import Notification from "@/components/notification/Notification";
+import { createUser } from "@/actions/user"
 import FlexibleForm from "./FlexibleForm";
 
 type FormItemAnswer = {
   id: number;
   form_item_id: number;
   value: string;
-  date_value: Date;
 };
 
 type User = {
@@ -61,9 +61,8 @@ const PlanForm = ({ company_code, service_code, form_items }: Props) => {
     }));
   };
 
-  const onSubmit = (data: User) => {
-    console.log("送信")
-    console.log(data)
+  const onSubmit = async(data: User) => {
+    const { result, errorText = '' } = await createUser(data)
   };
 
   return (

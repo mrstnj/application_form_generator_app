@@ -10,7 +10,7 @@ type FormItemAnswer = {
 
 type User = {
   email: string;
-  form_item_answer: FormItemAnswer[];
+  form_item_answer?: FormItemAnswer[];
 };
 
 type UserParams = {
@@ -37,8 +37,29 @@ export async function createUser(data: User) {
   }
 }
 
+export async function updateUser(data: User, id: number) {
+  const accessToken = cookies().get('accessToken');
+  const url = `${process.env.API_BASE_URL}/users/${id}`;
+  const method = 'PUT';
+  try {
+    const res = await fetch(url, {
+      method,
+      headers: accessToken ? {
+        'AccessToken': `${accessToken.value}`,
+        'Content-Type': 'application/json'
+      } : {},
+      body: JSON.stringify({user: data})
+    })
+    const response = await res.json();
+    if (!res.ok) throw new Error(response.err);
+    return { result: true };
+  } catch (error: any) {
+    const errorText = errorHandle(error.message)
+    return { result: false, errorText };
+  }
+}
+
 export async function searchUser(data: UserParams) {
-  console.log(data)
   const accessToken = cookies().get('accessToken');
   try {
     const params = new URLSearchParams(data);

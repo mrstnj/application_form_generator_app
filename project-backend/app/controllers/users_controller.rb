@@ -11,7 +11,7 @@ class UsersController < AdminController
 
   # GET /users/1
   def show
-    render json: @user
+    render json: @user, serializer: UserSerializer, root: nil
   end
 
   # POST /users
@@ -27,10 +27,11 @@ class UsersController < AdminController
 
   # PATCH/PUT /users/1
   def update
-    if @user.update(user_params)
-      render json: @user
-    else
-      render json: @user.errors, status: :unprocessable_entity
+    begin
+      @user = User.update_user(user_params, @user)
+      render json: @user, serializer: UserSerializer, root: nil
+    rescue => e
+      render json: { err: e.message }, status: :unprocessable_entity
     end
   end
 

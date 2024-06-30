@@ -18,6 +18,7 @@ class OrderService
           value: form_item_answer_param[:value]
         )
       end
+      UserMailer.complete_order(user_plan).deliver_later
     end
     return user
   end

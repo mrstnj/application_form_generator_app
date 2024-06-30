@@ -1,0 +1,26 @@
+<div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1);">
+  <h2 style="color: #333333; font-size: 24px; font-weight: bold; margin-bottom: 20px;">申込確認</h2>
+  
+  <div style="background-color: #f0f0f0; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+    <p style="margin: 0;">この度はご利用いただきましてありがとうございます。</p>
+    <p style="margin: 0;">下記内容で申込を承りました。</p>
+  </div>
+  
+  <div style="margin-bottom: 20px;">
+    <h3 style="color: #333333; font-size: 18px; font-weight: bold;">◼️申込プラン</h3>
+    <p style="color: #666666; margin-top: 5px;"><%= @plan.service.name %></p>
+    <p style="color: #666666; margin-top: 5px;"><%= @plan.name %></p>
+  </div>
+
+  <div style="margin-bottom: 20px;">
+    <h3 style="color: #333333; font-size: 18px; font-weight: bold;">◼️申込日時</h3>
+    <p style="color: #666666; margin-top: 5px;"><%= @user.created_at&.strftime("%Y/%m/%d %H:%M") %></p>
+  </div>
+
+  <div>
+    <h3 style="color: #333333; font-size: 18px; font-weight: bold;">◼️申込回答内容</h3>
+    <% @form_item_answers.each do |form_item_answer| %>
+      <p style="color: #666666; margin-top: 5px;"><strong><%= form_item_answer.name %>:</strong> <%= form_item_answer.value %></p>
+    <% end %>
+  </div>
+</div>

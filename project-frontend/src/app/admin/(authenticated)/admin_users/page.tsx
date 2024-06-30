@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers'
 import Index from '@/features/routes/admin/admin_users/Index'
 
-const CompanyIndex = async () => {
+const AdminUserIndex = async () => {
   const accessToken = cookies().get('accessToken');
   const admin_users = await fetch(`${process.env.API_BASE_URL}/admin_users`, {
     cache: 'no-store',
@@ -17,4 +17,4 @@ const CompanyIndex = async () => {
   );
 };
 
-export default CompanyIndex;
+export default AdminUserIndex;

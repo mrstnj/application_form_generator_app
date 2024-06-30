@@ -13,6 +13,10 @@ type User = {
   form_item_answer: FormItemAnswer[];
 };
 
+type UserParams = {
+  plan: string;
+}
+
 export async function createUser(data: User) {
   const url = `${process.env.API_BASE_URL}/users`;
   const method = 'POST';
@@ -33,30 +37,31 @@ export async function createUser(data: User) {
   }
 }
 
-// export async function searchUser(data: User) {
-//   const accessToken = cookies().get('accessToken');
-//   try {
-//     const params = new URLSearchParams(data);
-//     const res = await fetch(`${process.env.API_BASE_URL}/users?${params}`, {
-//       headers: accessToken ? {
-//         'AccessToken': `${accessToken.value}`
-//       } : {}
-//     });
-//     const response = await res.json();
-//     if (!res.ok) throw new Error(response.err);
-//     return { result: true, response };
-//   } catch (error: any) {
-//     const errorText = errorHandle(error.message)
-//     return { result: false, errorText };
-//   }
-// }
+export async function searchUser(data: UserParams) {
+  console.log(data)
+  const accessToken = cookies().get('accessToken');
+  try {
+    const params = new URLSearchParams(data);
+    const res = await fetch(`${process.env.API_BASE_URL}/users?${params}`, {
+      headers: accessToken ? {
+        'AccessToken': `${accessToken.value}`
+      } : {}
+    });
+    const response = await res.json();
+    if (!res.ok) throw new Error(response.err);
+    return { result: true, response };
+  } catch (error: any) {
+    const errorText = errorHandle(error.message)
+    return { result: false, errorText };
+  }
+}
 
-// export async function deleteUser(id: number) {
-//   const accessToken = cookies().get('accessToken');
-//   await fetch(`${process.env.API_BASE_URL}/users/${id}`, {
-//     method: 'DELETE',
-//     headers: accessToken ? {
-//       'AccessToken': `${accessToken.value}`
-//     } : {}
-//   });
-// }
+export async function deleteUser(id: number) {
+  const accessToken = cookies().get('accessToken');
+  await fetch(`${process.env.API_BASE_URL}/users/${id}`, {
+    method: 'DELETE',
+    headers: accessToken ? {
+      'AccessToken': `${accessToken.value}`
+    } : {}
+  });
+}

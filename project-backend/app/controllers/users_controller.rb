@@ -1,11 +1,12 @@
-class UsersController < ApplicationController
+class UsersController < AdminController
   before_action :set_user, only: %i[ show update destroy ]
+  skip_before_action :authenticate_token, only: %i[ create ]
 
   # GET /users
   def index
     @users = User.all
-
-    render json: @users
+    @users = @users.search(@users, params)
+    render json: @users, each_serializer: UserSerializer, root: nil
   end
 
   # GET /users/1

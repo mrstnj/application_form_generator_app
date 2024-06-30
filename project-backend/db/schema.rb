@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_22_090643) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_28_130301) do
   create_table "admin_users", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.bigint "company_id", null: false
     t.string "code", null: false
@@ -35,6 +35,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_22_090643) do
     t.integer "status", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "form_item_answers", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.bigint "user_plan_id", null: false
+    t.string "name", null: false
+    t.string "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_plan_id"], name: "index_form_item_answers_on_user_plan_id"
   end
 
   create_table "form_items", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
@@ -80,9 +89,27 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_22_090643) do
     t.index ["company_id"], name: "index_services_on_company_id"
   end
 
+  create_table "user_plans", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "plan_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["plan_id"], name: "index_user_plans_on_plan_id"
+    t.index ["user_id"], name: "index_user_plans_on_user_id"
+  end
+
+  create_table "users", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.string "email", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "form_item_answers", "user_plans"
   add_foreign_key "form_items", "forms"
   add_foreign_key "forms", "companies"
   add_foreign_key "plans", "forms"
   add_foreign_key "plans", "services"
   add_foreign_key "services", "companies"
+  add_foreign_key "user_plans", "plans"
+  add_foreign_key "user_plans", "users"
 end

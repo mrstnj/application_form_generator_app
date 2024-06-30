@@ -25,8 +25,7 @@ type FormItem = {
 };
 
 type FormItemAnswer = {
-  id: number;
-  form_item_id: number;
+  name: string;
   value: string;
 };
 
@@ -45,117 +44,113 @@ interface Props {
 const FlexibleForm = ({ form_item, index, control, errors }: Props) => {
 
   switch (form_item.form_type) {
-    case "email":
-      return (
-        <div className="my-4">
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <FormControl fullWidth>
-                <Controller
-                  name="email"
-                  control={control}
-                  defaultValue=""
-                  rules={{
-                    validate: {
-                      ...(form_item.is_required && { required: validators.required }),
-                      pattern: validators.email
-                    }
-                  }}
-                  render={({ field }) => <TextField
-                    {...field}
-                    label={form_item.name}
-                    error={Boolean(errors.email)}
-                    helperText={errors.email?.message}
-                  />}
-                />
-              </FormControl>
-            </Grid>
-          </Grid>
-        </div>
-      );
-      case "date":
-        return (
-          <div className="my-4">
-            <Grid container spacing={3}>
-              {false &&
-                <Controller
-                  name={`form_item_answer.${index}.form_item_id`}
-                  control={control}
-                  defaultValue={form_item.id}
-                  render={({ field }) => <TextField {...field} />}
-                />
-              }
-              <Grid item xs={12}>
-                <FormControl fullWidth>
-                  <Controller
-                    name={`form_item_answer.${index}.value`}
-                    control={control}
-                    rules={{
-                      validate: {
-                        ...(form_item.is_required && { required: validators.required }),
-                      }
-                    }}
-                    render={({ field }) => 
-                      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ja">
-                        <DemoContainer components={['DatePicker']}>
-                          <DatePicker 
-                            {...field}
-                            label={form_item.name} 
-                            format="YYYY/MM/DD" 
-                            value={field.value ? dayjs(field.value) : null}
-                            onChange={ newValue => field.onChange(dayjs(newValue).format("YYYY/MM/DD"))}
-                            slotProps={{
-                              textField: {
-                                error: Boolean(errors.form_item_answer?.[index]?.value),
-                                helperText: errors.form_item_answer?.[index]?.value?.message,
-                              },
-                            }}
-                          />
-                        </DemoContainer>
-                      </LocalizationProvider>
-                    }
-                  />
-                </FormControl>
-              </Grid>
-            </Grid>
-          </div>
-        );  
-    default:
-      return (
-        <div className="my-4">
-          <Grid container spacing={3}>
-            {false &&
+  case "email":
+    return (
+      <div className="my-4">
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <FormControl fullWidth>
               <Controller
-                name={`form_item_answer.${index}.form_item_id`}
+                name="email"
                 control={control}
-                defaultValue={form_item.id}
-                render={({ field }) => <TextField {...field} />}
+                defaultValue=""
+                rules={{
+                  validate: {
+                    ...(form_item.is_required && { required: validators.required }),
+                    ...(form_item.form_type == 'email' && { pattern: validators.email}),
+                  }
+                }}
+                render={({ field }) => <TextField
+                  {...field}
+                  label={form_item.name}
+                  error={Boolean(errors?.email?.value)}
+                  helperText={errors?.email?.value?.message}
+                />}
               />
-            }
-            <Grid item xs={12}>
-              <FormControl fullWidth>
-                <Controller
-                  name={`form_item_answer.${index}.value`}
-                  control={control}
-                  defaultValue=""
-                  rules={{
-                    validate: {
-                      ...(form_item.is_required && { required: validators.required }),
-                      ...(form_item.form_type == 'number' && { pattern: validators.number }),
-                    }
-                  }}
-                  render={({ field }) => <TextField
-                    {...field}
-                    label={form_item.name}
-                    error={Boolean(errors.form_item_answer?.[index]?.value)}
-                    helperText={errors.form_item_answer?.[index]?.value?.message}
-                  />}
-                />
-              </FormControl>
-            </Grid>
+            </FormControl>
           </Grid>
-        </div>
-      );
+        </Grid>
+      </div>
+    );
+  case "date":
+    return (
+      <div className="my-4">
+        <Grid container spacing={3}>
+          <Controller
+            name={`form_item_answer.${index}.name`}
+            control={control}
+            defaultValue={form_item.name}
+            render={({ field }) => <div {...field} />}
+          />
+          <Grid item xs={12}>
+            <FormControl fullWidth>
+              <Controller
+                name={`form_item_answer.${index}.value`}
+                control={control}
+                rules={{
+                  validate: {
+                    ...(form_item.is_required && { required: validators.required }),
+                  }
+                }}
+                render={({ field }) => 
+                  <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ja">
+                    <DemoContainer components={['DatePicker']}>
+                      <DatePicker 
+                        {...field}
+                        label={form_item.name} 
+                        format="YYYY/MM/DD" 
+                        value={field.value ? dayjs(field.value) : null}
+                        onChange={ newValue => field.onChange(dayjs(newValue).format("YYYY/MM/DD"))}
+                        slotProps={{
+                          textField: {
+                            error: Boolean(errors?.form_item_answer?.[index]?.value),
+                            helperText: errors?.form_item_answer?.[index]?.value?.message,
+                          },
+                        }}
+                      />
+                    </DemoContainer>
+                  </LocalizationProvider>
+                }
+              />
+            </FormControl>
+          </Grid>
+        </Grid>
+      </div>
+    );  
+  default:
+    return (
+      <div className="my-4">
+        <Grid container spacing={3}>
+          <Controller
+            name={`form_item_answer.${index}.name`}
+            control={control}
+            defaultValue={form_item.name}
+            render={({ field }) => <div {...field} />}
+          />
+          <Grid item xs={12}>
+            <FormControl fullWidth>
+              <Controller
+                name={`form_item_answer.${index}.value`}
+                control={control}
+                defaultValue=""
+                rules={{
+                  validate: {
+                    ...(form_item.is_required && { required: validators.required }),
+                    ...(form_item.form_type == 'number' && { pattern: validators.number })
+                  }
+                }}
+                render={({ field }) => <TextField
+                  {...field}
+                  label={form_item.name}
+                  error={Boolean(errors?.form_item_answer?.[index]?.value)}
+                  helperText={errors?.form_item_answer?.[index]?.value?.message}
+                />}
+              />
+            </FormControl>
+          </Grid>
+        </Grid>
+      </div>
+    );
   }
 };
 

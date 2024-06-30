@@ -13,8 +13,7 @@ import { createUser } from "@/actions/user"
 import FlexibleForm from "./FlexibleForm";
 
 type FormItemAnswer = {
-  id: number;
-  form_item_id: number;
+  name: string;
   value: string;
 };
 
@@ -33,12 +32,13 @@ type FormItem = {
 type Valiant = 'success' | 'warning' | 'error' | 'info';
 
 interface Props {
+  plan_id: number;
   company_code: string;
   service_code: string;
   form_items: FormItem[];
 }
 
-const PlanForm = ({ company_code, service_code, form_items }: Props) => {
+const PlanForm = ({ plan_id, company_code, service_code, form_items }: Props) => {
   const router = useRouter();
   const { control, handleSubmit, formState: { errors } } = useForm<User>();
 
@@ -62,7 +62,18 @@ const PlanForm = ({ company_code, service_code, form_items }: Props) => {
   };
 
   const onSubmit = async(data: User) => {
-    const { result, errorText = '' } = await createUser(data)
+    const formData = {
+      ...data,
+      plan_id: plan_id,
+    };
+    const { result, errorText = '' } = await createUser(formData)
+    if (result) {
+      // TODO: 申込完了画面に遷移
+      router.push(`/front/${company_code}/${service_code}`);
+      handleOpenNotification('申込が完了しました。', 'success')
+    } else {
+      handleOpenNotification(errorText)
+    }
   };
 
   return (

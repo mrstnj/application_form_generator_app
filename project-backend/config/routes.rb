@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :users
   resources :plans
   resources :forms
   resources :services do

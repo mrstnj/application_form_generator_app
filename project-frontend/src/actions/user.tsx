@@ -4,7 +4,7 @@ import { cookies } from 'next/headers'
 import { errorHandle } from "@/common/utils/errorHandle";
 
 type FormItemAnswer = {
-  form_item_id: number;
+  name: string;
   value: string;
 };
 
@@ -14,13 +14,14 @@ type User = {
 };
 
 export async function createUser(data: User) {
-  console.log("送信")
-  console.log(data)
   const url = `${process.env.API_BASE_URL}/users`;
   const method = 'POST';
   try {
     const res = await fetch(url, {
       method,
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({user: data})
     })
     const response = await res.json();

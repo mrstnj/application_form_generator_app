@@ -15,6 +15,7 @@ type Plan = {
 
 interface Props {
   params: {
+    company_code: string;
     service_code: string;
   }
 }
@@ -30,7 +31,7 @@ const ServiceTop = async({ params }: Props) => {
           <Grid container spacing={2}>
             {service.plans_attributes.map( (plan: Plan, index: number) => {
               return (
-                <PlanCard plan={plan} key={index} />
+                <PlanCard company_code={params.company_code} service_code={params.service_code} plan={plan} key={index} />
               )
             })}
           </Grid>

@@ -23,7 +23,7 @@ const ServiceInfo = ({ service }: Props) => {
         {service.name}
       </Typography>
       <Divider/>
-      <Typography variant="subtitle1" gutterBottom className='pt-5'>
+      <Typography variant="body2" gutterBottom className='pt-5'>
         {service.content}
       </Typography>
       {/* TODO: 画像を表示させる */}

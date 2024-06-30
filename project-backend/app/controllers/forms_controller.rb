@@ -1,5 +1,6 @@
 class FormsController < AdminController
   before_action :set_form, only: %i[ show update destroy ]
+  skip_before_action :authenticate_token, only: %i[ show ]
 
   # GET /forms
   def index

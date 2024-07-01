@@ -14,6 +14,11 @@ class UsersController < AdminController
     render json: @user, serializer: UserSerializer, root: nil
   end
 
+  def show_user_plan
+    @user_plan = UserPlan.where(user_id: params[:id])
+    render json: @user_plan, each_serializer: UserPlanSerializer, root: nil
+  end
+
   # POST /users
   def create
     begin

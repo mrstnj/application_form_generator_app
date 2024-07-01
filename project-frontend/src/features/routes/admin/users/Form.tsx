@@ -6,7 +6,14 @@ import {
   FormControl,
   Grid,
   TextField,
+  Collapse,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText
 } from "@mui/material";
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
 import { useRouter } from 'next/navigation'
 import { useForm, Controller } from 'react-hook-form';
 import { useEffect, useState, MouseEvent } from "react";
@@ -16,9 +23,24 @@ import Notification from "@/components/notification/Notification";
 import * as validators from "@/common/utils/validate";
 import { updateUser } from "@/actions/user"
 
+type FormItemAnswer = {
+  name: string;
+  value: string;
+}
+
+type Plan = {
+  name: string;
+}
+
 type User = {
   id: number;
   email: string;
+  plans: Plan[];
+};
+
+type UserPlan = {
+  form_item_answers: FormItemAnswer[];
+  plan: Plan;
 };
 
 type Valiant = 'success' | 'warning' | 'error' | 'info';
@@ -26,9 +48,10 @@ type Valiant = 'success' | 'warning' | 'error' | 'info';
 interface Props {
   id: number;
   user?: User | null;
+  user_plans: UserPlan[];
 }
 
-const Form = ({ id, user }: Props) => {
+const Form = ({ id, user, user_plans }: Props) => {
   const router = useRouter();
   const { control, handleSubmit, setValue, formState: { errors } } = useForm<User>();
 
@@ -68,6 +91,12 @@ const Form = ({ id, user }: Props) => {
     }
   };
 
+  const [openPlan, setOpenPlan] = useState(false);
+
+  const handleOpenPlan = () => {
+    setOpenPlan(!openPlan);
+  };
+
   return (
     <>
       <Paper elevation={0} className="sm:mx-auto sm:max-w-prose mb-4">
@@ -100,6 +129,30 @@ const Form = ({ id, user }: Props) => {
               </Grid>
             </Grid>
           </div>
+          {user_plans.map((user_plan, index) => (
+            <Paper elevation={3} className="sm:mx-auto sm:max-w-prose mb-4" key={index}>
+              <ListItemButton onClick={handleOpenPlan}>
+                <ListItemText primary={user_plan.plan.name} />
+                {openPlan ? <ExpandLess /> : <ExpandMore />}
+              </ListItemButton>
+              <Collapse in={openPlan} timeout="auto" unmountOnExit>
+                {user_plan.form_item_answers.map((form_item_answer, answerIndex) => (
+                  <List component="div" disablePadding key={answerIndex}>
+                    <ListItem sx={{ pl: 4 }}>
+                      <Grid container >
+                        <Grid item xs={6}>
+                          <ListItemText primary={form_item_answer.name} />
+                        </Grid>
+                        <Grid item xs={6} textAlign="right">
+                          {form_item_answer.value}
+                        </Grid>
+                      </Grid>
+                    </ListItem>
+                  </List>
+                ))}
+              </Collapse>
+            </Paper>
+          ))}
           <div className="flex justify-center">
             <BackButton path={'/admin/users'} />
             <SubmitButton action_letter={action} />

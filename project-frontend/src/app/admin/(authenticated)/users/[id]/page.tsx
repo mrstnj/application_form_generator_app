@@ -15,10 +15,16 @@ const UserEdit = async ({ params }: Props) => {
       'AccessToken': `${accessToken.value}`
     } : {}
   }).then((res) => res.json())
+  const user_plans = await fetch(`${process.env.API_BASE_URL}/users/show_user_plan?id=${params.id}`, {
+    cache: 'no-store',
+    headers: accessToken ? {
+      'AccessToken': `${accessToken.value}`
+    } : {}
+  }).then((res) => res.json())
 
   return (
     <>
-      <Form id={params.id} user={user} />
+      <Form id={params.id} user={user} user_plans={user_plans} />
     </>
   );
 };

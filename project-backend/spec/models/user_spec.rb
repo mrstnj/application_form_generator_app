@@ -41,4 +41,26 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe 'メソッド動作テスト' do
+    context 'update_user' do 
+      subject {FactoryBot.create(:user)}
+      context '引数が正常の場合' do 
+        it 'userが返ること' do
+          params = {}
+          params[:email] = 'update_test@test.com'
+          expect(User.update_user(params, subject).present?).to be_truthy
+        end
+      end
+    end
+
+    context 'search' do 
+      subject {FactoryBot.create(:user_plan)}
+      it 'plan' do
+        params = {}
+        params[:plan] = subject.plan.name
+        expect(User.search(User, params).present?).to be_truthy
+      end
+    end
+  end
 end

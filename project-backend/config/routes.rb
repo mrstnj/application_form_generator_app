@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  resources :users
+  resources :users do
+    get 'show_user_plan', on: :collection
+  end
   resources :plans
   resources :forms
   resources :services do

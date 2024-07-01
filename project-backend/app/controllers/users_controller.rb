@@ -1,16 +1,22 @@
-class UsersController < ApplicationController
+class UsersController < AdminController
   before_action :set_user, only: %i[ show update destroy ]
+  skip_before_action :authenticate_token, only: %i[ create ]
 
   # GET /users
   def index
     @users = User.all
-
-    render json: @users
+    @users = @users.search(@users, params)
+    render json: @users, each_serializer: UserSerializer, root: nil
   end
 
   # GET /users/1
   def show
-    render json: @user
+    render json: @user, serializer: UserSerializer, root: nil
+  end
+
+  def show_user_plan
+    @user_plan = UserPlan.where(user_id: params[:id])
+    render json: @user_plan, each_serializer: UserPlanSerializer, root: nil
   end
 
   # POST /users
@@ -26,10 +32,11 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   def update
-    if @user.update(user_params)
-      render json: @user
-    else
-      render json: @user.errors, status: :unprocessable_entity
+    begin
+      @user = User.update_user(user_params, @user)
+      render json: @user, serializer: UserSerializer, root: nil
+    rescue => e
+      render json: { err: e.message }, status: :unprocessable_entity
     end
   end
 

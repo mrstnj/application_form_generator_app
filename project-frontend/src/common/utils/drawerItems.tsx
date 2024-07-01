@@ -5,6 +5,7 @@ import ListIcon from '@mui/icons-material/List';
 import CreateIcon from '@mui/icons-material/Create';
 import RedeemIcon from '@mui/icons-material/Redeem';
 import FeedIcon from '@mui/icons-material/Feed';
+import PersonIcon from '@mui/icons-material/Person';
 
 interface ChildItem {
   name: string;
@@ -19,6 +20,17 @@ interface DrawerItem {
 }
 
 const drawerItems: DrawerItem[] = [
+  {
+    name: "会員管理",
+    icon: <PersonIcon />,
+    child: [
+      {
+        name: "会員一覧",
+        icon: <ListIcon />,
+        path: "/admin/users",
+      },
+    ],
+  },
   {
     name: "サービス管理",
     icon: <StorefrontIcon />,

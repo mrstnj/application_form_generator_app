@@ -1,6 +1,8 @@
 class Plan < ApplicationRecord
   belongs_to :service
   belongs_to :form, optional: true
+  has_many :user_plans
+  has_many :users, through: :user_plans
 
   enum status: { deactivate: 0, activate: 1 }
 

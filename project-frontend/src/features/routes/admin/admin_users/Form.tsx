@@ -11,7 +11,9 @@ import {
   TextField,
   FormHelperText,
   InputAdornment,
-  IconButton
+  IconButton,
+  FormControlLabel,
+  Checkbox 
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useRouter } from 'next/navigation'
@@ -32,6 +34,7 @@ type AdminUser = {
   current_password: string;
   password: string;
   status: string;
+  is_super_admin: boolean;
 };
 
 type Valiant = 'success' | 'warning' | 'error' | 'info';
@@ -81,6 +84,7 @@ const Form = ({ is_new, id, adminUser }: Props) => {
       setValue("last_name", adminUser.last_name);
       setValue("email", adminUser.email);
       setValue("status", adminUser.status);
+      setValue("is_super_admin", adminUser.is_super_admin);
     }
   }, [is_new, adminUser, setValue]);
 
@@ -277,6 +281,24 @@ const Form = ({ is_new, id, adminUser }: Props) => {
                         <FormHelperText>{errors.status?.message}</FormHelperText>
                       </FormControl>
                     )}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item sm={6} />
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <Controller
+                    name="is_super_admin"
+                    control={control}
+                    render={({ field }) => <FormControlLabel
+                      control={
+                        <Checkbox
+                          {...field}
+                          checked={!!field.value}
+                        />
+                      }
+                      label="スーパー管理者"
+                    />}
                   />
                 </FormControl>
               </Grid>

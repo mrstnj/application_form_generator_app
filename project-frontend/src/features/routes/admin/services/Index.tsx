@@ -64,12 +64,16 @@ const Index = ({ servicesList }: Props) => {
   const handleDeleteService = async (id: number) => {
     await deleteService(id)
     setServices(services.filter((service) => service.id !== id));
+    handleOpenNotification('サービス情報を削除しました。', 'success')
   };
 
   const onSubmit = async (data: Service) => {
     const { result, response, errorText = '' } = await searchService(data)
     if (result) {
       setServices(response);
+      if (response.length == 0) {
+        handleOpenNotification('検索結果が0件でした。', 'info')
+      }
     } else {
       handleOpenNotification(errorText)
     }

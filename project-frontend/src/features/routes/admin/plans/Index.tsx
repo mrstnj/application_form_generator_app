@@ -76,12 +76,16 @@ const Index = ({ plansList, services }: Props) => {
   const handleDeletePlan = async (id: number) => {
     await deletePlan(id)
     setPlans(plans.filter((plan) => plan.id !== id));
+    handleOpenNotification('プラン情報を削除しました。', 'success')
   };
 
   const onSubmit = async (data: PlanParams) => {
     const { result, response, errorText = '' } = await searchPlan(data)
     if (result) {
       setPlans(response);
+      if (response.length == 0) {
+        handleOpenNotification('検索結果が0件でした。', 'info')
+      }
     } else {
       handleOpenNotification(errorText)
     }

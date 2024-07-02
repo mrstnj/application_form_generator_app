@@ -68,12 +68,16 @@ const Index = ({ adminUsersList }: Props) => {
   const handleDeleteAdminUser = async (id: number) => {
     await deleteAdminUser(id)
     setAdminUsers(adminUsers.filter((admin_user) => admin_user.id !== id));
+    handleOpenNotification('管理者情報を削除しました。', 'success')
   };
 
   const onSubmit = async (data: AdminUser) => {
     const { result, response, errorText = '' } = await searchAdminUser(data)
     if (result) {
       setAdminUsers(response);
+      if (response.length == 0) {
+        handleOpenNotification('検索結果が0件でした。', 'info')
+      }
     } else {
       handleOpenNotification(errorText)
     }

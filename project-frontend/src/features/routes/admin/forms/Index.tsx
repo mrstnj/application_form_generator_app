@@ -60,12 +60,16 @@ const Index = ({ formsList }: Props) => {
   const handleDeleteForm = async (id: number) => {
     await deleteForm(id)
     setForms(forms.filter((form) => form.id !== id));
+    handleOpenNotification('フォーム情報を削除しました。', 'success')
   };
 
   const onSubmit = async (data: Form) => {
     const { result, response, errorText = '' } = await searchForm(data)
     if (result) {
       setForms(response);
+      if (response.length == 0) {
+        handleOpenNotification('検索結果が0件でした。', 'info')
+      }
     } else {
       handleOpenNotification(errorText)
     }

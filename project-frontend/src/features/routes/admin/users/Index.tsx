@@ -78,7 +78,7 @@ const Index = ({ usersList, plans }: Props) => {
   const handleDeleteUser = async (id: number) => {
     await deleteUser(id)
     setUsers(users.filter((user) => user.id !== id));
-    handleOpenNotification('会員を削除しました。', 'success')
+    handleOpenNotification('会員情報を削除しました。', 'success')
   };
 
   const onSubmit = async (data: UserParams) => {

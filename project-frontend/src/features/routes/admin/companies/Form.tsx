@@ -73,6 +73,8 @@ const Form = ({ is_new, id, company = null }: Props) => {
     if (result) {
       router.push('/admin/companies');
       router.refresh();
+      const commit_message = is_new ? "企業情報を登録しました。" : "企業情報を更新しました。"
+      handleOpenNotification(commit_message, 'success')
     } else {
       handleOpenNotification(errorText)
     }

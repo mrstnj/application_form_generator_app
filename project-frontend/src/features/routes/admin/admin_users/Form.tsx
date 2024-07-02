@@ -89,6 +89,8 @@ const Form = ({ is_new, id, adminUser }: Props) => {
     if (result) {
       router.push('/admin/admin_users');
       router.refresh();
+      const commit_message = is_new ? "管理者情報を登録しました。" : "管理者情報を更新しました。"
+      handleOpenNotification(commit_message, 'success')
     } else {
       handleOpenNotification(errorText)
     }

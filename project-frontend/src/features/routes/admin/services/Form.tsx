@@ -88,6 +88,8 @@ const Form = ({ is_new, id, service }: Props) => {
     if (result) {
       router.push('/admin/services');
       router.refresh();
+      const commit_message = is_new ? "サービス情報を登録しました。" : "サービス情報を更新しました。"
+      handleOpenNotification(commit_message, 'success')
     } else {
       handleOpenNotification(errorText)
     }

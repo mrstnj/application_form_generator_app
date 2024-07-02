@@ -65,12 +65,16 @@ const Index = ({ companiesList }: Props) => {
   const handleDeleteCompany = async (id: number) => {
     await deleteCompany(id)
     setCompanies(companies.filter((company) => company.id !== id));
+    handleOpenNotification('企業情報を削除しました。', 'success')
   };
 
   const onSubmit = async (data: Company) => {
     const { result, response, errorText = '' } = await searchCompany(data)
     if (result) {
       setCompanies(response);
+      if (response.length == 0) {
+        handleOpenNotification('検索結果が0件でした。', 'info')
+      }
     } else {
       handleOpenNotification(errorText)
     }

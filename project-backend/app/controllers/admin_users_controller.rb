@@ -13,6 +13,10 @@ class AdminUsersController < AdminController
     render json: @admin_user, serializer: AdminUserSerializer, root: nil
   end
 
+  def fetch_current_user
+    render json: @current_admin, serializer: AdminUserSerializer, root: nil
+  end
+
   # POST /admin_users
   def create
     begin

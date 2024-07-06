@@ -8,7 +8,9 @@ Rails.application.routes.draw do
     get 'show_by_code', on: :collection
   end
   resources :sessions
-  resources :admin_users
+  resources :admin_users do
+    get 'fetch_current_user', on: :collection
+  end
   resources :companies do
     get 'show_by_code', on: :collection
   end

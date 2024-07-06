@@ -62,3 +62,14 @@ export async function deleteAdminUser(id: number) {
     } : {}
   });
 }
+
+export async function fetchCurrentUser() {
+  const accessToken = cookies().get('accessToken');
+  const res = await fetch(`${process.env.API_BASE_URL}/admin_users/fetch_current_user`, {
+    headers: accessToken ? {
+      'AccessToken': `${accessToken.value}`
+    } : {}
+  });
+  const response = await res.json();
+  return { response };
+}

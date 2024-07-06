@@ -27,6 +27,7 @@ import { updateAdminUser } from "@/actions/adminUser"
 
 type AdminUser = {
   id: number;
+  company_id?: number;
   code: string;
   first_name: string;
   last_name: string;
@@ -37,15 +38,21 @@ type AdminUser = {
   is_super_admin: boolean;
 };
 
+type Company = {
+  id: number;
+  name: string;
+};
+
 type Valiant = 'success' | 'warning' | 'error' | 'info';
 
 interface Props {
   is_new: boolean;
   id?: number;
   adminUser?: AdminUser | null;
+  companies?: Company[];
 }
 
-const Form = ({ is_new, id, adminUser }: Props) => {
+const Form = ({ is_new, id, adminUser, companies }: Props) => {
   const router = useRouter();
   const { control, handleSubmit, setValue, formState: { errors } } = useForm<AdminUser>();
 
@@ -109,6 +116,34 @@ const Form = ({ is_new, id, adminUser }: Props) => {
           </Typography>
           <div className="my-4">
             <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <FormControl fullWidth>
+                  <Controller
+                    name="company_id"
+                    control={control}
+                    defaultValue={companies?.[0].id}
+                    rules={{
+                      validate: {
+                        required: validators.required,
+                      }
+                    }}
+                    render={({ field }) => (
+                      <FormControl fullWidth error={Boolean(errors.company_id)}>
+                        <InputLabel>企業名</InputLabel>
+                        <Select
+                          {...field}
+                          label="企業名"
+                        >
+                          {companies?.map((company, index) => (
+                            <MenuItem key={index} value={company.id}>{company.name}</MenuItem>
+                          ))}
+                        </Select>
+                        <FormHelperText>{errors.company_id?.message}</FormHelperText>
+                      </FormControl>
+                    )}
+                  />
+                </FormControl>
+              </Grid>
               <Grid item xs={12}>
                 <FormControl fullWidth>
                   <Controller
@@ -297,7 +332,7 @@ const Form = ({ is_new, id, adminUser }: Props) => {
                           checked={!!field.value}
                         />
                       }
-                      label="スーパー管理者"
+                      label="システム管理者"
                     />}
                   />
                 </FormControl>

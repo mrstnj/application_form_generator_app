@@ -36,14 +36,14 @@ export default function RootLayout({
   
   return (
     <Box sx={{ display: 'flex' }} >
-      <AppBar open={open} handleDrawerOpen={handleDrawerOpen} />
-      <CustomDrawer open={open} handleDrawerClose={handleDrawerClose} />
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader />
-        <CurrentUserContext.Provider value={{ current_user: currentUser }}>
-          {children}
-        </CurrentUserContext.Provider>
-      </Box>
+      <CurrentUserContext.Provider value={{ current_user: currentUser }}>
+        <AppBar open={open} handleDrawerOpen={handleDrawerOpen} />
+        <CustomDrawer open={open} handleDrawerClose={handleDrawerClose} />
+        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+          <DrawerHeader />
+            {children}
+        </Box>
+      </CurrentUserContext.Provider>
     </Box>
   );
 }

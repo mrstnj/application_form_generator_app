@@ -4,12 +4,20 @@ import { cookies } from 'next/headers'
 import { errorHandle } from "@/common/utils/errorHandle";
 
 type AdminUser = {
+  company_id?: number;
   code: string;
   first_name: string;
   last_name: string;
   current_password?: string;
   password?: string;
   email: string;
+  status: string;
+};
+
+type AdminUserParams = {
+  code: string;
+  first_name: string;
+  last_name: string;
   status: string;
 };
 
@@ -35,7 +43,7 @@ export async function updateAdminUser(is_new: boolean, data: AdminUser, id?: num
   }
 }
 
-export async function searchAdminUser(data: AdminUser) {
+export async function searchAdminUser(data: AdminUserParams) {
   const accessToken = cookies().get('accessToken');
   try {
     const params = new URLSearchParams(data);

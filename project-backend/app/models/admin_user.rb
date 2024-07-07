@@ -5,6 +5,8 @@ class AdminUser < ApplicationRecord
 
   belongs_to :company
 
+  scope :scope_company, lambda{|company_id| where(company_id: company_id)}
+
   enum status: { deactivate: 0, activate: 1 }
 
   validates :code, uniqueness: true, length: { in: 1..20 }, :format => { :with => /\A[0-9a-zA-Z_]{1,20}\z/ }
@@ -17,7 +19,7 @@ class AdminUser < ApplicationRecord
     admin_user = nil
     ActiveRecord::Base::transaction do
       admin_user = self.new(params)
-      admin_user.company = company
+      admin_user.company = company unless admin_user.company.present?
       admin_user.save!
     end
     return admin_user

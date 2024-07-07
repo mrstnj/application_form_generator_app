@@ -334,6 +334,7 @@ const Form = ({ is_new, id, adminUser, companies }: Props) => {
                         <Checkbox
                           {...field}
                           checked={!!field.value}
+                          disabled={!current_user.is_super_admin}
                         />
                       }
                       label="システム管理者"

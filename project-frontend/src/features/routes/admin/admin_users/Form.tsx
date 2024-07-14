@@ -29,6 +29,7 @@ import { useCurrentUser } from '@/contexts/currentUserContext';
 type AdminUser = {
   id: number;
   company_id?: number;
+  company?: Company;
   code: string;
   first_name: string;
   last_name: string;
@@ -88,6 +89,7 @@ const Form = ({ is_new, id, adminUser, companies }: Props) => {
 
   useEffect(() => {
     if (!is_new && adminUser) {
+      setValue("company_id", adminUser.company?.id);
       setValue("code", adminUser.code);
       setValue("first_name", adminUser.first_name);
       setValue("last_name", adminUser.last_name);

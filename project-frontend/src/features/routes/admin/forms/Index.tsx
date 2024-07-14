@@ -21,8 +21,14 @@ import EditButton from "@/components/button/EditButton";
 import DeleteButton from "@/components/button/DeleteButton";
 import Notification from "@/components/notification/Notification";
 import { searchForm, deleteForm } from "@/actions/form";
+import { useCurrentUser } from '@/contexts/currentUserContext';
+
+type Company = {
+  name: string;
+}
 
 type Form = {
+  company: Company;
   id: number;
   name: string;
 };
@@ -34,6 +40,7 @@ interface Props {
 type Valiant = 'success' | 'warning' | 'error' | 'info';
 
 const Index = ({ formsList }: Props) => {
+  const { current_user } = useCurrentUser();
   const router = useRouter();
   const [forms, setForms] = useState<Form[]>(formsList);
   const [notification, setNotification] = useState({
@@ -111,6 +118,9 @@ const Index = ({ formsList }: Props) => {
           <Table align="center">
             <TableHead>
               <TableRow>
+                {current_user.is_super_admin &&
+                  <TableCell className="font-bold">企業名</TableCell>
+                }
                 <TableCell className="font-bold">フォーム名</TableCell>
                 <TableCell className="font-bold">アクション</TableCell>
               </TableRow>
@@ -119,6 +129,9 @@ const Index = ({ formsList }: Props) => {
               {forms.map((form) => {
                 return (
                   <TableRow key={form.id}>
+                    { current_user.is_super_admin &&
+                      <TableCell>{form.company.name}</TableCell>
+                    }
                     <TableCell>{form.name}</TableCell>
                     <TableCell>
                       <EditButton onClick={handleShowDetails} data={form.id} />

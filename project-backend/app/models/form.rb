@@ -2,6 +2,8 @@ class Form < ApplicationRecord
   belongs_to :company
   has_many :form_items, ->{order('form_items.position')}, dependent: :destroy
 
+  scope :scope_company, lambda{|company_id| where(company_id: company_id)}
+
   accepts_nested_attributes_for :form_items, allow_destroy: true
 
   validates_presence_of :name
@@ -10,7 +12,7 @@ class Form < ApplicationRecord
     form = nil
     ActiveRecord::Base::transaction do
       form = self.new(params)
-      form.company = company
+      form.company = company unless form.company.present?
       form.save!      
     end
     return form

@@ -4,6 +4,7 @@ import { cookies } from 'next/headers'
 import { errorHandle } from "@/common/utils/errorHandle";
 
 type AdminUser = {
+  company_code: string;
   code: string;
   password: string;
 };

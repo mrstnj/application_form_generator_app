@@ -87,7 +87,7 @@ const Form = () => {
                     }}
                     render={({ field }) => <TextField
                       {...field}
-                      label="企業ID"
+                      label="企業コード"
                       error={Boolean(errors.company_code)}
                       helperText={errors.company_code?.message}
                     />}

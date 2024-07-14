@@ -79,7 +79,7 @@ const Index = ({ formsList }: Props) => {
 
   return (
     <>
-      <Paper elevation={0} className="sm:mx-auto sm:max-w-prose mb-4">
+      <Paper elevation={0} className="max-w-full mb-4">
         <form onSubmit={handleSubmit(onSubmit)} className="p-8">
           <Typography variant="h6">
             フォーム検索
@@ -103,7 +103,7 @@ const Index = ({ formsList }: Props) => {
           </div>
         </form>  
       </Paper>
-      <Paper elevation={0} className="sm:mx-auto sm:max-w-prose mb-4">
+      <Paper elevation={0} className="max-w-full mb-4">
         <TableContainer className="p-8">
           <Typography variant="h6">
             フォーム一覧

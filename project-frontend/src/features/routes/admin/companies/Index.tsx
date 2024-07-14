@@ -84,7 +84,7 @@ const Index = ({ companiesList }: Props) => {
 
   return (
     <>
-      <Paper elevation={0} className="sm:mx-auto sm:max-w-prose mb-4">
+      <Paper elevation={0} className="max-w-full mb-4">
         <form onSubmit={handleSubmit(onSubmit)} className="p-8">
           <Typography variant="h6">
             企業検索
@@ -137,7 +137,7 @@ const Index = ({ companiesList }: Props) => {
           </div>
         </form>  
       </Paper>
-      <Paper elevation={0} className="sm:mx-auto sm:max-w-prose mb-4">
+      <Paper elevation={0} className="max-w-full mb-4">
         <TableContainer className="p-8">
           <Typography variant="h6">
             企業一覧

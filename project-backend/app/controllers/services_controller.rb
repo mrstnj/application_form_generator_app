@@ -5,6 +5,7 @@ class ServicesController < AdminController
   # GET /services
   def index
     @services = Service.all
+    @services = Service.scope_company(current_company.id) unless @current_admin.is_super_admin
     @services = @services.search(@services, params)
     render json: @services, each_serializer: ServiceSerializer, root: nil
   end

@@ -3,9 +3,11 @@ class Service < ApplicationRecord
   belongs_to :company
   has_many :plans
 
+  scope :scope_company, lambda{|company_id| where(company_id: company_id)}
+
   enum status: { deactivate: 0, activate: 1 }
 
-  validates :code, uniqueness: true, length: { in: 1..20 }, :format => { :with => /\A[0-9a-zA-Z_]{1,20}\z/ }
+  validates :code, uniqueness: { scope: :company_id }, length: { in: 1..20 }, :format => { :with => /\A[0-9a-zA-Z_]{1,20}\z/ }
   validates_presence_of :code, :name, :status
 
   mount_uploader :img, ImageUploader

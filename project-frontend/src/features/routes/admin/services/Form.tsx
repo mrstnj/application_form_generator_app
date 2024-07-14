@@ -20,14 +20,22 @@ import Notification from "@/components/notification/Notification";
 import * as validators from "@/common/utils/validate";
 import { updateService } from "@/actions/service"
 import MyDropzone from '@/components/dropzone/MyDropzone';
+import { useCurrentUser } from '@/contexts/currentUserContext';
 
 type Service = {
   id: number;
+  company_id?: number;
+  company?: Company;
   code: string;
   name: string;
   content: string;
   img?: string | Blob;
   status: string;
+};
+
+type Company = {
+  id: number;
+  name: string;
 };
 
 type Valiant = 'success' | 'warning' | 'error' | 'info';
@@ -36,9 +44,11 @@ interface Props {
   is_new: boolean;
   id?: number;
   service?: Service;
+  companies?: Company[];
 }
 
-const Form = ({ is_new, id, service }: Props) => {
+const Form = ({ is_new, id, service, companies }: Props) => {
+  const { current_user } = useCurrentUser();
   const router = useRouter();
   const { control, handleSubmit, setValue, watch, formState: { errors } } = useForm<Service>();
 
@@ -65,6 +75,7 @@ const Form = ({ is_new, id, service }: Props) => {
 
   const fetchData = useCallback(async () => {
     if (!is_new && service) {
+      setValue("company_id", service.company?.id);
       setValue("code", service.code);
       setValue("name", service.name);
       setValue("content", service.content);
@@ -106,6 +117,36 @@ const Form = ({ is_new, id, service }: Props) => {
           </Typography>
           <div className="my-4">
             <Grid container spacing={3}>
+              {current_user.is_super_admin &&
+                <Grid item xs={12}>
+                  <FormControl fullWidth>
+                    <Controller
+                      name="company_id"
+                      control={control}
+                      defaultValue={companies?.[0].id}
+                      rules={{
+                        validate: {
+                          required: validators.required,
+                        }
+                      }}
+                      render={({ field }) => (
+                        <FormControl fullWidth error={Boolean(errors.company_id)}>
+                          <InputLabel>企業名</InputLabel>
+                          <Select
+                            {...field}
+                            label="企業名"
+                          >
+                            {companies?.map((company, index) => (
+                              <MenuItem key={index} value={company.id}>{company.name}</MenuItem>
+                            ))}
+                          </Select>
+                          <FormHelperText>{errors.company_id?.message}</FormHelperText>
+                        </FormControl>
+                      )}
+                    />
+                  </FormControl>
+                </Grid>
+              }
               <Grid item xs={12}>
                 <FormControl fullWidth>
                   <Controller

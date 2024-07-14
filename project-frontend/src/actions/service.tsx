@@ -4,6 +4,7 @@ import { cookies } from 'next/headers'
 import { errorHandle } from "@/common/utils/errorHandle";
 
 type Service = {
+  company_id?: number;
   name: string;
   code: string;
   content: string;

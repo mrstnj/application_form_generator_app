@@ -15,7 +15,7 @@ class Service < ApplicationRecord
     ActiveRecord::Base::transaction do
       params[:img] = base64_conversion(params[:img]) if params[:img].present?
       service = self.new(params)
-      service.company = company
+      service.company = company unless service.company.present?
       service.save!
     end
     return service

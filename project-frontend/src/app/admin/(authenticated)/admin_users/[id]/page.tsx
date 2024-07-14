@@ -22,7 +22,6 @@ const AdminUserEdit = async ({ params }: Props) => {
     } : {}
   }).then((res) => res.json())
 
-
   return (
     <>
       <Form is_new={false} id={params.id} adminUser={admin_user} companies={companies} />

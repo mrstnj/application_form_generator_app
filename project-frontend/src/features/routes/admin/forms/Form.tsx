@@ -6,6 +6,10 @@ import {
   FormControl,
   Grid,
   TextField,
+  InputLabel,
+  Select,
+  FormHelperText,
+  MenuItem
 } from "@mui/material";
 import { useRouter } from 'next/navigation'
 import { useForm, Controller } from 'react-hook-form';
@@ -16,6 +20,7 @@ import Notification from "@/components/notification/Notification";
 import * as validators from "@/common/utils/validate";
 import { updateForm } from "@/actions/form"
 import FormItemList from "./components/FormItemList"
+import { useCurrentUser } from '@/contexts/currentUserContext';
 
 type FormItem = {
   id?: number;
@@ -25,8 +30,15 @@ type FormItem = {
   _destroy: boolean;
 };
 
+type Company = {
+  id: number;
+  name: string;
+};
+
 type Form = {
   id: number;
+  company_id?: number;
+  company?: Company;
   name: string;
   form_items_attributes: FormItem[];
 };
@@ -37,9 +49,11 @@ interface Props {
   is_new: boolean;
   id?: number;
   form?: Form;
+  companies?: Company[];
 }
 
-const Form = ({ is_new, id, form }: Props) => {
+const Form = ({ is_new, id, form, companies }: Props) => {
+  const { current_user } = useCurrentUser();
   const router = useRouter();
   const defaultValue = { name: "メールアドレス", form_type: "email", is_required: true, _destroy: false };
   const { control, handleSubmit, setValue, watch, formState: { errors } } = useForm<Form>({
@@ -71,6 +85,7 @@ const Form = ({ is_new, id, form }: Props) => {
 
   useEffect(() => {
     if (!is_new && form) {
+      setValue("company_id", form.company?.id);
       setValue("name", form.name);
     }
   }, [is_new, form, setValue]);
@@ -89,13 +104,43 @@ const Form = ({ is_new, id, form }: Props) => {
 
   return (
     <>
-      <Paper elevation={0} className="sm:mx-auto sm:max-w-prose mb-4">
+      <Paper elevation={0} className="max-w-full mb-4">
         <form onSubmit={handleSubmit(onSubmit)} className="p-8">
           <Typography variant="h6">
             {title}
           </Typography>
           <div className="my-4">
             <Grid container spacing={3}>
+            {current_user.is_super_admin &&
+                <Grid item xs={12}>
+                  <FormControl fullWidth>
+                    <Controller
+                      name="company_id"
+                      control={control}
+                      defaultValue={companies?.[0].id}
+                      rules={{
+                        validate: {
+                          required: validators.required,
+                        }
+                      }}
+                      render={({ field }) => (
+                        <FormControl fullWidth error={Boolean(errors.company_id)}>
+                          <InputLabel>企業名</InputLabel>
+                          <Select
+                            {...field}
+                            label="企業名"
+                          >
+                            {companies?.map((company, index) => (
+                              <MenuItem key={index} value={company.id}>{company.name}</MenuItem>
+                            ))}
+                          </Select>
+                          <FormHelperText>{errors.company_id?.message}</FormHelperText>
+                        </FormControl>
+                      )}
+                    />
+                  </FormControl>
+                </Grid>
+              }
               <Grid item xs={12}>
                 <FormControl fullWidth>
                   <Controller

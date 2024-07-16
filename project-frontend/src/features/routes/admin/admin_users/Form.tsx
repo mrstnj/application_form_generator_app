@@ -11,7 +11,9 @@ import {
   TextField,
   FormHelperText,
   InputAdornment,
-  IconButton
+  IconButton,
+  FormControlLabel,
+  Checkbox 
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useRouter } from 'next/navigation'
@@ -22,9 +24,12 @@ import BackButton from "@/components/button/BackButton";
 import Notification from "@/components/notification/Notification";
 import * as validators from "@/common/utils/validate";
 import { updateAdminUser } from "@/actions/adminUser"
+import { useCurrentUser } from '@/contexts/currentUserContext';
 
 type AdminUser = {
   id: number;
+  company_id?: number;
+  company?: Company;
   code: string;
   first_name: string;
   last_name: string;
@@ -32,6 +37,12 @@ type AdminUser = {
   current_password: string;
   password: string;
   status: string;
+  is_super_admin: boolean;
+};
+
+type Company = {
+  id: number;
+  name: string;
 };
 
 type Valiant = 'success' | 'warning' | 'error' | 'info';
@@ -40,9 +51,11 @@ interface Props {
   is_new: boolean;
   id?: number;
   adminUser?: AdminUser | null;
+  companies?: Company[];
 }
 
-const Form = ({ is_new, id, adminUser }: Props) => {
+const Form = ({ is_new, id, adminUser, companies }: Props) => {
+  const { current_user } = useCurrentUser();
   const router = useRouter();
   const { control, handleSubmit, setValue, formState: { errors } } = useForm<AdminUser>();
 
@@ -76,11 +89,13 @@ const Form = ({ is_new, id, adminUser }: Props) => {
 
   useEffect(() => {
     if (!is_new && adminUser) {
+      setValue("company_id", adminUser.company?.id);
       setValue("code", adminUser.code);
       setValue("first_name", adminUser.first_name);
       setValue("last_name", adminUser.last_name);
       setValue("email", adminUser.email);
       setValue("status", adminUser.status);
+      setValue("is_super_admin", adminUser.is_super_admin);
     }
   }, [is_new, adminUser, setValue]);
 
@@ -98,13 +113,43 @@ const Form = ({ is_new, id, adminUser }: Props) => {
 
   return (
     <>
-      <Paper elevation={0} className="sm:mx-auto sm:max-w-prose mb-4">
+      <Paper elevation={0} className="max-w-full mb-4">
         <form onSubmit={handleSubmit(onSubmit)} className="p-8">
           <Typography variant="h6">
             {title}
           </Typography>
           <div className="my-4">
             <Grid container spacing={3}>
+              {current_user.is_super_admin &&
+                <Grid item xs={12}>
+                  <FormControl fullWidth>
+                    <Controller
+                      name="company_id"
+                      control={control}
+                      defaultValue={companies?.[0].id}
+                      rules={{
+                        validate: {
+                          required: validators.required,
+                        }
+                      }}
+                      render={({ field }) => (
+                        <FormControl fullWidth error={Boolean(errors.company_id)}>
+                          <InputLabel>企業名</InputLabel>
+                          <Select
+                            {...field}
+                            label="企業名"
+                          >
+                            {companies?.map((company, index) => (
+                              <MenuItem key={index} value={company.id}>{company.name}</MenuItem>
+                            ))}
+                          </Select>
+                          <FormHelperText>{errors.company_id?.message}</FormHelperText>
+                        </FormControl>
+                      )}
+                    />
+                  </FormControl>
+                </Grid>
+              }
               <Grid item xs={12}>
                 <FormControl fullWidth>
                   <Controller
@@ -277,6 +322,25 @@ const Form = ({ is_new, id, adminUser }: Props) => {
                         <FormHelperText>{errors.status?.message}</FormHelperText>
                       </FormControl>
                     )}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item sm={6} />
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <Controller
+                    name="is_super_admin"
+                    control={control}
+                    render={({ field }) => <FormControlLabel
+                      control={
+                        <Checkbox
+                          {...field}
+                          checked={!!field.value}
+                          disabled={!current_user.is_super_admin}
+                        />
+                      }
+                      label="システム管理者"
+                    />}
                   />
                 </FormControl>
               </Grid>

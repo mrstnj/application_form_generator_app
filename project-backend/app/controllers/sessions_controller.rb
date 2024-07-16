@@ -1,11 +1,12 @@
 class SessionsController < AdminController
   before_action :set_session, only: %i[ destroy ]
   before_action :authenticate_token, only: %i[ destroy ]
+  before_action :set_company, only: %i[ create ]
 
   # POST /sessions
   def create
     begin
-      admin_user = AdminUser.authenticate_with_lock(session_params[:code], session_params[:password])
+      admin_user = AdminUser.scope_company(@company.id).authenticate_with_lock(session_params[:code], session_params[:password])
       return render_error('Invalid code or password', 400) unless admin_user.present?
       admin_user.issue_access_token
       render json: admin_user, serializer: AdminUserSerializer, root: nil, is_session: true
@@ -22,6 +23,11 @@ class SessionsController < AdminController
   end
 
   private
+    def set_company
+      @company = Company.find_by_code(session_params[:company_code])
+      return render_error('Company not found', 400) unless @company.present?
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_session
       @session = Session.find(params[:id])
@@ -29,6 +35,6 @@ class SessionsController < AdminController
 
     # Only allow a list of trusted parameters through.
     def session_params
-      params.require(:session).permit(:code, :password)
+      params.require(:session).permit(:company_code, :code, :password)
     end
 end

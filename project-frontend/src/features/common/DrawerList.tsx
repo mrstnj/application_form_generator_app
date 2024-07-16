@@ -8,13 +8,16 @@ import {
   Collapse
 } from "@mui/material";
 import { useState } from "react";
-import drawerItems from '@/common/utils/drawerItems';
+import DrawerItems from '@/common/utils/drawerItems';
+import { useCurrentUser } from '@/contexts/currentUserContext';
 
 interface Props {
   handleDrawerClose: () => void;
 }
 
 const DrawerList = ({ handleDrawerClose }: Props): JSX.Element => {
+  const { current_user } = useCurrentUser();
+  const drawerItems = DrawerItems(current_user);
   const [openLists, setOpenLists] = useState<number[]>([]);
 
   const handleClick = (index: number) => {

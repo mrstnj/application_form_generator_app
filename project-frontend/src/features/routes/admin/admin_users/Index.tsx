@@ -24,10 +24,15 @@ import EditButton from "@/components/button/EditButton";
 import DeleteButton from "@/components/button/DeleteButton";
 import Notification from "@/components/notification/Notification";
 import { searchAdminUser, deleteAdminUser } from "@/actions/adminUser"
+import { useCurrentUser } from '@/contexts/currentUserContext';
 
+type Company = {
+  name: string;
+}
 
 type AdminUser = {
   id: number;
+  company: Company;
   code: string;
   first_name: string;
   last_name: string;
@@ -42,6 +47,7 @@ interface Props {
 type Valiant = 'success' | 'warning' | 'error' | 'info';
 
 const Index = ({ adminUsersList }: Props) => {
+  const { current_user } = useCurrentUser();
   const router = useRouter();
   const [adminUsers, setAdminUsers] = useState<AdminUser[]>(adminUsersList);
   const [notification, setNotification] = useState({
@@ -87,7 +93,7 @@ const Index = ({ adminUsersList }: Props) => {
 
   return (
     <>
-      <Paper elevation={0} className="sm:mx-auto sm:max-w-prose mb-4">
+      <Paper elevation={0} className="max-w-full mb-4">
         <form onSubmit={handleSubmit(onSubmit)} className="p-8">
           <Typography variant="h6">
             管理者検索
@@ -150,7 +156,7 @@ const Index = ({ adminUsersList }: Props) => {
           </div>
         </form>  
       </Paper>
-      <Paper elevation={0} className="sm:mx-auto sm:max-w-prose mb-4">
+      <Paper elevation={0} className="max-w-full mb-4">
         <TableContainer className="p-8">
           <Typography variant="h6">
             管理者一覧
@@ -158,6 +164,9 @@ const Index = ({ adminUsersList }: Props) => {
           <Table align="center">
             <TableHead>
               <TableRow>
+                {current_user.is_super_admin &&
+                  <TableCell className="font-bold">企業名</TableCell>
+                }
                 <TableCell className="font-bold">管理者コード</TableCell>
                 <TableCell className="font-bold">姓</TableCell>
                 <TableCell className="font-bold">名</TableCell>
@@ -169,6 +178,9 @@ const Index = ({ adminUsersList }: Props) => {
               {adminUsers.map((admin_user) => {
                 return (
                   <TableRow key={admin_user.id}>
+                    { current_user.is_super_admin &&
+                      <TableCell>{admin_user.company.name}</TableCell>
+                    }
                     <TableCell>{admin_user.code}</TableCell>
                     <TableCell>{admin_user.last_name}</TableCell>
                     <TableCell>{admin_user.first_name}</TableCell>

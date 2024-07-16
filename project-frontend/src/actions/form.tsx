@@ -12,6 +12,7 @@ type FormItem = {
 };
 
 type Form = {
+  company_id?: number;
   name: string;
   form_items_attributes: FormItem[];
 };

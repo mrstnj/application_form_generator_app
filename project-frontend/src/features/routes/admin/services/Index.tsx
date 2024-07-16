@@ -24,9 +24,15 @@ import EditButton from "@/components/button/EditButton";
 import DeleteButton from "@/components/button/DeleteButton";
 import Notification from "@/components/notification/Notification";
 import { searchService, deleteService } from "@/actions/service"
+import { useCurrentUser } from '@/contexts/currentUserContext';
+
+type Company = {
+  name: string;
+}
 
 type Service = {
   id: number;
+  company: Company;
   name: string;
   status: string;
 };
@@ -38,6 +44,7 @@ interface Props {
 type Valiant = 'success' | 'warning' | 'error' | 'info';
 
 const Index = ({ servicesList }: Props) => {
+  const { current_user } = useCurrentUser();
   const router = useRouter();
   const [services, setServices] = useState<Service[]>(servicesList);
   const [notification, setNotification] = useState({
@@ -83,7 +90,7 @@ const Index = ({ servicesList }: Props) => {
 
   return (
     <>
-      <Paper elevation={0} className="sm:mx-auto sm:max-w-prose mb-4">
+      <Paper elevation={0} className="max-w-full mb-4">
         <form onSubmit={handleSubmit(onSubmit)} className="p-8">
           <Typography variant="h6">
             サービス検索
@@ -126,7 +133,7 @@ const Index = ({ servicesList }: Props) => {
           </div>
         </form>  
       </Paper>
-      <Paper elevation={0} className="sm:mx-auto sm:max-w-prose mb-4">
+      <Paper elevation={0} className="max-w-full mb-4">
         <TableContainer className="p-8">
           <Typography variant="h6">
             サービス一覧
@@ -134,6 +141,9 @@ const Index = ({ servicesList }: Props) => {
           <Table align="center">
             <TableHead>
               <TableRow>
+                {current_user.is_super_admin &&
+                  <TableCell className="font-bold">企業名</TableCell>
+                }
                 <TableCell className="font-bold">サービス名</TableCell>
                 <TableCell className="font-bold">ステータス</TableCell>
                 <TableCell className="font-bold">アクション</TableCell>
@@ -143,6 +153,9 @@ const Index = ({ servicesList }: Props) => {
               {services.map((service) => {
                 return (
                   <TableRow key={service.id}>
+                    { current_user.is_super_admin &&
+                      <TableCell>{service.company.name}</TableCell>
+                    }
                     <TableCell>{service.name}</TableCell>
                     <TableCell>{service.status == "activate" ? '有効' : '無効'}</TableCell>
                     <TableCell>

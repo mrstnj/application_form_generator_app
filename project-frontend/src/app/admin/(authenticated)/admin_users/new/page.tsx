@@ -1,10 +1,18 @@
+import { cookies } from 'next/headers'
 import Form from '@/features/routes/admin/admin_users/Form'
 
-const AdminUserCreate = () => {
+const AdminUserCreate = async() => {
+  const accessToken = cookies().get('accessToken');
+  const companies = await fetch(`${process.env.API_BASE_URL}/companies`, { 
+    cache: 'no-store',
+    headers: accessToken ? {
+      'AccessToken': `${accessToken.value}`
+    } : {}
+  }).then((res) => res.json())
 
   return (
     <>
-      <Form is_new={true} />
+      <Form is_new={true} companies={companies} />
     </>
   );
 };

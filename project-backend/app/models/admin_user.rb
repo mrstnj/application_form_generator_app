@@ -5,9 +5,11 @@ class AdminUser < ApplicationRecord
 
   belongs_to :company
 
+  scope :scope_company, lambda{|company_id| where(company_id: company_id)}
+
   enum status: { deactivate: 0, activate: 1 }
 
-  validates :code, uniqueness: true, length: { in: 1..20 }, :format => { :with => /\A[0-9a-zA-Z_]{1,20}\z/ }
+  validates :code, uniqueness: { scope: :company_id }, length: { in: 1..20 }, :format => { :with => /\A[0-9a-zA-Z_]{1,20}\z/ }
   validates :email, :format => { :with => /\A[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\z/ }
   validates :password, allow_blank: true, length: { in: 8..50 }, :format => { :with => /\A(?=.*[0-9])(?=.*[a-zA-Z])[0-9a-zA-Z]{8,50}\z/ }
   validates :password, presence: true, on: :create
@@ -17,7 +19,7 @@ class AdminUser < ApplicationRecord
     admin_user = nil
     ActiveRecord::Base::transaction do
       admin_user = self.new(params)
-      admin_user.company = company
+      admin_user.company = company unless admin_user.company.present?
       admin_user.save!
     end
     return admin_user

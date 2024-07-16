@@ -19,6 +19,7 @@ import { login } from "@/actions/session"
 
 type AdminUser = {
   id: number;
+  company_code: string;
   code: string;
   password: string;
 };
@@ -73,6 +74,26 @@ const Form = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="p-8">
           <div className="my-4">
             <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <FormControl fullWidth>
+                  <Controller
+                    name="company_code"
+                    control={control}
+                    defaultValue=""
+                    rules={{
+                      validate: {
+                        required: validators.required
+                      }
+                    }}
+                    render={({ field }) => <TextField
+                      {...field}
+                      label="企業コード"
+                      error={Boolean(errors.company_code)}
+                      helperText={errors.company_code?.message}
+                    />}
+                  />
+                </FormControl>
+              </Grid>
               <Grid item xs={12}>
                 <FormControl fullWidth>
                   <Controller

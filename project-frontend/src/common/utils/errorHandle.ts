@@ -10,6 +10,9 @@ export const errorHandle = (error: any): string => {
   case 'Invalid code or password':
     errorText = "ログインIDもしくはパスワードが間違っています。";
     break;
+  case 'Company not found':
+    errorText = "企業IDが間違っています。";
+    break;
   case 'User is locked':
     errorText = "連続して不正なパスワードが入力されたため、アカウントをロックしました。";
     break;

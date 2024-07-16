@@ -4,6 +4,7 @@ class AdminUsersController < AdminController
   # GET /admin_users
   def index
     @admin_users = AdminUser.all
+    @admin_users = AdminUser.scope_company(current_company.id) unless @current_admin.is_super_admin
     @admin_users = @admin_users.search(@admin_users, params)
     render json: @admin_users, each_serializer: AdminUserSerializer, root: nil
   end
@@ -11,6 +12,10 @@ class AdminUsersController < AdminController
   # GET /admin_users/1
   def show
     render json: @admin_user, serializer: AdminUserSerializer, root: nil
+  end
+
+  def fetch_current_user
+    render json: @current_admin, serializer: AdminUserSerializer, root: nil
   end
 
   # POST /admin_users
@@ -54,6 +59,6 @@ class AdminUsersController < AdminController
 
     # Only allow a list of trusted parameters through.
     def admin_user_params
-      params.require(:admin_user).permit(:code, :first_name, :last_name, :current_password, :password, :email, :status)
+      params.require(:admin_user).permit(:company_id, :code, :first_name, :last_name, :current_password, :password, :email, :status, :is_super_admin)
     end
 end

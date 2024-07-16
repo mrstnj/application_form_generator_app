@@ -5,6 +5,7 @@ class FormsController < AdminController
   # GET /forms
   def index
     @forms = Form.all
+    @forms = Form.scope_company(current_company.id) unless @current_admin.is_super_admin
     @forms = @forms.search(@forms, params)
     render json: @forms, each_serializer: FormSerializer, root: nil
   end

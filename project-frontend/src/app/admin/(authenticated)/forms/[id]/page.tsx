@@ -15,10 +15,16 @@ const FormEdit = async ({ params }: Props) => {
       'AccessToken': `${accessToken.value}`
     } : {}
   }).then((res) => res.json())
+  const companies = await fetch(`${process.env.API_BASE_URL}/companies`, { 
+    cache: 'no-store',
+    headers: accessToken ? {
+      'AccessToken': `${accessToken.value}`
+    } : {}
+  }).then((res) => res.json())
 
   return (
     <>
-      <Form is_new={false} id={params.id} form={form} />
+      <Form is_new={false} id={params.id} form={form} companies={companies} />
     </>
   );
 };

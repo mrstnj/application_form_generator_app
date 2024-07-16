@@ -2,6 +2,11 @@ class User < ApplicationRecord
   has_many :user_plans
   has_many :plans, through: :user_plans
 
+  scope :scope_company, ->(company_id) {
+    joins(user_plans: { plan: :service })
+      .where(services: { company_id: company_id })
+  }
+
   validates :email, :format => { :with => /\A[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\z/ }
   validates_presence_of :email
 

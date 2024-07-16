@@ -4,6 +4,10 @@ class Plan < ApplicationRecord
   has_many :user_plans
   has_many :users, through: :user_plans
 
+  scope :scope_company, ->(company_id) {
+    joins(:service).where(services: { company_id: company_id })
+  }
+
   enum status: { deactivate: 0, activate: 1 }
 
   validates_presence_of :service_id, :name, :status

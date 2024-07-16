@@ -5,6 +5,7 @@ class UsersController < AdminController
   # GET /users
   def index
     @users = User.all
+    @users = User.scope_company(current_company.id) unless @current_admin.is_super_admin
     @users = @users.search(@users, params)
     render json: @users, each_serializer: UserSerializer, root: nil
   end

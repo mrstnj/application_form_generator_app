@@ -5,6 +5,7 @@ class PlansController < AdminController
   # GET /plans
   def index
     @plans = Plan.all
+    @plans = Plan.scope_company(current_company.id) unless @current_admin.is_super_admin
     @plans = @plans.search(@plans, params)
     render json: @plans, each_serializer: PlanSerializer, root: nil
   end

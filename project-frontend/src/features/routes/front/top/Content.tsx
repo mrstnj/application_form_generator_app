@@ -66,10 +66,16 @@ const Content = ({ services, company_code }: Props) => {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-      <Grid container spacing={2}>
-        {services.map((service, index) => (
-          <ServiceCard service={service} company_code={company_code} key={index}/>
-        ))}
+        <Grid container spacing={2}>
+          {services.length == 0 ? (
+            <Grid item xs={12}>
+              取り扱いのサービスが現在ありません。
+            </Grid>
+          ) : (
+            services.map((service, index) => (
+              <ServiceCard service={service} company_code={company_code} key={index}/>
+            ))
+          )}
         </Grid>
       </CustomTabPanel>
       {/* <CustomTabPanel value={value} index={1}>

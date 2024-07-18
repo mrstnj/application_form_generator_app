@@ -29,11 +29,17 @@ const ServiceTop = async({ params }: Props) => {
         <ServiceInfo service={service} />
         <Box className="p-8">
           <Grid container spacing={2}>
-            {service.plans_attributes.map( (plan: Plan, index: number) => {
-              return (
-                <PlanCard company_code={params.company_code} service_code={params.service_code} plan={plan} key={index} />
-              )
-            })}
+            {service.plans_attributes.length == 0 ? (
+              <Grid item xs={12}>
+                取り扱いのプランが現在ありません。
+              </Grid>
+            ) : (
+              service.plans_attributes.map( (plan: Plan, index: number) => {
+                return (
+                  <PlanCard company_code={params.company_code} service_code={params.service_code} plan={plan} key={index} />
+                )
+              })
+            )}
           </Grid>
         </Box>
       </Paper>

@@ -28,7 +28,7 @@ const ServiceCard = ({ service, company_code }: Props) => {
         <CardActionArea href={`/front/${company_code}/${service.code}`}>
           <CardMedia
             sx={{ height: 140 }}
-            image={service.img}
+            image={service.img || "/img/no_image.jpeg"}
             title="service"
           />
           <CardContent>

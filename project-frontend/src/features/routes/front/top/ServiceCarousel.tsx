@@ -4,6 +4,7 @@ import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/splide/css';
 import Box from '@mui/material/Box';
 import { useMediaQuery } from '@mui/material';
+import Image from 'next/image'
 
 type Service = {
   id: number;
@@ -34,7 +35,10 @@ const ServiceCarousel = ({ services }: Props) => {
       >
         {services.map(service => (
           <SplideSlide key={service.id} className="flex justify-center items-center">
-            <img className="slide-img" src={service.img} alt={service.name}/>
+            {service.img ?
+              <img className="slide-img" src={service.img} alt={service.name}/> :
+              <Image src="/img/no_image.jpeg" alt="My Image" width={300} height={300} />
+            }
             <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2">
               {service.name}
             </div>

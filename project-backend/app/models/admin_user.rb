@@ -5,7 +5,7 @@ class AdminUser < ApplicationRecord
 
   belongs_to :company
 
-  scope :scope_company, lambda{|company_id| where(company_id: company_id)}
+  scope :scope_company, lambda{|company_id| where(company_id: company_id, status: "activate")}
 
   enum status: { deactivate: 0, activate: 1 }
 

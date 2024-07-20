@@ -3,7 +3,7 @@ import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import BusinessIcon from '@mui/icons-material/Business';
 import ListIcon from '@mui/icons-material/List';
 import CreateIcon from '@mui/icons-material/Create';
-import RedeemIcon from '@mui/icons-material/Redeem';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import FeedIcon from '@mui/icons-material/Feed';
 import PersonIcon from '@mui/icons-material/Person';
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -62,7 +62,7 @@ const DrawerItems = ( current_user: CurrentUser ) => {
     },
     {
       name: "プラン管理",
-      icon: <RedeemIcon />,
+      icon: <LocalOfferIcon />,
       child: [
         {
           name: "プラン一覧",

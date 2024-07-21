@@ -1,5 +1,6 @@
 import ServiceCarousel from '@/features/routes/front/top/ServiceCarousel'
 import Content from '@/features/routes/front/top/Content'
+import { redirect } from 'next/navigation'
 
 type Service = {
   status: string;
@@ -13,6 +14,9 @@ interface Props {
 
 const Top = async({ params }: Props) => {
   const company = await fetch(`${process.env.API_BASE_URL}/companies/show_by_code?code=${params.company_code}`, {cache: 'no-store'}).then((res) => res.json())
+  if (!company) {
+    redirect('/not_found')
+  }
   const services = company.services_attributes.filter((service: Service) => service.status === 'activate')
 
   return (

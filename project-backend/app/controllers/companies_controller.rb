@@ -16,7 +16,11 @@ class CompaniesController < AdminController
 
   def show_by_code
     @company = Company.find_by(code: params[:code])
-    render json: @company, serializer: CompanySerializer, root: nil
+    if @company.present?
+      render json: @company, serializer: CompanySerializer, root: nil
+    else
+      render json: nil
+    end
   end
 
   # POST /companies

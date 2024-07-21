@@ -5,6 +5,7 @@ import {
 } from '@mui/material';
 import ServiceInfo from '@/features/routes/front/service/ServiceInfo'
 import PlanCard from '@/features/routes/front/service/PlanCard';
+import { redirect } from 'next/navigation'
 
 type Plan = {
   id: number;
@@ -22,6 +23,9 @@ interface Props {
 
 const ServiceTop = async({ params }: Props) => {
   const service = await fetch(`${process.env.API_BASE_URL}/services/show_by_code?code=${params.service_code}`, {cache: 'no-store'}).then((res) => res.json())
+  if (!service) {
+    redirect('/not_found')
+  }
   const plans = service.plans_attributes.filter((plan: Plan) => plan.status === 'activate')
   
   return (

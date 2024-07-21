@@ -3,6 +3,7 @@ import {
 } from '@mui/material';
 import PlanInfo from '@/features/routes/front/plan/PlanInfo'
 import PlanForm from '@/features/routes/front/plan/PlanForm'
+import { redirect } from 'next/navigation'
 
 interface Props {
   params: {
@@ -14,6 +15,9 @@ interface Props {
 
 const PlanTop = async({ params }: Props) => {
   const plan = await fetch(`${process.env.API_BASE_URL}/plans/${params.plan_id}`, {cache: 'no-store'}).then((res) => res.json())
+  if (!plan) {
+    redirect('/not_found')
+  }
   const form = await fetch(`${process.env.API_BASE_URL}/forms/${plan.form.id}`, {cache: 'no-store'}).then((res) => res.json())
 
   return (

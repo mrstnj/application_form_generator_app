@@ -17,7 +17,11 @@ class ServicesController < AdminController
 
   def show_by_code
     @service = Service.find_by(code: params[:code])
-    render json: @service, serializer: ServiceSerializer, root: nil
+    if @service.present?
+      render json: @service, serializer: ServiceSerializer, root: nil
+    else
+      render json: nil
+    end
   end
 
   # POST /services

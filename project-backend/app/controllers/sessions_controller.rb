@@ -24,7 +24,7 @@ class SessionsController < AdminController
 
   private
     def set_company
-      @company = Company.find_by_code(session_params[:company_code])
+      @company = Company.where(status: "activate").find_by_code(session_params[:company_code])
       return render_error('Company not found', 400) unless @company.present?
     end
 

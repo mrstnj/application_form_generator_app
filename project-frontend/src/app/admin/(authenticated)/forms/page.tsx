@@ -9,10 +9,16 @@ const FormIndex = async () => {
       'AccessToken': `${accessToken.value}`
     } : {}
   }).then((res) => res.json())
+  const companies = await fetch(`${process.env.API_BASE_URL}/companies`, { 
+    cache: 'no-store',
+    headers: accessToken ? {
+      'AccessToken': `${accessToken.value}`
+    } : {}
+  }).then((res) => res.json())
 
   return (
     <>
-      <Index formsList={forms} />
+      <Index formsList={forms} companies={companies} />
     </>
   );
 };

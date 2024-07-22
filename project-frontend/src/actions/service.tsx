@@ -13,6 +13,7 @@ type Service = {
 };
 
 type ServiceParams = {
+  company_name: string;
   name: string;
   status: string;
 }

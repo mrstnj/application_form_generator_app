@@ -32,6 +32,7 @@ class Service < ApplicationRecord
   end
 
   def self.search(services, params)
+    services = services.joins(:company).where(company: { name: params[:company_name] }) if params[:company_name].present?
     services = services.where("name LIKE ?", "%#{params[:name]}%") if params[:name].present?
     services = services.where(status: params[:status]) if params[:status].present?
     return services.order(created_at: "desc")

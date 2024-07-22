@@ -48,6 +48,6 @@ class FormsController < AdminController
 
     # Only allow a list of trusted parameters through.
     def form_params
-      params.require(:form).permit(:company_id, :name, form_items_attributes: [:id, :name, :form_type, :is_required, :position, :_destroy])
+      params.require(:form).permit(:company_id, :name, :company_name, form_items_attributes: [:id, :name, :form_type, :is_required, :position, :_destroy])
     end
 end

@@ -26,6 +26,7 @@ class Form < ApplicationRecord
   end
 
   def self.search(forms, params)
+    forms = forms.joins(:company).where(company: { name: params[:company_name] }) if params[:company_name].present?
     forms = forms.where("name LIKE ?", "%#{params[:name]}%") if params[:name].present?
     return forms.order(created_at: "desc")
   end

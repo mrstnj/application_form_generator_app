@@ -15,6 +15,7 @@ type AdminUser = {
 };
 
 type AdminUserParams = {
+  company_name: string;
   code: string;
   first_name: string;
   last_name: string;

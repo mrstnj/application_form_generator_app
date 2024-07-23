@@ -33,6 +33,7 @@ class AdminUser < ApplicationRecord
   end
 
   def self.search(admin_users, params)
+    admin_users = admin_users.joins(:company).where(company: { name: params[:company_name] }) if params[:company_name].present?
     admin_users = admin_users.where("code LIKE ?", "%#{params[:code]}%") if params[:code].present?
     admin_users = admin_users.where("first_name LIKE ?", "%#{params[:first_name]}%") if params[:first_name].present?
     admin_users = admin_users.where("last_name LIKE ?", "%#{params[:last_name]}%") if params[:last_name].present?

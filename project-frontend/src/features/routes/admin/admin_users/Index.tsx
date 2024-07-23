@@ -33,6 +33,7 @@ type Company = {
 type AdminUser = {
   id: number;
   company: Company;
+  company_name: string;
   code: string;
   first_name: string;
   last_name: string;
@@ -42,11 +43,12 @@ type AdminUser = {
 
 interface Props {
   adminUsersList: AdminUser[];
+  companies: Company[];
 }
 
 type Valiant = 'success' | 'warning' | 'error' | 'info';
 
-const Index = ({ adminUsersList }: Props) => {
+const Index = ({ adminUsersList, companies }: Props) => {
   const { current_user } = useCurrentUser();
   const router = useRouter();
   const [adminUsers, setAdminUsers] = useState<AdminUser[]>(adminUsersList);
@@ -100,6 +102,27 @@ const Index = ({ adminUsersList }: Props) => {
           </Typography>
           <div className="my-4">
             <Grid container spacing={3}>
+              { current_user.is_super_admin &&
+                <Grid item xs={12}>
+                  <FormControl fullWidth>
+                    <Controller
+                      name="company_name"
+                      control={control}
+                      defaultValue=""
+                      render={({ field }) => (
+                        <FormControl fullWidth>
+                          <InputLabel>企業</InputLabel>
+                          <Select {...field} label="企業">
+                            {companies.map((company, index) => (
+                              <MenuItem key={index} value={company.name}>{company.name}</MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+                      )}
+                    />
+                  </FormControl>
+                </Grid>
+              }
               <Grid item xs={12}>
                 <FormControl fullWidth>
                   <Controller

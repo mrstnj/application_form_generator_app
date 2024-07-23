@@ -35,7 +35,7 @@ RSpec.describe AdminUser, type: :model do
       end
       context 'コードが重複している場合' do
         it 'エラーになること' do
-          FactoryBot.create(:admin_user, code: subject.code)
+          FactoryBot.create(:admin_user, code: subject.code, company: subject.company)
           expect(subject).not_to be_valid
         end
       end
@@ -167,6 +167,11 @@ RSpec.describe AdminUser, type: :model do
 
     context 'search' do 
       subject {FactoryBot.create(:admin_user)}
+      it 'company' do
+        params = {}
+        params[:company_name] = subject.company.name
+        expect(AdminUser.search(AdminUser, params).present?).to be_truthy
+      end
       it 'code' do
         params = {}
         params[:code] = subject.code

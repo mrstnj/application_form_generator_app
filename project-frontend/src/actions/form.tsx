@@ -18,6 +18,7 @@ type Form = {
 };
 
 type FormParams = {
+  company_name: string;
   name: string;
 }
 

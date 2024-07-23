@@ -12,6 +12,9 @@ import {
   FormControl,
   Grid,
   TextField,
+  InputLabel,
+  Select,
+  MenuItem
 } from "@mui/material";
 import { useRouter } from 'next/navigation'
 import { useForm, Controller } from 'react-hook-form';
@@ -29,17 +32,19 @@ type Company = {
 
 type Form = {
   company: Company;
+  company_name: string;
   id: number;
   name: string;
 };
 
 interface Props {
   formsList: Form[];
+  companies: Company[];
 }
 
 type Valiant = 'success' | 'warning' | 'error' | 'info';
 
-const Index = ({ formsList }: Props) => {
+const Index = ({ formsList, companies }: Props) => {
   const { current_user } = useCurrentUser();
   const router = useRouter();
   const [forms, setForms] = useState<Form[]>(formsList);
@@ -93,6 +98,27 @@ const Index = ({ formsList }: Props) => {
           </Typography>
           <div className="my-4">
             <Grid container spacing={3}>
+              { current_user.is_super_admin &&
+                <Grid item xs={12}>
+                  <FormControl fullWidth>
+                    <Controller
+                      name="company_name"
+                      control={control}
+                      defaultValue=""
+                      render={({ field }) => (
+                        <FormControl fullWidth>
+                          <InputLabel>企業</InputLabel>
+                          <Select {...field} label="企業">
+                            {companies.map((company, index) => (
+                              <MenuItem key={index} value={company.name}>{company.name}</MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+                      )}
+                    />
+                  </FormControl>
+                </Grid>
+              }
               <Grid item xs={12}>
                 <FormControl fullWidth>
                   <Controller

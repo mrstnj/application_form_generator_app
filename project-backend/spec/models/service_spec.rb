@@ -35,7 +35,7 @@ RSpec.describe Service, type: :model do
       end
       context 'コードが重複している場合' do
         it 'エラーになること' do
-          FactoryBot.create(:service, code: subject.code)
+          FactoryBot.create(:service, code: subject.code, company: subject.company)
           expect(subject).not_to be_valid
         end
       end
@@ -102,6 +102,11 @@ RSpec.describe Service, type: :model do
 
     context 'search' do 
       subject {FactoryBot.create(:service)}
+      it 'company' do
+        params = {}
+        params[:company_name] = subject.company.name
+        expect(Service.search(Service, params).present?).to be_truthy
+      end
       it 'name' do
         params = {}
         params[:name] = subject.name

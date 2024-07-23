@@ -70,6 +70,11 @@ RSpec.describe Form, type: :model do
 
     context 'search' do 
       subject {FactoryBot.create(:form)}
+      it 'company' do
+        params = {}
+        params[:company_name] = subject.company.name
+        expect(Form.search(Form, params).present?).to be_truthy
+      end
       it 'name' do
         params = {}
         params[:name] = subject.name
